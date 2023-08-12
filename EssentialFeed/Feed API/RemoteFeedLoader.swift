@@ -26,11 +26,7 @@ public final class RemoteFeedLoader: FeedLoader {
         self.client = client
         self.url = url
     }
-    
-    private func addcodeDidNotUnderstandIDCIDone(){
-        //created test plan fo CI **
-    }
-    
+ 
     //this is main behaviour, so has to be public too
     public func load(completion: @escaping (Result) -> Void) {
         
