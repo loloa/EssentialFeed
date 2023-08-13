@@ -21,6 +21,7 @@
 		5EEBCFDE2A87E2D700809580 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEBCFDB2A87E2D700809580 /* URLSessionHTTPClient.swift */; };
 		5EEBCFE02A87E36700809580 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEBCFDF2A87E36700809580 /* URLSessionHTTPClientTests.swift */; };
 		5EEBCFE32A87E39200809580 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEBCFE22A87E39200809580 /* XCTestCase+MemoryLeakTracking.swift */; };
+		5EEBCFE62A88C24400809580 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEBCFE22A87E39200809580 /* XCTestCase+MemoryLeakTracking.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		5EEBCFDF2A87E36700809580 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		5EEBCFE22A87E39200809580 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		5EEBCFE52A88B5FC00809580 /* EssentialFeed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = EssentialFeed.xctestplan; path = ../EssentialFeed.xctestplan; sourceTree = "<group>"; };
+		5EEBCFE72A88C48500809580 /* CI.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CI.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 		5EEBCF9D2A87D52000809580 = {
 			isa = PBXGroup;
 			children = (
+				5EEBCFE72A88C48500809580 /* CI.xctestplan */,
 				5EEBCFE52A88B5FC00809580 /* EssentialFeed.xctestplan */,
 				5EEBCFA92A87D52000809580 /* EssentialFeed */,
 				5EEBCFB52A87D52000809580 /* EssentialFeedTests */,
@@ -327,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EEBCFCD2A87D9FF00809580 /* EssentialFeedAPIEndToEndTests.swift in Sources */,
+				5EEBCFE62A88C24400809580 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
