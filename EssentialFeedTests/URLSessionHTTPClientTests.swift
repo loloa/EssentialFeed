@@ -205,7 +205,6 @@ final class URLSessionHTTPClientTests: XCTestCase {
         // class method , is called before instance exists -> static
         // invoced before request even starts
         override class func canInit(with request: URLRequest) -> Bool {
-            requestObserver?(request)
             return true
         }
         
