@@ -18,6 +18,9 @@ public final class RemoteFeedLoader: FeedLoader {
         case invalidData
     }
     
+    func stam(){
+        
+    }
     //we dont want expose this implementation detail to higher- level Feed feature module
     public typealias Result = LoadFeedResult
     
