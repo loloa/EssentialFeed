@@ -18,9 +18,6 @@ public final class RemoteFeedLoader: FeedLoader {
         case invalidData
     }
     
-    func test_CI_build(){
-        
-    }
     //we dont want expose this implementation detail to higher- level Feed feature module
     public typealias Result = LoadFeedResult
     
