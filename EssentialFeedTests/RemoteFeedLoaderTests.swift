@@ -5,6 +5,20 @@
 //  Created by אליסה לשין on 12/08/2023.
 //
 
+/* Important behavior to test
+ 
+ 1. RemoteFeedLoader did not load , so expected url of client is nil
+ 2. It is important to test that given the client URL is the same as expected
+ 3. How many times the client executes get(from: url), for this purpose we want HTTPClientSpy capture array of urls
+ 4. not delevered data connectivity error
+ 5.invalid data = not 200 status
+ 6. 200 but inavalid json
+ 7. 200 but empty json []/{}
+ 8. 200 + valid json
+ 9. test for memory leak addTeardownBlock{} 
+ 10. test if result was passed to callback if instanse of requester deallocated
+ */
+
 import XCTest
 
 import EssentialFeed

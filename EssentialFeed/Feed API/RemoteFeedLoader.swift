@@ -9,7 +9,6 @@ import Foundation
 
 public final class RemoteFeedLoader: FeedLoader {
  
- 
     private let url: URL
     private let client: HTTPClient
     
@@ -21,12 +20,12 @@ public final class RemoteFeedLoader: FeedLoader {
     
     //we dont want expose this implementation detail to higher- level Feed feature module
     public typealias Result = LoadFeedResult
- 
+    
     public init(url: URL, client: HTTPClient) {
         self.client = client
         self.url = url
     }
- 
+    
     //this is main behaviour, so has to be public too
     public func load(completion: @escaping (Result) -> Void) {
         
@@ -46,7 +45,6 @@ public final class RemoteFeedLoader: FeedLoader {
             }
         }
     }
-    
- }
+}
 
 
