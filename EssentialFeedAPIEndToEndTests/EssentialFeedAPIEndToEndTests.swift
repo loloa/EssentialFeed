@@ -9,7 +9,26 @@ import XCTest
 import EssentialFeed
 
 final class EssentialFeedAPIEndEndtoEndTests: XCTestCase {
+    /*
+     Here's how to access the system cache files on Mac:
+     Open Finder, click Go menu, and select Go to Folder.
+     Type ~/Library/Caches/ in the window and click Go.
+     Your system, or library, caches will appear. ...
+     You can open each folder and delete unneeded cache files by dragging them to the Trash and emptying it.
+     
+    find cache /Users/alisala/Library/Caches/com.apple.dt.xctest.tool
+     URLSession.shared has cache
+     ephemeral no cache
     
+    func demo (){
+        
+        let cache = URLCache(memoryCapacity: 10 * 1024 * 1024, diskCapacity: 100 * 1024, diskPath: nil)
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = cache
+        let session  = URLSession(configuration: configuration)
+        
+    }
+     */
     
     func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
         
@@ -38,7 +57,7 @@ final class EssentialFeedAPIEndEndtoEndTests: XCTestCase {
     private func getFeedResult(file: StaticString = #file, line: UInt = #line) -> LoadFeedResult? {
         
         let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
-        let client = URLSessionHTTPClient()
+        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedLoader(url: testServerURL, client: client)
         
         trackForMemoryLeaks(client, file: file, line: line)
