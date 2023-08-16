@@ -98,7 +98,6 @@
 			children = (
 				5EEBCFD42A87DC7C00809580 /* LoadFeedFromRemoteUseCaseTests.swift */,
 				5EEBCFDF2A87E36700809580 /* URLSessionHTTPClientTests.swift */,
-				5EEBCFE12A87E37100809580 /* Helpers */,
 			);
 			path = "Feed API";
 			sourceTree = "<group>";
@@ -148,6 +147,7 @@
 		5EEBCFB52A87D52000809580 /* EssentialFeedTests */ = {
 			isa = PBXGroup;
 			children = (
+				5EEBCFE12A87E37100809580 /* Helpers */,
 				5E8ECC212A8CDD2600805486 /* Feed Cache */,
 				5E8ECC202A8CDC6900805486 /* Feed API */,
 			);
