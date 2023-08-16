@@ -119,7 +119,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         
         store.completeDeletion(with: deletionError)
         wait(for: [exp], timeout: 1)
-        XCTAssertEqual(receivedError as NSError, deletionError)
+        XCTAssertEqual(receivedError as NSError?, deletionError)
     }
     
     //MARK: - Helpers
