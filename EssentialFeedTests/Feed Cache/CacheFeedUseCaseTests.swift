@@ -77,13 +77,11 @@ final class CacheFeedUseCaseTests: XCTestCase {
     
     
     func test_init_doesNotMessageStoreUponCreation(){
-        
         let (_, store) = makeSUT()
         XCTAssertEqual(store.receivedMessages, [])
     }
     
     func test_save_requestsCacheDeletion() {
-        
         let items = [uniqueItem(),uniqueItem()]
         let (sut, store) = makeSUT()
         
@@ -92,7 +90,6 @@ final class CacheFeedUseCaseTests: XCTestCase {
     }
     
     func test_doesNotRequestCacheInsertionOnDeletionError(){
-        
         let deletionError = anyNSError()
         let items = [uniqueItem(),uniqueItem()]
         let (sut, store) = makeSUT()
@@ -104,7 +101,6 @@ final class CacheFeedUseCaseTests: XCTestCase {
     
     
     func test_save_requestsNewCacheInsertionWithTimeStampOnSuccessfulDeletion() {
-        
         let timestamp = Date()
         let items = [uniqueItem(),uniqueItem()]
         let (sut, store) = makeSUT(currentDate:{ timestamp })
@@ -116,62 +112,32 @@ final class CacheFeedUseCaseTests: XCTestCase {
     }
     
     func test_save_failsOnDeletionError() {
-        
-        let items = [uniqueItem(),uniqueItem()]
         let (sut, store) = makeSUT()
         
         let deletionError = anyNSError()
-        var receivedError: Error?
-        
-        let exp = expectation(description: "Wait for save complition")
-        sut.save(items) { error in
-            receivedError = error
-            exp.fulfill()
+        expect(sut, toCompleteWithError: deletionError) {
+            store.completeDeletion(with: deletionError)
         }
-        
-        store.completeDeletion(with: deletionError)
-        wait(for: [exp], timeout: 1)
-        XCTAssertEqual(receivedError as NSError?, deletionError)
-    }
+     }
     
     func test_save_failsOnInsertionError() {
-        
-        let items = [uniqueItem(),uniqueItem()]
         let (sut, store) = makeSUT()
-        
         let insertionError = anyNSError()
-        var receivedError: Error?
         
-        let exp = expectation(description: "Wait for save complition")
-        sut.save(items) { error in
-            receivedError = error
-            exp.fulfill()
+        expect(sut, toCompleteWithError: insertionError) {
+            store.completeDeletionSuccessfully()
+            store.completeInsertion(with: insertionError)
         }
-        
-        store.completeDeletionSuccessfully()
-        store.completeInsertion(with: insertionError)
-        wait(for: [exp], timeout: 1)
-        XCTAssertEqual(receivedError as NSError?, insertionError)
     }
     
     func test_save_succeedsOnSuccessfullCacheInsertion() {
-        
-        let items = [uniqueItem(),uniqueItem()]
         let (sut, store) = makeSUT()
-       
-        var receivedError: Error?
         
-        let exp = expectation(description: "Wait for save complition")
-        sut.save(items) { error in
-            receivedError = error
-            exp.fulfill()
+        expect(sut, toCompleteWithError: nil) {
+            store.completeDeletionSuccessfully()
+            store.completeInsertionSuccessfully()
         }
-        
-        store.completeDeletionSuccessfully()
-        store.completeInsertionSuccessfully()
-        wait(for: [exp], timeout: 1)
-        XCTAssertNil(receivedError)
-    }
+     }
     
     //MARK: - Helpers
     
@@ -183,6 +149,21 @@ final class CacheFeedUseCaseTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, store)
     }
+    
+    private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+        
+        var receivedError: Error?
+        let exp = expectation(description: "Wait for save complition")
+        sut.save([uniqueItem()]) { error in
+            receivedError = error
+            exp.fulfill()
+        }
+        
+        action()
+        wait(for: [exp], timeout: 1)
+        XCTAssertEqual(receivedError as NSError?, expectedError, file: file, line: line)
+    }
+    
     private func uniqueItem() -> FeedItem {
         return FeedItem(id: UUID(), description: nil, location: nil, imageURL: anyURL())
     }
