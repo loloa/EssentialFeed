@@ -27,6 +27,7 @@
 		5EEBCFEB2A88D27D00809580 /* EssentialFeed.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 5EEBCFEA2A88D27D00809580 /* EssentialFeed.xctestplan */; };
 		5EEE88752A8E428600481BB9 /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE88742A8E428600481BB9 /* LocalFeedLoader.swift */; };
 		5EEE88772A8E44D500481BB9 /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE88762A8E44D500481BB9 /* FeedStore.swift */; };
+		5EEE88792A8EA81600481BB9 /* RemoteFedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE88782A8EA81600481BB9 /* RemoteFedItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		5EEBCFEA2A88D27D00809580 /* EssentialFeed.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EssentialFeed.xctestplan; sourceTree = "<group>"; };
 		5EEE88742A8E428600481BB9 /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		5EEE88762A8E44D500481BB9 /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
+		5EEE88782A8EA81600481BB9 /* RemoteFedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFedItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +181,7 @@
 		5EEBCFD62A87E23000809580 /* Feed API */ = {
 			isa = PBXGroup;
 			children = (
+				5EEE88782A8EA81600481BB9 /* RemoteFedItem.swift */,
 				5EEBCFD72A87E25C00809580 /* RemoteFeedLoader.swift */,
 				5EEBCFDA2A87E2D700809580 /* FeedItemMapper.swift */,
 				5EEBCFD92A87E2D700809580 /* HTTPClient.swift */,
@@ -350,6 +353,7 @@
 				5EEBCFDC2A87E2D700809580 /* HTTPClient.swift in Sources */,
 				5EEBCFC42A87D74800809580 /* FeedLoader.swift in Sources */,
 				5EEBCFDD2A87E2D700809580 /* FeedItemMapper.swift in Sources */,
+				5EEE88792A8EA81600481BB9 /* RemoteFedItem.swift in Sources */,
 				5EEBCFC22A87D5AF00809580 /* FeedItem.swift in Sources */,
 				5EEE88752A8E428600481BB9 /* LocalFeedLoader.swift in Sources */,
 				5EEBCFAC2A87D52000809580 /* EssentialFeed.docc in Sources */,
