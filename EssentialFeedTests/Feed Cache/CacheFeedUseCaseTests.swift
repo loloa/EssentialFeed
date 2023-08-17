@@ -31,16 +31,16 @@ class LocalFeedLoader {
         store.deleteCachedFeed {[weak self] error in
             
             guard let self = self else { return }
-            if error == nil {
-                
+            
+            if let cacheDeletionError = error {
+                comletion(cacheDeletionError)
+            } else {
                 self.store.insert(items, timestamp: self.currentDate()) {[weak self] error in
                     guard let self = self else { return }
                     comletion(error)
                 }
-            }else {
-                comletion(error)
             }
-        }
+         }
     }
 }
 
