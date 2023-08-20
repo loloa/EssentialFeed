@@ -9,7 +9,7 @@ import Foundation
 import EssentialFeed
 
 class FeedStoreSpy: FeedStore {
-    
+ 
     /*
      we have order dependency on store insert can be done only after deletion
      so we need garantee not only that the methods were called but also called in write order
@@ -25,6 +25,7 @@ class FeedStoreSpy: FeedStore {
     
     private var deletionCompletions = [DeletionCompletion]()
     private var insertionCompletions = [InsertionCompletion]()
+    private var retrievalCompletions = [RetrivalCompletion]()
     
     
     func deleteCachedFeed(completion: @escaping DeletionCompletion){
@@ -48,7 +49,12 @@ class FeedStoreSpy: FeedStore {
         insertionCompletions[index](nil)
     }
     
-    func retrieve() {
+    func completeRetrival(with error: Error, at index: Int = 0) {
+        retrievalCompletions[index](error)
+    }
+    
+    func retrieve(completion: @escaping RetrivalCompletion) {
+        retrievalCompletions.append(completion)
         receivedMessages.append(.retrieve)
     }
  }

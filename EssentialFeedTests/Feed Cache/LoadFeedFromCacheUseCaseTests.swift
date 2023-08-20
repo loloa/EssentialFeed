@@ -20,11 +20,31 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
     func test_load_requestsCacheRetrival(){
         
         let (sut, store) = makeSUT()
-        sut.load()
+        sut.load { _ in }
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    // MArk: - Helpers
+    //#### Retrieval error course (sad path):
+    //1. System delivers error.
+    func test_deliversErrorOnCacheRetrival() {
+        
+        let (sut, store) = makeSUT()
+        let exp = expectation(description: "Waiting for complition")
+        
+        let expectedError = anyNSError()
+        var receivedError: Error?
+       
+        sut.load { error in
+            receivedError = error
+            exp.fulfill()
+        }
+        store.completeRetrival(with: expectedError)
+        
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(receivedError as NSError?, expectedError)
+    }
+    
+    // MARK: - Helpers
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init ,file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
         
@@ -33,6 +53,10 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         trackForMemoryLeaks(store, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, store)
+    }
+    
+    private func anyNSError()  -> NSError {
+        return NSError(domain: "any error", code: 0)
     }
     
 }
