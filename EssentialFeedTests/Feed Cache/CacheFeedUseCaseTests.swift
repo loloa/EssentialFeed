@@ -111,47 +111,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, store)
     }
-    private class FeedStoreSpy: FeedStore {
-        
-        /*
-         we have order dependency on store insert can be done only after deletion
-         so we need garantee not only that the methods were called but also called in write order
-         we ned to merge all info in one stuff to use it in assertions
-         */
-        
-        enum ReceivedMessages: Equatable {
-            case deleteCachedFeed
-            case insert([LocalFeedImage], Date)
-        }
-        private (set) var receivedMessages = [ReceivedMessages]()
-        
-        private var deletionCompletions = [DeletionCompletion]()
-        private var insertionCompletions = [InsertionCompletion]()
-        
-        
-        func deleteCachedFeed(completion: @escaping DeletionCompletion){
-            deletionCompletions.append(completion)
-            receivedMessages.append(.deleteCachedFeed)
-        }
-        func completeDeletion(with error: Error, at index: Int = 0) {
-            deletionCompletions[index](error)
-        }
-        func completeDeletionSuccessfully(at index: Int = 0){
-            deletionCompletions[index](nil)
-        }
-        func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-            insertionCompletions.append(completion)
-            receivedMessages.append(.insert(feed, timestamp))
-        }
-        func completeInsertion(with error: Error, at index: Int = 0) {
-            insertionCompletions[index](error)
-        }
-        func completeInsertionSuccessfully(at index: Int = 0) {
-            insertionCompletions[index](nil)
-        }
-        
-    }
-    
+ 
     private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         
         var receivedError: Error?
