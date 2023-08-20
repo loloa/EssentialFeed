@@ -17,7 +17,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     //2. System retrieves feed data from cache.
-    func test_load_requestsCacheretrival(){
+    func test_load_requestsCacheRetrival(){
         
         let (sut, store) = makeSUT()
         sut.load()
