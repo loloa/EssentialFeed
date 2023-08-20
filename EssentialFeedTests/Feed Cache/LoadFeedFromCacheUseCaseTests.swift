@@ -26,7 +26,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
     
     //#### Retrieval error course (sad path):
     //1. System delivers error.
-    func test_deliversErrorOnCacheRetrival() {
+    func test_load_failsOnretrivalError() {
         
         let (sut, store) = makeSUT()
         let exp = expectation(description: "Waiting for complition")
