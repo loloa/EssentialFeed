@@ -64,6 +64,21 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         }
     }
     
+    //#### Expired cache course (sad path):
+    //1. System delivers no feed images.
+    
+    func test_load_deleiversNoImagesOnSevendaysOldCache() {
+        
+        let feed = uniqueImageFeed()
+        let fixedCurrentDate = Date()
+        let sevendaysOldTimeStamp = fixedCurrentDate.adding(days: -7)
+        let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+ 
+        expect(sut, toCompleteWith: .success([])) {
+            store.completeRetrival(with: feed.local, timestamp: sevendaysOldTimeStamp)
+        }
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init ,file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
