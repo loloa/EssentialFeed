@@ -96,25 +96,22 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
     //1. System deletes cache.
     
     func test_load_hasNoSideEffectsOnretrivalError (){
-        
         let (sut, store) = makeSUT()
         
         sut.load { _ in }
         store.completeRetrival(with: anyNSError())
         XCTAssertEqual(store.receivedMessages, [.retrieve])
- 
     }
  
     func test_load_hasNoSideEffectOnEmptyCache (){
-        
         let (sut, store) = makeSUT()
         
         sut.load { _ in }
         store.completeRetrivalWithEmptyCache()
         XCTAssertEqual(store.receivedMessages, [.retrieve])
- 
     }
-    func test_load_doesNotDeleteCacheOnLessThanSevenDaysOldCache (){
+    
+    func test_load_hasNoSideEffectOnLessThanSevenDaysOldCache (){
        
         let fixedDate = Date()
         let lessThanSevenDaysOldTimestamp = fixedDate.adding(days: -7).adding(seconds: 1)

@@ -17,7 +17,6 @@ final class ValidateFeedcacheUseCaseTests: XCTestCase {
     }
     
     func test_validateCache_deletesCacheOnRetrivalError (){
-        
         let (sut, store) = makeSUT()
         
         sut.validateCache()
@@ -26,11 +25,21 @@ final class ValidateFeedcacheUseCaseTests: XCTestCase {
     }
     
     func test_validateCache_doesNotDeleteCacheOnEmptyCache (){
-        
         let (sut, store) = makeSUT()
         
         sut.validateCache()
         store.completeRetrivalWithEmptyCache()
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
+    }
+    
+    func test_validateCache_doesNotDeleteCacheOnLessThanSevenDaysOldCache (){
+        let fixedDate = Date()
+        let lessThanSevenDaysOldTimestamp = fixedDate.adding(days: -7).adding(seconds: 1)
+        let expectedImagesFeed = uniqueImageFeed()
+        let (sut, store) = makeSUT()
+ 
+        sut.validateCache()
+        store.completeRetrival(with: expectedImagesFeed.local, timestamp: lessThanSevenDaysOldTimestamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
@@ -47,5 +56,29 @@ final class ValidateFeedcacheUseCaseTests: XCTestCase {
  
     private func anyNSError()  -> NSError {
         return NSError(domain: "any error", code: 0)
+    }
+    
+    
+    private func uniqueImage() -> FeedImage {
+        return FeedImage(id: UUID(), description: nil, location: nil, url: anyURL())
+    }
+    private func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) {
+        let models = [uniqueImage(), uniqueImage()]
+        let local = models.map{ LocalFeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.url) }
+        return (models, local)
+    }
+    private func anyURL() -> URL {
+        return URL(string: "http://any-url.com")!
+    }
+}
+private extension Date {
+    
+    func adding(days: Int) -> Date {
+        
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+    }
+    func adding(seconds: TimeInterval) -> Date {
+        
+        return self + seconds
     }
 }
