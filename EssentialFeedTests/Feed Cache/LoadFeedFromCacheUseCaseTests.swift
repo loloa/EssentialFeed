@@ -90,6 +90,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
             store.completeRetrival(with: feed.local, timestamp: moreThansevendaysOldTimeStamp)
         }
     }
+ 
     
     // #### Retrieval error course (sad path):
     //1. System deletes cache.
@@ -101,8 +102,17 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         sut.load { _ in }
         store.completeRetrival(with: anyNSError())
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
-             
+ 
+    }
+    
+    func test_load_doesNotdeletesCacheOnEmptyCache (){
         
+        let (sut, store) = makeSUT()
+        
+        sut.load { _ in }
+        store.completeRetrivalWithEmptyCache()
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
+ 
     }
     
     // MARK: - Helpers
