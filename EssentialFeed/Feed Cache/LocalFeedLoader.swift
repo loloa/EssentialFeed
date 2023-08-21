@@ -6,7 +6,7 @@
 //
 
 import Foundation
-  
+
 public final class LocalFeedLoader {
     private let store: FeedStore
     private let currentDate: () -> Date
@@ -19,7 +19,7 @@ public final class LocalFeedLoader {
         self.store = store
         self.currentDate = currentDate
     }
- 
+    
     public func save(_ feed: [FeedImage], comletion: @escaping (SaveResult) -> Void ) {
         store.deleteCachedFeed {[weak self] error in
             
@@ -30,7 +30,7 @@ public final class LocalFeedLoader {
             } else {
                 cache(feed, with: comletion)
             }
-         }
+        }
     }
     
     public func validateCache() {
@@ -47,7 +47,7 @@ public final class LocalFeedLoader {
                 break
             }
         }
-     }
+    }
     
     public func load(completion: @escaping (LoadResult) -> Void) {
         store.retrieve {[weak self] result in
@@ -55,19 +55,17 @@ public final class LocalFeedLoader {
             
             switch result {
             case let .failure(error):
-                 
+                
                 completion(.failure(error))
                 
             case let .found(feed, timestamp) where self.validate(timestamp):
                 completion(.success(feed.toModels()))
                 
-            case .found:
+            case .found, .empty:
                 completion(.success([]))
                 
-            case .empty:
-                completion(.success([]))
             }
- 
+            
         }
     }
     
