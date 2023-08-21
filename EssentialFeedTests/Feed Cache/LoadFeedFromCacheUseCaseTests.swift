@@ -94,17 +94,17 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
     
     // #### Retrieval error course (sad path):
     //1. System deletes cache.
-
-    func test_load_deletesCacheOnretrivalError (){
+    
+    func test_load_hasNoSideEffectsOnretrivalError (){
         
         let (sut, store) = makeSUT()
         
         sut.load { _ in }
         store.completeRetrival(with: anyNSError())
-        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
  
     }
-    
+ 
     func test_load_doesNotdeletesCacheOnEmptyCache (){
         
         let (sut, store) = makeSUT()

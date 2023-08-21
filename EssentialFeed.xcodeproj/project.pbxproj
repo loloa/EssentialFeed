@@ -119,9 +119,9 @@
 		5E8ECC212A8CDD2600805486 /* Feed Cache */ = {
 			isa = PBXGroup;
 			children = (
+				5E63B03F2A92004700D38CC7 /* FeedStoreSpy.swift */,
 				5E8ECC222A8CDD6500805486 /* CacheFeedUseCaseTests.swift */,
 				5E63B03D2A91FF5A00D38CC7 /* LoadFeedFromCacheUseCaseTests.swift */,
-				5E63B03F2A92004700D38CC7 /* FeedStoreSpy.swift */,
 				5ECCCD492A93825F007B823A /* ValidateFeedcacheUseCaseTests.swift */,
 			);
 			path = "Feed Cache";
