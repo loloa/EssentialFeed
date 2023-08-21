@@ -91,6 +91,20 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         }
     }
     
+    // #### Retrieval error course (sad path):
+    //1. System deletes cache.
+
+    func test_load_deletesCacheOnretrivalError (){
+        
+        let (sut, store) = makeSUT()
+        
+        sut.load { _ in }
+        store.completeRetrival(with: anyNSError())
+        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
+             
+        
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init ,file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
