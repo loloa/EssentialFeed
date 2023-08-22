@@ -33,7 +33,7 @@
 		5EEE88752A8E428600481BB9 /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE88742A8E428600481BB9 /* LocalFeedLoader.swift */; };
 		5EEE88772A8E44D500481BB9 /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE88762A8E44D500481BB9 /* FeedStore.swift */; };
 		5EEE88792A8EA81600481BB9 /* RemoteFedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE88782A8EA81600481BB9 /* RemoteFedItem.swift */; };
-		5EEE887B2A8EA86600481BB9 /* LocalfeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE887A2A8EA86600481BB9 /* LocalfeedItem.swift */; };
+		5EEE887B2A8EA86600481BB9 /* LocalFeedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE887A2A8EA86600481BB9 /* LocalFeedImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,7 +81,7 @@
 		5EEE88742A8E428600481BB9 /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		5EEE88762A8E44D500481BB9 /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
 		5EEE88782A8EA81600481BB9 /* RemoteFedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFedItem.swift; sourceTree = "<group>"; };
-		5EEE887A2A8EA86600481BB9 /* LocalfeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalfeedItem.swift; sourceTree = "<group>"; };
+		5EEE887A2A8EA86600481BB9 /* LocalFeedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,7 +228,7 @@
 			children = (
 				5EEE88742A8E428600481BB9 /* LocalFeedLoader.swift */,
 				5EEE88762A8E44D500481BB9 /* FeedStore.swift */,
-				5EEE887A2A8EA86600481BB9 /* LocalfeedItem.swift */,
+				5EEE887A2A8EA86600481BB9 /* LocalFeedImage.swift */,
 			);
 			path = "Feed Cache";
 			sourceTree = "<group>";
@@ -374,7 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EEE88772A8E44D500481BB9 /* FeedStore.swift in Sources */,
-				5EEE887B2A8EA86600481BB9 /* LocalfeedItem.swift in Sources */,
+				5EEE887B2A8EA86600481BB9 /* LocalFeedImage.swift in Sources */,
 				5EEBCFDE2A87E2D700809580 /* URLSessionHTTPClient.swift in Sources */,
 				5EEBCFD82A87E25C00809580 /* RemoteFeedLoader.swift in Sources */,
 				5EEBCFDC2A87E2D700809580 /* HTTPClient.swift in Sources */,
