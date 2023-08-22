@@ -32,38 +32,38 @@ final class ValidateFeedcacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_validateCache_doesNotDeleteCacheOnLessThanSevenDaysOldCache (){
+    func test_validateCache_doesNotDeleteNonExpiredCache (){
         let fixedDate = Date()
-        let lessThanSevenDaysOldTimestamp = fixedDate.adding(days: -7).adding(seconds: 1)
+        let nonExpiredTimestamp = fixedDate.minusFeedCacheMaxAge().adding(seconds: 1)
         let expectedImagesFeed = uniqueImageFeed()
         let (sut, store) = makeSUT()
  
         sut.validateCache()
-        store.completeRetrival(with: expectedImagesFeed.local, timestamp: lessThanSevenDaysOldTimestamp)
+        store.completeRetrival(with: expectedImagesFeed.local, timestamp: nonExpiredTimestamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_validateCache_deletesSevenDaysOldCache (){
+    func test_validateCache_deletesCacheOnExpiration (){
        
         let expectedImagesFeed = uniqueImageFeed()
         let fixedDate = Date()
-        let sevenDaysOldTimestamp = fixedDate.adding(days: -7)
+        let expirationTimestamp = fixedDate.minusFeedCacheMaxAge()
         let (sut, store) = makeSUT(currentDate: { fixedDate })
  
         sut.validateCache()
-        store.completeRetrival(with: expectedImagesFeed.local, timestamp: sevenDaysOldTimestamp)
+        store.completeRetrival(with: expectedImagesFeed.local, timestamp: expirationTimestamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
     }
     
-    func test_validateCache_deletesMoreThanSevenDaysOldCache (){
+    func test_validateCache_deletesExpiredCache (){
        
         let fixedDate = Date()
-        let moreThanSevenDaysOldTimestamp = fixedDate.adding(days: -7).adding(days: -1)
+        let expiredTimestamp = fixedDate.minusFeedCacheMaxAge().adding(days: -1)
         let expectedImagesFeed = uniqueImageFeed()
         let (sut, store) = makeSUT()
  
         sut.validateCache()
-        store.completeRetrival(with: expectedImagesFeed.local, timestamp: moreThanSevenDaysOldTimestamp)
+        store.completeRetrival(with: expectedImagesFeed.local, timestamp: expiredTimestamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
     }
     
