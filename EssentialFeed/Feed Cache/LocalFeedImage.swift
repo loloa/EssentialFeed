@@ -7,8 +7,12 @@
 
 import Foundation
 
-// Data transfer Objects /Mirro
-public struct LocalFeedImage: Equatable, Codable{
+// Data transfer Objects /Mirro from backend object
+/*
+ we added Codable = details of framework FileSystem to the LocalFeedImage which is in the framework agnostic area, it is not right
+ if we will use CoreData instead of filesystem, so Core Data does not need these Codable capability
+ */
+public struct LocalFeedImage: Equatable {
     
    public let id: UUID
    public let description: String?
