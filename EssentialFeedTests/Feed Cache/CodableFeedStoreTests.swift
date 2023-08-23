@@ -64,30 +64,19 @@ final class CodableFeedStoreTests: XCTestCase {
         super.setUp()
         let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image-feed.store")
         try? FileManager.default.removeItem(at: storeURL)
-//        do {
-//            try FileManager.default.removeItem(at: storeURL)
-//            print("** Success! setiup.")
-//        }catch {
-//            print("** failed Cleared on SetUP \(error)")
-//        }
+ 
     }
     
     override  func tearDown() {
         super.tearDown()
         let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image-feed.store")
         try? FileManager.default.removeItem(at: storeURL)
-//        do {
-//             try FileManager.default.removeItem(at: storeURL)
-//            print("** Success! tearDown.")
-//        }catch {
-//            print("**failed Cleared on tearDown \(error)")
-//        }
-    }
+     }
 
     //Empty cache works (before something is inserted)
     func test_retrieve_deliversEmptyOnEmptyCache() {
         
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         let exp = expectation(description: "Waiting for cache retireval")
         sut.retrieve { result in
             
@@ -105,7 +94,7 @@ final class CodableFeedStoreTests: XCTestCase {
     //Empty cache twice returns empty (no side effect)
     func test_retrieve_hasNoSideEffectsOnEmptyCache() {
 
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         let exp = expectation(description: "Waiting for cache retireval")
         sut.retrieve { firstResult in
 
@@ -125,7 +114,7 @@ final class CodableFeedStoreTests: XCTestCase {
 
     func test_retrieveCacheAfterInsertingToEmptycache_deliversInsertedValue() {
 
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         let feed = uniqueImageFeed().local
         let timestamp = Date()
         let exp = expectation(description: "Waiting for cache retireval")
@@ -150,6 +139,12 @@ final class CodableFeedStoreTests: XCTestCase {
         }
          
         wait(for: [exp], timeout: 1.0)
+    }
+    
+    //MARK: - Helpers
+    
+    func makeSUT() -> CodableFeedStore{
+        return CodableFeedStore()
     }
      
 }
