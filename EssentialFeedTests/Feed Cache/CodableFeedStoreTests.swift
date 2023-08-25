@@ -8,6 +8,7 @@
 import XCTest
 import EssentialFeed
 
+
 class CodableFeedStore {
     private struct Cache: Codable {
         let feed: [CodableFeedImage]
@@ -17,9 +18,19 @@ class CodableFeedStore {
             return feed.map{ $0.local }
         }
     }
+    //"Make it work. Make it right. Make it fast. In that order."—Kent Beck
     
     private struct CodableFeedImage: Codable {
         /* priority to decoupling, but if you think it hurts the performance , need to mesure before optimizing */
+        
+        /*
+         
+         We encourage you to measure your test suite performance over time. It should be automated, as part of your CI reports. Performance outliers should alert you to take action before they become a costly problem.
+         
+         To measure our test suite times, we used the following xcodebuild command to clean, build and test the EssentialFeed project using the EssentialFeed scheme:
+
+         xcodebuild clean build test -project EssentialFeed/EssentialFeed.xcodeproj -scheme "EssentialFeed"
+         */
         private let id: UUID
         private let description: String?
         private let location: String?
@@ -113,7 +124,7 @@ final class CodableFeedStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    func test_retrieveCacheAfterInsertingToEmptycache_deliversInsertedValue() {
+    func test_retrieveAfterInsertingToEmptyCache_deliversInsertedValue() {
 
         let sut = makeSUT()
         let feed = uniqueImageFeed().local
@@ -154,6 +165,9 @@ final class CodableFeedStoreTests: XCTestCase {
     private func testSpecificStoreURL() -> URL {
         
         //CodableFeedStoreTests.store
+        /*
+         we made sure to use the cachesDirectory which is a place for “discardable cache files” and the OS itself can clean up when necessary. (As opposed to the documentDirectory, which the developer is fully responsible for maintaining).
+         */
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent("\(type(of: self)).store")
     }
     private func setupEmptyStoreState() {
