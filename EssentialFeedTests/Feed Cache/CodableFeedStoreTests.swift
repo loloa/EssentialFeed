@@ -115,16 +115,19 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
     }
     // returns the same Data on twice call
-    
-    private func insert(_ cache:(feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore) {
+    @discardableResult
+    private func insert(_ cache:(feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore) -> Error? {
         let exp = expectation(description: "Waiting for cache retireval")
-        sut.insert(cache.feed, timestamp: cache.timestamp) { insertionError in
+        var insertionError: Error?
+        
+        sut.insert(cache.feed, timestamp: cache.timestamp) { receivedInsertionError in
             
-            XCTAssertNil(insertionError,"Expected feed to be inserted successfully")
+            insertionError = receivedInsertionError
             exp.fulfill()
         }
         
         wait(for: [exp], timeout: 1.0)
+        return insertionError
     }
     
     func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
@@ -150,6 +153,23 @@ final class CodableFeedStoreTests: XCTestCase {
         
         try! "invalid data".write(to: storeURL, atomically: false, encoding: .utf8)
         expect(sut, toRetrieveTwice: .failure(anyNSError()))
+    }
+    
+    func test_insert_overidesPrevioslyInsertedCache() {
+        
+        let sut = makeSUT()
+        let feed = uniqueImageFeed()
+        let timestamp = Date()
+        
+        let firstInsertionError = insert((feed: feed.local, timestamp: timestamp), to: sut)
+        XCTAssertNil(firstInsertionError,"Expected to insert cache successfully")
+        
+        let latestFeed = uniqueImageFeed()
+        let latestTimestamp = Date()
+        let latestinsertionError = insert((feed: latestFeed.local, timestamp: latestTimestamp), to: sut)
+        XCTAssertNil(latestinsertionError, "Expected to override cache successfully")
+        expect(sut, toRetrieve: .found(feed: latestFeed.local, timestamp: latestTimestamp))
+        
     }
     //MARK: - Helpers
     
