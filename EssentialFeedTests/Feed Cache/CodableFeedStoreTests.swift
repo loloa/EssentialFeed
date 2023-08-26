@@ -86,9 +86,13 @@ class CodableFeedStore {
         guard FileManager.default.fileExists(atPath: storeURL.path) else {
             return completion(nil)
         }
-        try! FileManager.default.removeItem(at: storeURL)
-        completion(nil)
-    }
+        do {
+            try FileManager.default.removeItem(at: storeURL)
+            completion(nil)
+        } catch {
+            completion(error)
+        }
+     }
 }
 
 final class CodableFeedStoreTests: XCTestCase {
@@ -204,6 +208,15 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieve: .empty)
     }
     
+    func test_delete_deliversErrorOnDeletionError() {
+        let noPermissionsDirectory = cachesDirectory()
+        
+        let sut = makeSUT(storeURL: noPermissionsDirectory)
+        let deletionError = deleteCache(sut: sut)
+        XCTAssertNotNil(deletionError, "Expected cache deletion failure with error")
+        expect(sut, toRetrieve: .empty)
+    }
+    
     //MARK: - Helpers
     
     func makeSUT(storeURL: URL? = nil, file: StaticString = #filePath, line: UInt = #line) -> CodableFeedStore{
@@ -273,7 +286,11 @@ final class CodableFeedStoreTests: XCTestCase {
         /*
          we made sure to use the cachesDirectory which is a place for “discardable cache files” and the OS itself can clean up when necessary. (As opposed to the documentDirectory, which the developer is fully responsible for maintaining).
          */
-        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent("\(type(of: self)).store")
+        return cachesDirectory().appendingPathComponent("\(type(of: self)).store")
+    }
+    
+    private func cachesDirectory() -> URL {
+        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
     }
     private func setupEmptyStoreState() {
         deleteStoreArtifacts()
