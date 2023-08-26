@@ -69,13 +69,18 @@ class CodableFeedStore {
     
     func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping FeedStore.InsertionCompletion){
         
-        let encoder = JSONEncoder()
-        //let cache = Cache(feed: feed.map{ CodableFeedImage($0)}, timestamp: timestamp)
-        let cache = Cache(feed: feed.map(CodableFeedImage.init), timestamp: timestamp)
-        let encoded = try! encoder.encode(cache)
-        try! encoded.write(to: storeURL)
-        completion(nil)
-    }
+        do {
+            
+            let encoder = JSONEncoder()
+            //let cache = Cache(feed: feed.map{ CodableFeedImage($0)}, timestamp: timestamp)
+            let cache = Cache(feed: feed.map(CodableFeedImage.init), timestamp: timestamp)
+            let encoded = try encoder.encode(cache)
+            try encoded.write(to: storeURL)
+            completion(nil)
+        } catch {
+            completion(error)
+        }
+     }
 }
 
 final class CodableFeedStoreTests: XCTestCase {
@@ -169,13 +174,22 @@ final class CodableFeedStoreTests: XCTestCase {
         let latestinsertionError = insert((feed: latestFeed.local, timestamp: latestTimestamp), to: sut)
         XCTAssertNil(latestinsertionError, "Expected to override cache successfully")
         expect(sut, toRetrieve: .found(feed: latestFeed.local, timestamp: latestTimestamp))
-        
+    }
+    
+    func test_insert_deliversErrorOnInsertionError() {
+        let invalidStoreURL = URL(string: "invalid://store-url")
+        let sut = makeSUT(storeURL: invalidStoreURL)
+        let feed = uniqueImageFeed().local
+        let timestamp = Date()
+
+        let error = insert((feed: feed, timestamp: timestamp), to: sut)
+        XCTAssertNotNil(error,"Expected cache insertion to fail with an error")
     }
     //MARK: - Helpers
     
     func makeSUT(storeURL: URL? = nil, file: StaticString = #filePath, line: UInt = #line) -> CodableFeedStore{
          
-        let sut = CodableFeedStore(storeURL: testSpecificStoreURL())
+        let sut = CodableFeedStore(storeURL: storeURL ?? testSpecificStoreURL())
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
