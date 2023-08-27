@@ -56,7 +56,7 @@ public class CodableFeedStore: FeedStore {
      retrieve has no side effects, it can run concurrently!!!!
      we can add attribute to queue .concurrent and ad flag .barrier to the operations that run concurrently (have side effects)
      */
-    public func retrieve(completion: @escaping RetrivalCompletion) {
+    public func retrieve(completion: @escaping RetrievalCompletion) {
         
         let storeURL = self.storeURL
         backGroundQueu.async {
