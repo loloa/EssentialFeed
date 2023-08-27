@@ -122,12 +122,18 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_delete_deliversErrorOnDeletionError() {
-        let noPermissionsDirectory = cachesDirectory()
+//        let noPermissionsDirectory = cachesDirectory()
+//        let sut = makeSUT(storeURL: noPermissionsDirectory)
+//        let deletionError = deleteCache(sut: sut)
+//        XCTAssertNotNil(deletionError, "Expected cache deletion failure with error")
+//        expect(sut, toRetrieve: .empty)
         
-        let sut = makeSUT(storeURL: noPermissionsDirectory)
-        let deletionError = deleteCache(sut: sut)
-        XCTAssertNotNil(deletionError, "Expected cache deletion failure with error")
-        expect(sut, toRetrieve: .empty)
+        
+            let noDeletePermissionURL = noDeletePermissionURL()
+            let sut = makeSUT(storeURL: noDeletePermissionURL)
+            let deletionError = deleteCache(sut: sut)
+            XCTAssertNotNil(deletionError, "Expected cache deletion to fail")
+            expect(sut, toRetrieve: .empty)
     }
     
     func test_sideEffectsAreSerial() {
@@ -157,6 +163,8 @@ final class CodableFeedStoreTests: XCTestCase {
         XCTAssertEqual([op1, op2, op3], operationsOrder, "Expected side efects to run serially but operations finished in the wrong order")
          
     }
+     
+      
     //MARK: - Helpers
     
     func makeSUT(storeURL: URL? = nil, file: StaticString = #filePath, line: UInt = #line) -> FeedStore {
@@ -232,6 +240,11 @@ final class CodableFeedStoreTests: XCTestCase {
     private func cachesDirectory() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
     }
+    
+    private func noDeletePermissionURL() -> URL {
+      return FileManager.default.urls(for: .cachesDirectory, in: .systemDomainMask).first!
+    }
+    
     private func setupEmptyStoreState() {
         deleteStoreArtifacts()
     }
