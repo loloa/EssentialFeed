@@ -46,12 +46,16 @@ public class CodableFeedStore: FeedStore {
         }
     }
     private let storeURL: URL
-    private let backGroundQueu = DispatchQueue(label: "\(CodableFeedStore.self)Queu", qos: .userInitiated)
+    private let backGroundQueu = DispatchQueue(label: "\(CodableFeedStore.self)Queu", qos: .userInitiated, attributes: .concurrent)
     
     public init(storeURL: URL) {
         self.storeURL = storeURL
     }
     
+    /*
+     retrieve has no side effects, it can run concurrently!!!!
+     we can add attribute to queue .concurrent and ad flag .barrier to the operations that run concurrently (have side effects)
+     */
     public func retrieve(completion: @escaping RetrivalCompletion) {
         
         let storeURL = self.storeURL
@@ -73,7 +77,7 @@ public class CodableFeedStore: FeedStore {
     
     public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion){
         let storeURL = self.storeURL
-        backGroundQueu.async {
+        backGroundQueu.async (flags: .barrier) {
             do {
                 
                 let encoder = JSONEncoder()
@@ -91,7 +95,7 @@ public class CodableFeedStore: FeedStore {
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         let storeURL = self.storeURL
         
-        backGroundQueu.async {
+        backGroundQueu.async(flags: .barrier) {
             guard FileManager.default.fileExists(atPath: storeURL.path) else {
                 return completion(nil)
             }
