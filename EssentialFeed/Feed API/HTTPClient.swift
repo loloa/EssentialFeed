@@ -25,6 +25,9 @@ public enum HTTPClientResult {
 }
 
 //internal type, can be public, so other modules can use it
+
+/// The completion handler can be invoked in any thread.
+/// Clients are responsible to dispatch to appropriate threads, if needed.
 public protocol HTTPClient {
     
     func get(from url: URL, completion: @escaping(HTTPClientResult) -> Void)
