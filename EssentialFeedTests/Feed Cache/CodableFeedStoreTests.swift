@@ -8,7 +8,12 @@
 import XCTest
 import EssentialFeed
 
-final class CodableFeedStoreTests: XCTestCase, FailableFeedStore {
+
+//this is composition
+typealias FailableFeedStoreSpecs = FailableRetrieveFeedStoreSpecs & FailableInsertFeedStoreSpecs & FailableDeleteFeedStoreSpecs
+
+
+final class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
     
     override  func setUp() {
         super.setUp()
