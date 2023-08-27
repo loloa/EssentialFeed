@@ -40,4 +40,4 @@ protocol FailableDeleteFeedStoreSpecs: FeedStoreSpecs {
 }
 
 //this is composition
-typealias FailableFeedStore = FailableRetrieveFeedStoreSpecs & FailableInsertFeedStoreSpecs & FailableDeleteFeedStoreSpecs
+typealias FailableFeedStoreSpecs = FailableRetrieveFeedStoreSpecs & FailableInsertFeedStoreSpecs & FailableDeleteFeedStoreSpecs
