@@ -15,12 +15,17 @@ protocol FeedStoreSpecs {
      func test_retrieve_deliversFoundValuesOnNonEmptyCache()
      func test_retrieve_hasNoSideEffectsOnNonEmptyCache()
 
-     func test_insert_overidesPrevioslyInsertedCache()
+    
+     func test_insert_deliversNoErrorOnEmptyCache()//
+     func test_insert_deliversNoErrorOnNonEmptyCache()//
+     func test_insert_overridesPreviouslyInsertedCacheValues()
 
-     func test_delete_hasNoSideEffectOnEmptyCache()
-     func test_delete_emptiesPrevioslyInsertedCache()
+     func test_delete_deliversNoErrorOnEmptyCache()//
+     func test_delete_hasNoSideEffectsOnEmptyCache()
+     func test_delete_deliversNoErrorOnNonEmptyCache()//
+     func test_delete_emptiesPreviouslyInsertedCache()
  
-     func test_sideEffectsAreSerial()
+     func test_storeSideEffects_runSerially()
 }
 
 //these specs are not mandatory , they are specifications, we need to conform to basic protocol
