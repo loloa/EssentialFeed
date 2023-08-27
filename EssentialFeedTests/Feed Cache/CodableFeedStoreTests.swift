@@ -188,7 +188,7 @@ final class CodableFeedStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
         return insertionError
     }
-    
+    @discardableResult
     private func deleteCache(sut: FeedStore) -> Error? {
         
         let exp = expectation(description: "Waitong for cache deletion")

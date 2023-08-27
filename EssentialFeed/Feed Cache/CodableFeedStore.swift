@@ -55,6 +55,9 @@ public class CodableFeedStore: FeedStore {
     /*
      retrieve has no side effects, it can run concurrently!!!!
      we can add attribute to queue .concurrent and ad flag .barrier to the operations that run concurrently (have side effects)
+     
+     in this block there is no retaincycle but we avoid to use self to prevent holding the reference to object when it is unnessary, we prevent the object from deallocation when it is not needed
+     performance issues and runtime erors
      */
     public func retrieve(completion: @escaping RetrievalCompletion) {
         
