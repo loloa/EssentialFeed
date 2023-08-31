@@ -20,7 +20,15 @@ public final class CoreDataFeedStore: FeedStore {
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         
-        completion(nil)
+        let context = self.context
+        context.perform {
+            do {
+                try ManagedCache.find(in: context).map(context.delete).map(context.save)
+                completion(nil)
+            } catch {
+                completion(error)
+            }
+        }
     }
     
     public func insert(_ feed: [EssentialFeed.LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
@@ -111,9 +119,9 @@ private class ManagedCache: NSManagedObject {
     }
     
     static func newUniqueInstance(in context: NSManagedObjectContext) throws -> ManagedCache {
-            try find(in: context).map(context.delete)
-            return ManagedCache(context: context)
-        }
+        try find(in: context).map(context.delete)
+        return ManagedCache(context: context)
+    }
 }
 
 @objc(ManagedFeedImage)
