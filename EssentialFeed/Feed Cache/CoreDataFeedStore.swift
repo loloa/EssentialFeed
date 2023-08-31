@@ -19,38 +19,38 @@ public final class CoreDataFeedStore: FeedStore {
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-         
+        
     }
     
     public func insert(_ feed: [EssentialFeed.LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
         
         let context = self.context
-                context.perform {
-                    do {
-                        let managedCache = ManagedCache(context: context)
-                        managedCache.timestamp = timestamp
-                        managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
-                        try context.save()
-                        completion(nil)
-                    } catch {
-                        completion(error)
-                    }
-                }
+        context.perform {
+            do {
+                let managedCache = ManagedCache(context: context)
+                managedCache.timestamp = timestamp
+                managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
+                try context.save()
+                completion(nil)
+            } catch {
+                completion(error)
+            }
+        }
     }
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
         
         let context = self.context
         context.perform {
-
+            
             do {
- 
+                
                 if let cache = try ManagedCache.find(in: context) {
                     completion(.found(feed: cache.localFeed, timestamp: cache.timestamp))
                 } else {
                     completion(.empty)
                 }
-
+                
             } catch {
                 completion(.failure(error))
             }
@@ -101,7 +101,7 @@ private class ManagedCache: NSManagedObject {
     
     var localFeed: [LocalFeedImage] {
         return feed.compactMap { ($0 as? ManagedFeedImage)?.local }
-      }
+    }
     static func find(in context: NSManagedObjectContext) throws -> ManagedCache? {
         
         let request = NSFetchRequest<ManagedCache>(entityName: ManagedCache.entity().name!)
