@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5E0587732A938D1600447FC6 /* FeedCachTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0587722A938D1600447FC6 /* FeedCachTestHelpers.swift */; };
 		5E0587762A938EC400447FC6 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0587752A938EC400447FC6 /* SharedTestHelpers.swift */; };
+		5E0974DC2AA0D2ED0013F418 /* CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0974DB2AA0D2ED0013F418 /* CoreDataHelpers.swift */; };
 		5E3A2BFE2A9B805C003EEA83 /* FeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A2BFD2A9B805C003EEA83 /* FeedStoreSpecs.swift */; };
 		5E3A2C002A9B812B003EEA83 /* XCTestCase+FeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A2BFF2A9B812B003EEA83 /* XCTestCase+FeedStoreSpecs.swift */; };
 		5E3A2CC42A9F2479003EEA83 /* CoreDataFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A2CC32A9F2479003EEA83 /* CoreDataFeedStoreTests.swift */; };
@@ -64,6 +65,7 @@
 /* Begin PBXFileReference section */
 		5E0587722A938D1600447FC6 /* FeedCachTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCachTestHelpers.swift; sourceTree = "<group>"; };
 		5E0587752A938EC400447FC6 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
+		5E0974DB2AA0D2ED0013F418 /* CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelpers.swift; sourceTree = "<group>"; };
 		5E3A2BFD2A9B805C003EEA83 /* FeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreSpecs.swift; sourceTree = "<group>"; };
 		5E3A2BFF2A9B812B003EEA83 /* XCTestCase+FeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FeedStoreSpecs.swift"; sourceTree = "<group>"; };
 		5E3A2CC32A9F2479003EEA83 /* CoreDataFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStoreTests.swift; sourceTree = "<group>"; };
@@ -139,9 +141,10 @@
 		5E0974DA2AA0D1990013F418 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				5EDAEE9F2A9A79C00049A427 /* CodableFeedStore.swift */,
 				5E3A2CC82A9F2DB1003EEA83 /* CoreDataFeedStore.swift */,
+				5E0974DB2AA0D2ED0013F418 /* CoreDataHelpers.swift */,
 				5E3A2CC52A9F2B07003EEA83 /* FeedStore.xcdatamodeld */,
+				5EDAEE9F2A9A79C00049A427 /* CodableFeedStore.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				5EEBCFDE2A87E2D700809580 /* URLSessionHTTPClient.swift in Sources */,
 				5EEBCFD82A87E25C00809580 /* RemoteFeedLoader.swift in Sources */,
 				5EEBCFDC2A87E2D700809580 /* HTTPClient.swift in Sources */,
+				5E0974DC2AA0D2ED0013F418 /* CoreDataHelpers.swift in Sources */,
 				5EEBCFC42A87D74800809580 /* FeedLoader.swift in Sources */,
 				5E3A2CCC2A9F6B78003EEA83 /* CoreDataFeedStore.swift in Sources */,
 				5EEBCFDD2A87E2D700809580 /* FeedItemMapper.swift in Sources */,
