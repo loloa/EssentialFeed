@@ -167,10 +167,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
     private func nonHTTPURLResponse() -> URLResponse {
         return URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
     }
-    
-    private func anyNSError()  -> NSError {
-        return NSError(domain: "any error", code: 0)
-    }
+ 
     private class URLProtocolStub: URLProtocol {
         
         private static var stub: Stub?
