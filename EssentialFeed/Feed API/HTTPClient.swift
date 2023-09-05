@@ -19,10 +19,6 @@ import Foundation
  so he creates HTTPclintResult
  */
 
-public enum HTTPClientResult {
-    case success (Data, HTTPURLResponse)
-    case failure (Error)
-}
 
 // type, can be public, so other modules can use it
 
@@ -30,6 +26,7 @@ public enum HTTPClientResult {
 /// Clients are responsible to dispatch to appropriate threads, if needed.
 public protocol HTTPClient {
     
-    func get(from url: URL, completion: @escaping(HTTPClientResult) -> Void)
+    typealias Result = Swift.Result<(Data, HTTPURLResponse), Error>
+    func get(from url: URL, completion: @escaping(Result) -> Void)
     
 }
