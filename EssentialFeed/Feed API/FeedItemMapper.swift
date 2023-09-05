@@ -8,7 +8,7 @@
 import Foundation
 
  
-internal final class FeedItemMapper {
+ final class FeedItemMapper {
     
     private struct Root: Decodable {
         
@@ -19,10 +19,10 @@ internal final class FeedItemMapper {
    
     private static var OK_200: Int {return 200}
     
-    //used by FeedItemLoader, has to be internal, accessable in the module
+    //used by FeedItemLoader, has to be , accessable in the module
     
     
-    internal static func map(_ data: Data, response: HTTPURLResponse) throws -> [RemoteFeedItem] {
+     static func map(_ data: Data, response: HTTPURLResponse) throws -> [RemoteFeedItem] {
         
         guard response.statusCode == OK_200,
               let root = try? JSONDecoder().decode(Root.self, from: data)else {
