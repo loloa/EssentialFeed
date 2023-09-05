@@ -30,6 +30,7 @@ extension ManagedFeedImage {
             managed.imageDescription = local.description
             managed.location = local.location
             managed.url = local.url
+            //just try to use adding to prev commit
             return managed
         })
     }
