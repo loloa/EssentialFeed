@@ -7,12 +7,12 @@
 
 import Foundation
 
-public enum RetrieveCachedFeedResult {
+public typealias RetrieveCachedFeedResult = Swift.Result<CachedFeed, Error>
+
+public enum CachedFeed {
     case empty
     case found (feed: [LocalFeedImage], timestamp: Date)
-    case failure(Error)
 }
-
 public protocol FeedStore {
     typealias DeletionCompletion = ((Error?) -> Void)
     typealias InsertionCompletion = ((Error?) -> Void)
