@@ -19,7 +19,7 @@ public final class RemoteFeedLoader: FeedLoader {
     }
    
     //we dont want expose this implementation detail to higher- level Feed feature module
-    public typealias Result = LoadFeedResult
+    public typealias Result = FeedLoader.Result
     
     public init(url: URL, client: HTTPClient) {
         self.client = client

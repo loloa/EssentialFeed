@@ -8,7 +8,7 @@
 import CoreData
 
 @objc(ManagedFeedImage)
-internal class ManagedFeedImage: NSManagedObject {
+ class ManagedFeedImage: NSManagedObject {
    @NSManaged var id: UUID
    @NSManaged var imageDescription: String?
    @NSManaged var location: String?
@@ -22,7 +22,7 @@ internal class ManagedFeedImage: NSManagedObject {
 
 extension ManagedFeedImage {
     
-    internal static func images(from feed: [LocalFeedImage], in context: NSManagedObjectContext) -> NSOrderedSet {
+     static func images(from feed: [LocalFeedImage], in context: NSManagedObjectContext) -> NSOrderedSet {
         
         return NSOrderedSet(array: feed.map { local in
             let managed = ManagedFeedImage(context: context)
@@ -30,6 +30,7 @@ extension ManagedFeedImage {
             managed.imageDescription = local.description
             managed.location = local.location
             managed.url = local.url
+            //just try to use adding to prev commit
             return managed
         })
     }
