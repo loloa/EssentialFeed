@@ -24,6 +24,9 @@
  [✅] Show loading indicator on pull to refresh
  func test_pullToRefresh_showsLoadingIndicator()
  
+ [✅] Hide a loading indicator on pull to refresh copleted
+ func test_pullToRefresh_hidesLoadingIndicatorOnLoaderCompletion
+ 
  
  [ ] Render all loaded feed items (location, image, description)
  [ ] Image loading experience
@@ -114,6 +117,14 @@ final class FeedViewControllerTests: XCTestCase {
             XCTAssertEqual(sut.refreshControl?.isRefreshing, true)
         }
 
+    func test_pullToRefresh_hidesLoadingIndicatorOnLoaderCompletion() {
+            let (sut, loader) = makeSUT()
+
+            sut.refreshControl?.simulatePullToRefresh()
+            loader.completeFeedLoading()
+
+            XCTAssertEqual(sut.refreshControl?.isRefreshing, false)
+        }
     
     // MARK: - Helpers
     
