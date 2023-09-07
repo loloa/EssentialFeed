@@ -12,9 +12,12 @@
  func test_init_doesNotLoadFeed()
  func test_viewDidLoad_loadsFeed()
  
+ [✅] Allow customer to manually reload feed (pull to refresh)
+ func test_pullToRefresh_loadsFeed()
  
- [] Allow customer to manually reload feed (pull to refresh)
- [] Show a loading indicator while loading feed
+ [✅] Show a loading indicator while loading feed
+ func test_viewDidLoad_showLoadingIndicator()
+ 
  [ ] Render all loaded feed items (location, image, description)
  [ ] Image loading experience
  [ ] Load when image view is visible (on screen)
@@ -40,6 +43,7 @@ final class FeedViewController: UITableViewController {
         super.viewDidLoad()
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(load), for: .valueChanged)
+        refreshControl?.beginRefreshing()
         load()
     }
     
@@ -78,6 +82,14 @@ final class FeedViewControllerTests: XCTestCase {
         
         sut.refreshControl?.simulatePullRefresh()
         XCTAssertEqual(loader.loadCallCount, 3)
+    }
+    
+    func test_viewDidLoad_showLoadingIndicator() {
+        
+        let (sut, _) = makeSUT()
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.refreshControl?.isRefreshing, true)
+        
     }
     // MARK: - Helpers
     
