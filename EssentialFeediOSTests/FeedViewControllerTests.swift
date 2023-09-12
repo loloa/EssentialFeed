@@ -465,19 +465,7 @@ private extension UIButton {
         }
     }
 }
-private extension UIRefreshControl {
-    
-    func simulatePullToRefresh() {
-        
-        //sendActions(for: .valueChanged)
-        
-        allTargets.forEach { target in
-            actions(forTarget: target, forControlEvent: .valueChanged)?.forEach {
-                (target as NSObject).perform(Selector($0), with: nil)
-            }
-        }
-    }
-}
+ 
 
 private extension UIImage {
     static func make(withColor color: UIColor) -> UIImage {
