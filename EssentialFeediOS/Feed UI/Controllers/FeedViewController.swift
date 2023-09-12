@@ -9,26 +9,23 @@
 import UIKit
 import EssentialFeed
  
+ 
  public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
  
     private var refreshController: FeedRefreshViewController?
-    private var imageLoader: FeedImageDataLoader?
-    private var tableModel = [FeedImage]() {
+    var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
-    private var cellControllers = [IndexPath: FeedImageCellController]()
-    
-    public convenience init(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) {
+ 
+     convenience init(refreshController: FeedRefreshViewController) {
         self.init()
-        self.refreshController = FeedRefreshViewController(feedLoader: feedLoader)
-        self.imageLoader = imageLoader
+        self.refreshController = refreshController
+        
     }
     public override func viewDidLoad() {
         super.viewDidLoad()
         refreshControl = refreshController?.view
-        refreshController?.onRefresh = { [weak self] feed in
-            self?.tableModel = feed
-        }
+        
         tableView.prefetchDataSource = self
         refreshController?.refresh()
     }
@@ -42,7 +39,7 @@ import EssentialFeed
      }
     
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        removeCellcontroller(forRowAt: indexPath)
+        cancelCellcontrollerLoad(forRowAt: indexPath)
     }
     
     //    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -59,19 +56,17 @@ import EssentialFeed
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         
-        indexPaths.forEach (removeCellcontroller)
+        indexPaths.forEach (cancelCellcontrollerLoad)
         
     }
-    private func removeCellcontroller(forRowAt indexPath: IndexPath) {
-        cellControllers[indexPath] = nil
-    }
+    
     private func cellController(forRowAt indexPath: IndexPath) -> FeedImageCellController {
-        
-        let cellModel = tableModel[indexPath.row]
-        let cellController = FeedImageCellController(model: cellModel, imageLoader: imageLoader!)
-        cellControllers[indexPath] = cellController
-        return cellController
-    }
+         return tableModel[indexPath.row]
+     }
+     
+     private func cancelCellcontrollerLoad(forRowAt indexPath: IndexPath) {
+         cellController(forRowAt: indexPath).cancelLoad()
+     }
     /*
      On iOS 15+, the cell lifecycle behavior changed. For performance reasons, when the cell is removed from the table view and quickly added back (e.g., by scrolling up and down fast), the data source may not recreate the cell anymore using the cellForRow method if there's a cached cell for that IndexPath.
      
