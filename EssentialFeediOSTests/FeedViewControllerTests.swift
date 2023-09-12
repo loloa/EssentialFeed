@@ -32,7 +32,7 @@
  [✅] Cancel when image view is out of screen
  [✅] Show a loading indicator while loading image (shimmer)
  [✅] Option to retry on image download error
- [ ] Preload when image view is near visible
+ [✅] Preload when image view is near visible
  */
 
 import XCTest
