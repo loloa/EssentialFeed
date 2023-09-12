@@ -453,20 +453,7 @@ private extension FeedViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])         
     }
 }
-
-private extension UIButton {
-    
-    func simulateTap() {
-        
-        allTargets.forEach { target in
-            actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach {
-                (target as NSObject).perform(Selector($0), with: nil)
-            }
-        }
-    }
-}
  
-
 private extension UIImage {
     static func make(withColor color: UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
