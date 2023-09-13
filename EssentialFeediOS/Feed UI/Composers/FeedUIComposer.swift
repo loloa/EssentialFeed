@@ -13,13 +13,13 @@ public final class FeedUIComposer {
     
     private init(){}
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
-         
-        let refreshController = FeedRefreshViewController(feedLoader: feedLoader)
+        let feedViewModel = FeedViewModel(feedLoader: feedLoader)
+        let refreshController = FeedRefreshViewController(viewModel: feedViewModel)
         let feedController = FeedViewController(refreshController: refreshController)
         
         //this is adapter closure
         //[FeedImage] -> Adapt -> [FeedImageCellcontroller]
-        refreshController.onRefresh =  adaptFeedToCellControllers(forwardingTo: feedController, loader: imageLoader)
+        feedViewModel.onFeedLoad =  adaptFeedToCellControllers(forwardingTo: feedController, loader: imageLoader)
         return feedController
     }
     
