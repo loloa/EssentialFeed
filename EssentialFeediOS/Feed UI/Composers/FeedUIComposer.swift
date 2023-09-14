@@ -17,7 +17,7 @@ public final class FeedUIComposer {
         let refreshController = FeedRefreshViewController(feedPresenter: feedPresenter)
         let feedController = FeedViewController(refreshController: refreshController)
         
-        feedPresenter.loadingView = refreshController
+        feedPresenter.loadingView = WeakRefVrtualProxy(refreshController)
         feedPresenter.feedView = FeedViewAdapter(controller: feedController, imageLoader: imageLoader)
         
         return feedController
@@ -34,6 +34,25 @@ public final class FeedUIComposer {
     }
 }
 
+// memory management mooved to composer, removed from presenter
+/*
+ A proxy implements an interface for purpose of providing access to something else
+ */
+private final class WeakRefVrtualProxy<T: AnyObject> {
+    
+    private weak var object: T?
+     
+    init(_ object: T) {
+        self.object = object
+    }
+}
+extension WeakRefVrtualProxy: FeedLoadingView where T: FeedLoadingView {
+    
+    func display(isLoading: Bool) {
+        object?.display(isLoading: isLoading)
+    }
+}
+
 private final class FeedViewAdapter: FeedView {
     
     private weak var controller: FeedViewController?
@@ -47,7 +66,6 @@ private final class FeedViewAdapter: FeedView {
     func display(feed: [EssentialFeed.FeedImage]) {
         
         controller?.tableModel = feed.map{ model in
-            
             FeedImageCellController(viewModel: FeedImageViewModel(model: model, imageLoader: imageLoader, imageTransformer: UIImage.init))
         }
     }
