@@ -7,6 +7,9 @@
 
 import EssentialFeed
 
+/*
+ In MVP Model is only data, no behavior, no dependecies as in MVVM
+ */
 struct FeedLoadingViewModel {
     let isLoading: Bool
 }
