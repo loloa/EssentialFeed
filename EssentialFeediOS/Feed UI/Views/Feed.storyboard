@@ -80,6 +80,9 @@ Location</string>
                                                                 <fontDescription key="titleFontDescription" type="system" pointSize="60"/>
                                                                 <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </buttonConfiguration>
+                                                            <connections>
+                                                                <action selector="retryButtonTapped" destination="lKw-5M-aXY" eventType="touchUpInside" id="mdr-PS-Pjm"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" systemColor="systemGray5Color"/>
@@ -121,6 +124,14 @@ Location</string>
                                         <constraint firstItem="M46-4o-hqg" firstAttribute="top" secondItem="uan-Dr-2fB" secondAttribute="topMargin" priority="999" constant="6" id="yem-3n-A6Z"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="ibV-9R-PXQ" id="CZE-gH-eSY"/>
+                                    <outlet property="feedImageContainer" destination="Xws-kZ-wwd" id="Qx7-X2-k9g"/>
+                                    <outlet property="feedImageRetryButton" destination="fEH-61-wX7" id="VZt-ct-33W"/>
+                                    <outlet property="feedImageView" destination="9cD-NY-C3G" id="4GS-FZ-8Wd"/>
+                                    <outlet property="locationContainer" destination="nWM-AK-Pjo" id="Lfi-rO-LRL"/>
+                                    <outlet property="locationLabel" destination="1tf-98-MSA" id="x06-4n-dCI"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
