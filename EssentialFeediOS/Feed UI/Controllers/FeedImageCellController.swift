@@ -22,11 +22,10 @@ final class FeedImageCellController : FeedImageView {
         self.delegate = delegate
     }
     
-    func view(in table: UITableView) -> UITableViewCell {
-        let cell = table.dequeueReusableCell(withIdentifier: "FeedImageCell") as! FeedImageCell
-        self.cell = cell
+    func view(in tableView: UITableView) -> UITableViewCell {
+        cell = tableView.dequeuReusableCell()
         delegate.didRequestImage()
-        return cell
+        return cell!
     }
     
     func display(_ viewModel: FeedImageViewModel<UIImage>) {
@@ -54,4 +53,4 @@ final class FeedImageCellController : FeedImageView {
         cell = nil
     }
 }
-
+ 
