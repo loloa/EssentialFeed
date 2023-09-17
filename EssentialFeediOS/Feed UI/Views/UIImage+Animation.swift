@@ -18,4 +18,4 @@ extension UIImageView {
             self.alpha = 1
         }
     }
-}≈
+}
