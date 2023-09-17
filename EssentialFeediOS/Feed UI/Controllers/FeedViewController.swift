@@ -21,15 +21,8 @@ protocol FeedViewControllerDelegate {
         didSet { tableView.reloadData() }
     }
  
-//     convenience init(refreshController: FeedRefreshViewController) {
-//        self.init()
-//        self.refreshController = refreshController
-//
-//    }
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.prefetchDataSource = self
         refresh()
     }
      
