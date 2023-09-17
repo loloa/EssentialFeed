@@ -6,6 +6,20 @@
 //
 
 
+
+struct FeedImageViewModel<Image> {
+    let description: String?
+    let location: String?
+    let image: Image?
+    let isLoading: Bool
+    let shouldRetry: Bool
+    
+    var hasLocation: Bool {
+        return location != nil
+    }
+ }
+
+/*
 import EssentialFeed
 
 final class FeedImageViewModel<Image> {
@@ -63,3 +77,4 @@ final class FeedImageViewModel<Image> {
         task = nil
     }
 }
+*/
