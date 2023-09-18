@@ -24,6 +24,9 @@ final class FeedImageCellController : FeedImageView {
     
     func view(in tableView: UITableView) -> UITableViewCell {
         cell = tableView.dequeuReusableCell()
+        cell?.onReuse = { [weak self] in
+                    self?.releaseCell()
+                }
         delegate.didRequestImage()
         return cell!
     }
@@ -38,6 +41,10 @@ final class FeedImageCellController : FeedImageView {
         cell?.feedImageContainer.isShimmering = viewModel.isLoading
         cell?.feedImageRetryButton.isHidden = !viewModel.shouldRetry
         cell?.onRetry = delegate.didRequestImage
+        cell?.onReuse = { [weak self] in
+                    self?.releaseCell()
+                }
+        
     }
     
     
