@@ -16,7 +16,7 @@ public final class FeedUIComposer {
         
         let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: MainQueueDispatchDecorator(decoratee: feedLoader))
          
-        let feedController = FeedViewController.makeWith(
+        let feedController = makeFeedViewController(
             delegate: presentationAdapter,
             title: FeedPresenter.title)
  
@@ -24,9 +24,8 @@ public final class FeedUIComposer {
         
         return feedController
     }
-}
-private extension FeedViewController {
-    static func makeWith(delegate: FeedViewControllerDelegate, title: String) -> FeedViewController {
+    
+    private static func makeFeedViewController(delegate: FeedViewControllerDelegate, title: String) -> FeedViewController {
         
         let bundle = Bundle(for: FeedViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
@@ -36,10 +35,7 @@ private extension FeedViewController {
         return feedController
     }
 }
-
-// memory management mooved to composer, removed from presenter
-/*
- A proxy implements an interface for purpose of providing access to something else
- */
+ 
+ 
 
  
