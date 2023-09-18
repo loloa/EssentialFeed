@@ -44,6 +44,11 @@ final class FeedImageCellController : FeedImageView {
     func preload() {
         delegate.didRequestImage()
     }
+    
+    func startTask(cell: UITableViewCell?) {
+        self.cell = cell as? FeedImageCell
+        delegate.didRequestImage()
+    }
     func cancelLoad() {
         releaseCell()
         delegate.didCancelImageRequest()

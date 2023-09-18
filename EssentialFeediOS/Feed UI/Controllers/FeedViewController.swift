@@ -17,6 +17,13 @@ protocol FeedViewControllerDelegate {
  
     var delegate: FeedViewControllerDelegate?
      
+     
+     convenience init(coder: NSCoder, delegate: FeedViewControllerDelegate) {
+         self.init(coder: coder)!
+         self.delegate = delegate
+     }
+ 
+     
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
@@ -46,14 +53,15 @@ protocol FeedViewControllerDelegate {
         return cellController(forRowAt: indexPath).view(in: tableView)
      }
     
+     public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+         let cellController = cellController(forRowAt: indexPath)
+         cellController.startTask(cell: cell)
+      }
+ 
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelCellcontrollerLoad(forRowAt: indexPath)
     }
-    
-    //    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    //        startTask(forRowAt: indexPath)
-    //    }
-    //
+ 
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         
