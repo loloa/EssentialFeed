@@ -310,6 +310,18 @@ final class FeedUIIntegrationTests: XCTestCase {
 
             XCTAssertEqual(view0.renderedImage, .none, "Expected no image state change for reused view once image loading completes successfully")
         }
+    
+    func test_loadFeedCompletion_dispatchesFromBackgroundToMainThread()  {
+        
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        let expectation = expectation(description: "Waiting for completion")
+        DispatchQueue.global().async {
+            loader.completeFeedLoading(at: 0)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+    }
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
