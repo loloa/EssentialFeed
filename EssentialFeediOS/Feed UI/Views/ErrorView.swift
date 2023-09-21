@@ -5,6 +5,8 @@
 import UIKit
 
 public final class ErrorView: UIView {
+    
+    
 	@IBOutlet private(set) public var button: UIButton!
 
 	public var message: String? {
@@ -40,4 +42,5 @@ public final class ErrorView: UIView {
 				}
 			})
 	}
+ 
 }
