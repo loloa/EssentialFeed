@@ -42,6 +42,13 @@ import EssentialFeediOS
 
 final class FeedUIIntegrationTests: XCTestCase {
     
+    
+    func test_feedView_doesNotShowErrorMessageOnLoadingStart() {
+        let (sut, _) = makeSUT()
+        sut.loadViewIfNeeded()
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
+    }
+    
     func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
         sut.loadViewIfNeeded()
