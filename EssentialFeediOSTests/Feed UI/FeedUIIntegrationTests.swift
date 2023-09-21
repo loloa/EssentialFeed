@@ -49,6 +49,20 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
     }
     
+    func test_feedView_doesNotShowErrorMessageOnCompletionSuccess() {
+        let image0 = makeImage(url: URL(string: "http://url-0.com")!)
+        let image1 = makeImage(url: URL(string: "http://url-1.com")!)
+
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        loader.completeFeedLoading(with: [image0, image1])
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible on not empty list, instead \(String(describing: sut.errorMessage))")
+
+        loader.completeFeedLoading(with: [])
+        XCTAssertNil(sut.errorMessage, "Error message view expected to be not visible on empty list, instead \(String(describing: sut.errorMessage))")
+    }
+    
     func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
         sut.loadViewIfNeeded()
