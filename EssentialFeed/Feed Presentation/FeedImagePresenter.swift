@@ -4,7 +4,6 @@
 //
 //  Created by אליסה לשין on 24/09/2023.
 //
-import Foundation
  
 public protocol FeedImageView {
     associatedtype Image
