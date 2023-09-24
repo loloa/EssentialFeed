@@ -7,6 +7,7 @@
 
 
 import UIKit
+import EssentialFeed
 
 protocol FeedViewControllerDelegate {
     
@@ -38,7 +39,7 @@ protocol FeedViewControllerDelegate {
           delegate?.didRequestFeedrefresh()
       }
      
-     func display(_ viewModel: FeedLoadingViewModel) {
+     public func display(_ viewModel: FeedLoadingViewModel) {
          if viewModel.isLoading {
              refreshControl?.beginRefreshing()
          }else {
@@ -46,7 +47,7 @@ protocol FeedViewControllerDelegate {
          }
      }
      
-     func display(_ viewModel: FeedErrorViewModel) {
+     public func display(_ viewModel: FeedErrorViewModel) {
          if let message = viewModel.message {
              errorView?.show(message: message)
          }else {
