@@ -4,17 +4,12 @@
 //
 //  Created by אליסה לשין on 24/09/2023.
 //
-
  
  
 public protocol FeedView {
     func display(_ viewModel: FeedViewModel)
 }
-
-public struct FeedLoadingViewModel {
-    public let isLoading: Bool
-}
-
+ 
 public protocol FeedLoadingView {
     func display(_ viewModel: FeedLoadingViewModel)
 }
