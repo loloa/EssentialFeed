@@ -5,12 +5,8 @@
 //  Created by אליסה לשין on 24/09/2023.
 //
 
-import Foundation
-
-
-public struct FeedViewModel {
-    public let feed: [FeedImage]
-}
+ 
+ 
 public protocol FeedView {
     func display(_ viewModel: FeedViewModel)
 }
