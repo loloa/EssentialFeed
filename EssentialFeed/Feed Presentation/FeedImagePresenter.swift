@@ -20,7 +20,7 @@ public final class FeedImagePresenter<View: FeedImageView, Image> where View.Ima
         self.imageTransformer = imageTransformer
     }
     
-    private struct InvalidImageDataError: Error {}
+   // private struct InvalidImageDataError: Error {}
     
     public func didStartLoadingImageData(for model: FeedImage) {
         
