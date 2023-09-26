@@ -34,22 +34,23 @@ public final class CoreDataFeedStore: FeedStore {
         perform { context in
             
             completion(Result(catching: {
-                
-                
-                let managedCache = try ManagedCache.newUniqueInstance(in: context)
-                managedCache.timestamp = timestamp
-                managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
-                try context.save()
+//
+//                let managedCache = try ManagedCache.newUniqueInstance(in: context)
+//                managedCache.timestamp = timestamp
+//                managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
+//                try context.save()
                 
                //HELP!
-//                do {
-//                    let managedCache = try ManagedCache.newUniqueInstance(in: context)
-//                    managedCache.timestamp = timestamp
-//                    managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
-//                    try context.save()
-//                }catch {
-//                    context.rollback()
-//                }
+                do {
+                    let managedCache = try ManagedCache.newUniqueInstance(in: context)
+                    managedCache.timestamp = timestamp
+                    managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
+                    try context.save()
+                    completion(.success())
+                }catch {
+                    context.rollback()
+                    completion(.failure(error))
+                }
  
             }))
              

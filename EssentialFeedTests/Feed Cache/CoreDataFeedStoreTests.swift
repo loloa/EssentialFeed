@@ -10,24 +10,24 @@ import CoreData
 import EssentialFeed
 
 
-final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs /*, FailableInsertFeedStoreSpecs*/ {
+final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs , FailableInsertFeedStoreSpecs {
     
     //HELP! please search for HELP! uncomment this code and conforming to FailableInsertFeedStoreSpecs, and also
     //in CoredDataFeedStore
     
-//    func test_insert_deliversErrorOnInsertionError() {
-//
-//        let stub = NSManagedObjectContext.alwaysFailingSaveStub()
-//        stub.startIntercepting()
-//
-//        let sut =  makeSUT()
-//
-//        assertThatInsertDeliversErrorOnInsertionError(on: sut)
-//    }
-//
-//    func test_insert_hasNoSideEffectsOnInsertionError() {
-//
-//    }
+    func test_insert_deliversErrorOnInsertionError() {
+
+        let stub = NSManagedObjectContext.alwaysFailingSaveStub()
+        stub.startIntercepting()
+
+        let sut =  makeSUT()
+
+        assertThatInsertDeliversErrorOnInsertionError(on: sut)
+    }
+
+    func test_insert_hasNoSideEffectsOnInsertionError() {
+
+    }
     
     
     private func makeSUT() -> CoreDataFeedStore {
