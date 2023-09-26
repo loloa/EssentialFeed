@@ -12,7 +12,8 @@ import EssentialFeed
 
 final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs /*, FailableInsertFeedStoreSpecs*/ {
     
-    //HELP!
+    //HELP! please search for HELP! uncomment this code and conforming to FailableInsertFeedStoreSpecs, and also
+    //in CoredDataFeedStore
     
 //    func test_insert_deliversErrorOnInsertionError() {
 //
