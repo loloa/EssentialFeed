@@ -6,10 +6,28 @@
 //
 
 import XCTest
+import CoreData
 import EssentialFeed
 
 
-final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
+final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs /*, FailableInsertFeedStoreSpecs*/ {
+    
+    //HELP!
+    
+//    func test_insert_deliversErrorOnInsertionError() {
+//
+//        let stub = NSManagedObjectContext.alwaysFailingSaveStub()
+//        stub.startIntercepting()
+//
+//        let sut =  makeSUT()
+//
+//        assertThatInsertDeliversErrorOnInsertionError(on: sut)
+//    }
+//
+//    func test_insert_hasNoSideEffectsOnInsertionError() {
+//
+//    }
+    
     
     private func makeSUT() -> CoreDataFeedStore {
         
