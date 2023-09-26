@@ -33,20 +33,20 @@ final class FeedImagePresenterTests: XCTestCase {
         
     }
     
-    func test_didFinishLoadingImageDataWithError_stopsLoaderDisplaysRetry() {
-        
-        let (sut, view) = makeSUT()
-        let image = uniqueImage()
-        sut.didFinishLoadingImageData(with: anyNSError(), for: image)
-        
-        let model = view.messages.first
-        
-        XCTAssertEqual(model?.description, image.description)
-        XCTAssertEqual(model?.location, image.location)
-        XCTAssertNil(model?.image)
-        XCTAssertEqual(model?.isLoading, false)
-        XCTAssertEqual(model?.shouldRetry, true)
-    }
+//    func test_didFinishLoadingImageDataWithError_stopsLoaderDisplaysRetry() {
+//        
+//        let (sut, view) = makeSUT()
+//        let image = uniqueImage()
+//        sut.didFinishLoadingImageData(with: anyNSError(), for: image)
+//        
+//        let model = view.messages.first
+//        
+//        XCTAssertEqual(model?.description, image.description)
+//        XCTAssertEqual(model?.location, image.location)
+//        XCTAssertNil(model?.image)
+//        XCTAssertEqual(model?.isLoading, false)
+//        XCTAssertEqual(model?.shouldRetry, true)
+//    }
     
     func test_didFinishLoadingImageDataWithData_displaysRetryOnFailedImageTransformation() {
         
