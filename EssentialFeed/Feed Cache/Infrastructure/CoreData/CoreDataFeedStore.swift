@@ -30,31 +30,39 @@ public final class CoreDataFeedStore: FeedStore {
     }
     
     public func insert(_ feed: [EssentialFeed.LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        
+
+     perform { context in
+        do {
+           let managedCache = try ManagedCache.newUniqueInstance(in: context)
+           managedCache.timestamp = timestamp
+           managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
+           try context.save()
+           completion(.success(()))
+        }catch {
+           context.rollback()
+           completion(.failure(error))
+        }
+      }
+   
+       /*
         perform { context in
             
             completion(Result(catching: {
-//
-//                let managedCache = try ManagedCache.newUniqueInstance(in: context)
-//                managedCache.timestamp = timestamp
-//                managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
-//                try context.save()
-                
-               //HELP!
+ 
                 do {
                     let managedCache = try ManagedCache.newUniqueInstance(in: context)
                     managedCache.timestamp = timestamp
                     managedCache.feed =  ManagedFeedImage.images(from: feed, in: context)
                     try context.save()
-                    completion(.success())
                 }catch {
                     context.rollback()
-                    completion(.failure(error))
+                   throw error
                 }
  
             }))
-             
         }
+        */
+        
     }
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
