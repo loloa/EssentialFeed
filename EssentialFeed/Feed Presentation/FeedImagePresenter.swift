@@ -31,16 +31,16 @@ public final class FeedImagePresenter<View: FeedImageView, Image> where View.Ima
             isLoading: true,
             shouldRetry: false))
     }
-//    
-//    public func didFinishLoadingImageData(with error: Error, for model: FeedImage) {
-//        let viewModel: FeedImageViewModel = FeedImageViewModel<Image>(
-//            description: model.description,
-//            location: model.location,
-//            image: nil,
-//            isLoading: false,
-//            shouldRetry: true)
-//        view.display(viewModel)
-//    }
+    
+    public func didFinishLoadingImageData(with error: Error, for model: FeedImage) {
+        let viewModel: FeedImageViewModel = FeedImageViewModel<Image>(
+            description: model.description,
+            location: model.location,
+            image: nil,
+            isLoading: false,
+            shouldRetry: true)
+        view.display(viewModel)
+    }
     
     public func didFinishLoadingImageData(with data: Data, for model: FeedImage) {
         

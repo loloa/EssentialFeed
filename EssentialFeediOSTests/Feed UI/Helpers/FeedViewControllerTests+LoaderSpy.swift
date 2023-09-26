@@ -7,7 +7,7 @@
 
 import Foundation
 import EssentialFeed
-import EssentialFeediOS
+//import EssentialFeediOS
 
 
 
@@ -49,7 +49,7 @@ extension FeedUIIntegrationTests {
         private var imageRequests = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
         private(set) var cancelledImageURLs = [URL]()
         
-        func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> EssentialFeediOS.FeedImageDataLoaderTask {
+        func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> EssentialFeed.FeedImageDataLoaderTask {
             
             imageRequests.append((url: url, completion))
             return TaskSpy{ [weak self] in
