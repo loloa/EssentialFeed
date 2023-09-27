@@ -16,9 +16,17 @@ final class RemoteFeedImageDataLoader {
         self.client = client
     }
  
-    func loadImageData(from url: URL, completion: @escaping (Any) -> Void) {
+    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) {
         
-        client.get(from: url, completion: {_ in })
+        client.get(from: url, completion: { result in
+            
+            switch result {
+            case let .failure(error):
+                completion(.failure(error))
+            default:
+                break
+            }
+        })
     }
 }
 
@@ -50,14 +58,50 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
+    func test_loadImageDataFromURL_deliversErrorOnClientError() {
+        
+        let url = anyURL()
+        let supposedError = anyNSError()
+        let expectedResult: FeedImageDataLoader.Result = .failure(supposedError)
+        
+        let (sut, client) = makeSUT()
+       
+        let exp = expectation(description: "Waiting for completion")
+        
+        sut.loadImageData(from: url) { receivedResult in
+             
+            switch(receivedResult, expectedResult) {
+ 
+            case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
+                XCTAssertEqual(receivedError, expectedError)
+            
+            default:
+                break
+            }
+            exp.fulfill()
+        }
+        
+        client.complete(with: supposedError, at: 0)
+        wait(for: [exp], timeout: 1.0)
+        
+    }
+    
     // MARK: -
     
     private class HTTPClientSpy: HTTPClient {
-   
-         var requestedURLs = [URL]()
+ 
+        private var messages = [(url: URL, completion: (HTTPClient.Result) -> Void)]()
+        
+        var requestedURLs: [URL] {
+            return messages.map{ $0.url }
+        }
         
         func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) {
-            requestedURLs.append(url)
+            messages.append((url, completion))
+        }
+        
+        func complete(with error: Error, at index: Int) {
+            messages[index].completion(.failure(error))
         }
     }
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, client: HTTPClientSpy) {
