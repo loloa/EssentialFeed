@@ -59,13 +59,23 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
     }
     
     func test_loadImageDataFromURL_deliversErrorOnClientError() {
+       
         
-        let url = anyURL()
         let supposedError = anyNSError()
         let expectedResult: FeedImageDataLoader.Result = .failure(supposedError)
         
         let (sut, client) = makeSUT()
        
+        expect(sut, toCompleteWith: expectedResult) {
+            client.complete(with: supposedError, at: 0)
+        }
+ 
+    }
+    
+    private func expect(_ sut: RemoteFeedImageDataLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+        
+        let url = anyURL()
+        
         let exp = expectation(description: "Waiting for completion")
         
         sut.loadImageData(from: url) { receivedResult in
@@ -73,17 +83,16 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
             switch(receivedResult, expectedResult) {
  
             case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
-                XCTAssertEqual(receivedError, expectedError)
+                XCTAssertEqual(receivedError, expectedError, file: file, line: line)
             
             default:
                 break
             }
             exp.fulfill()
         }
-        
-        client.complete(with: supposedError, at: 0)
+        action()
+         
         wait(for: [exp], timeout: 1.0)
-        
     }
     
     // MARK: -
