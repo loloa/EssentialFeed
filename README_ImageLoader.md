@@ -68,6 +68,8 @@ Given the customer doesn't have connectivity
 
 #### Invalid data – error course (sad path):
 1. System delivers invalid data error.
+- status code not 200
+- status code 200 but data is empty
 
 #### No connectivity – error course (sad path):
 1. System delivers connectivity error.
