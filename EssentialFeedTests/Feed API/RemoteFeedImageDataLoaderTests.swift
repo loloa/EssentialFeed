@@ -19,7 +19,7 @@ final class RemoteFeedImageDataLoader {
     public enum Error: Swift.Error {
         case invalidData
     }
- 
+    
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) {
         
         client.get(from: url, completion: { result in
@@ -27,15 +27,20 @@ final class RemoteFeedImageDataLoader {
             switch result {
             case let .failure(error):
                 completion(.failure(error))
-            case .success:
-                completion(.failure(Error.invalidData))
-             }
+            case let .success((data, response)):
+               
+                if response.statusCode == 200, data.isEmpty == false {
+                    completion(.success(data))
+                } else {
+                     completion(.failure(Error.invalidData))
+                }
+            }
         })
     }
 }
 
 final class RemoteFeedImageDataLoaderTests: XCTestCase {
-
+    
     func test_init_doesNotPerformAnyURLRequest() {
         
         let (_, client) = makeSUT()
@@ -63,12 +68,12 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
     }
     
     func test_loadImageDataFromURL_deliversErrorOnClientError() {
- 
+        
         let supposedError = anyNSError()
         let expectedResult: FeedImageDataLoader.Result = .failure(supposedError)
         
         let (sut, client) = makeSUT()
-       
+        
         expect(sut, toCompleteWith: expectedResult) {
             client.complete(with: supposedError, at: 0)
         }
@@ -93,17 +98,28 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         
         let expectedResult: FeedImageDataLoader.Result = failure(.invalidData)
-         
+        
         expect(sut, toCompleteWith: expectedResult) {
             let emptyData = Data()
             client.complete(withStatusCode: 200, data: emptyData)
         }
     }
     
+    func test_loadImageDataFromURL_deliversReceivedNonEmptyDataOn200HTTPResponse() {
+        let (sut, client) = makeSUT()
+        
+        let nonEmptyData = Data("non-empty data".utf8)
+        let expectedResult: FeedImageDataLoader.Result = .success(nonEmptyData)
+        
+        expect(sut, toCompleteWith: expectedResult, when: {
+            client.complete(withStatusCode: 200, data: nonEmptyData)
+        })
+    }
+    
     // MARK: -
     
     private class HTTPClientSpy: HTTPClient {
- 
+        
         private var messages = [(url: URL, completion: (HTTPClient.Result) -> Void)]()
         
         var requestedURLs: [URL] {
@@ -133,14 +149,14 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
         trackForMemoryLeaks(client, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, client)
-     }
-
+    }
+    
     private func anyData() -> Data {
         return Data("any data".utf8)
     }
     
     private func failure(_ error: RemoteFeedImageDataLoader.Error) -> FeedImageDataLoader.Result {
-         return .failure(error)
+        return .failure(error)
     }
     
     private func expect(_ sut: RemoteFeedImageDataLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
@@ -150,20 +166,20 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
         let exp = expectation(description: "Waiting for completion")
         
         sut.loadImageData(from: url) { receivedResult in
-             
+            
             switch(receivedResult, expectedResult) {
- 
+                
             case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
             case let (.success(receivedData), .success(expectedData)):
                 XCTAssertEqual(receivedData, expectedData, file: file, line: line)
             default:
-                break
+                XCTFail("Expexted result \(expectedResult) got \(receivedResult) instead", file: file, line: line)
             }
             exp.fulfill()
         }
         action()
-         
+        
         wait(for: [exp], timeout: 1.0)
     }
 }
