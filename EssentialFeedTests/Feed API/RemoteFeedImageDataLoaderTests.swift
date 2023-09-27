@@ -20,9 +20,19 @@ final class RemoteFeedImageDataLoader {
         case invalidData
     }
     
-    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) {
+    private struct HTTPTaskWrapper: FeedImageDataLoaderTask {
         
-        client.get(from: url, completion: { [weak self] result in
+        let wrapped: HTTPClientTask
+        
+        func cancel() {
+            wrapped.cancel()
+        }
+    }
+    
+    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
+        
+        
+       let task = client.get(from: url, completion: { [weak self] result in
             
             guard self != nil else { return }
             switch result {
@@ -37,6 +47,7 @@ final class RemoteFeedImageDataLoader {
                 }
             }
         })
+        return HTTPTaskWrapper(wrapped: task)
     }
 }
 
@@ -123,7 +134,7 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
         var sut: RemoteFeedImageDataLoader? = RemoteFeedImageDataLoader(client: client)
         
         var result = [FeedImageDataLoader.Result]()
-        sut?.loadImageData(from: anyURL()) { result.append($0)}
+        _ = sut?.loadImageData(from: anyURL()) { result.append($0)}
         sut = nil
         client.complete(withStatusCode: 200, data: anyData())
         XCTAssertTrue(result.isEmpty, "Expected not to deliver result sfter deallocation")
@@ -136,12 +147,17 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
         
         private var messages = [(url: URL, completion: (HTTPClient.Result) -> Void)]()
         
+        private struct Task: HTTPClientTask {
+                    func cancel() {}
+                }
+        
         var requestedURLs: [URL] {
             return messages.map{ $0.url }
         }
         
-        func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) {
+        func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
             messages.append((url, completion))
+            return Task()
         }
         
         func complete(with error: Error, at index: Int) {
