@@ -29,8 +29,12 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_cancelGetFromURLTask_cancelsURLRequest() {
+        let exp = expectation(description: "Wait for request")
+        URLProtocolStub.observeRequests { _ in exp.fulfill() }
+        
         let receivedError = resultErrorFor(taskHandler: { $0.cancel() }) as NSError?
-
+        wait(for: [exp], timeout: 1.0)
+        
         XCTAssertEqual(receivedError?.code, URLError.cancelled.rawValue)
     }
     
@@ -70,13 +74,13 @@ class URLSessionHTTPClientTests: XCTestCase {
         let response = anyHTTPURLResponse()
         
         let receivedValues = resultValuesFor((data: nil, response: response, error: nil))
-
+        
         let emptyData = Data()
         XCTAssertEqual(receivedValues?.data, emptyData)
         XCTAssertEqual(receivedValues?.response.url, response.url)
         XCTAssertEqual(receivedValues?.response.statusCode, response.statusCode)
     }
-
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> HTTPClient {
@@ -92,7 +96,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     private func resultValuesFor(_ values: (data: Data?, response: URLResponse?, error: Error?), file: StaticString = #file, line: UInt = #line) -> (data: Data, response: HTTPURLResponse)? {
         let result = resultFor(values, file: file, line: line)
-
+        
         switch result {
         case let .success((data, response)):
             return (data, response)
@@ -101,7 +105,7 @@ class URLSessionHTTPClientTests: XCTestCase {
             return nil
         }
     }
-
+    
     private func resultErrorFor(_ values: (data: Data?, response: URLResponse?, error: Error?)? = nil, taskHandler: (HTTPClientTask) -> Void = { _ in }, file: StaticString = #file, line: UInt = #line) -> Error? {
         let result = resultFor(values, taskHandler: taskHandler, file: file, line: line)
         
@@ -129,7 +133,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
         return receivedResult
     }
- 
+    
     private func anyHTTPURLResponse() -> HTTPURLResponse {
         return HTTPURLResponse(url: anyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)!
     }
