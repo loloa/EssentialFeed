@@ -26,6 +26,7 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
     
     public enum Error: Swift.Error {
         case failed
+        case notFound
     }
     
     private let store: FeedImageDataStore
@@ -37,14 +38,10 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
         
         store.retrieve(dataForURL: url) { result in
            
-            switch result {
-                
-            case let .failure(error):
-                completion(.failure(error))
-            default:
-                break
-            }
-        }
+            completion( result
+                .mapError{ _ in Error.failed }
+                .flatMap{ _ in .failure( Error.notFound ) })
+         }
         return Task()
     }
 }
@@ -74,9 +71,16 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
         expect(sut, toCompleteWith: failed()) {
             store.complete(with: LocalFeedImageDataLoader.Error.failed)
         }
-         
     }
     
+    func test_loadImageDataFromURL_deliversNotFoundErrorOnNotFound() {
+        
+        let (sut, store) = makeSUT()
+ 
+        expect(sut, toCompleteWith: notFound()) {
+            store.complete(with: .none)
+        }
+    }
     //MARK: --
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: StoreSpy) {
@@ -91,6 +95,9 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
     
     private func failed() -> FeedImageDataLoader.Result {
             return .failure(LocalFeedImageDataLoader.Error.failed)
+        }
+    private func notFound() -> FeedImageDataLoader.Result {
+            return .failure(LocalFeedImageDataLoader.Error.notFound)
         }
     
     private func expect(_ sut: LocalFeedImageDataLoader,toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
@@ -131,6 +138,10 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
         
         func complete(with error: Error, at index: Int = 0) {
              completions[index](.failure(error))
+        }
+        
+        func complete(with data: Data?, at index: Int = 0) {
+             completions[index](.success(data))
         }
     }
 
