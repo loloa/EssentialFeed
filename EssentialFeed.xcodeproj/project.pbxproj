@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E0407D12AC563BE00DEC7F4 /* HTTPClientSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0407D02AC563BE00DEC7F4 /* HTTPClientSpy.swift */; };
 		5E0587732A938D1600447FC6 /* FeedCachTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0587722A938D1600447FC6 /* FeedCachTestHelpers.swift */; };
 		5E0587762A938EC400447FC6 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0587752A938EC400447FC6 /* SharedTestHelpers.swift */; };
 		5E0974DC2AA0D2ED0013F418 /* CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0974DB2AA0D2ED0013F418 /* CoreDataHelpers.swift */; };
@@ -132,6 +133,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5E0407D02AC563BE00DEC7F4 /* HTTPClientSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientSpy.swift; sourceTree = "<group>"; };
 		5E0587722A938D1600447FC6 /* FeedCachTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCachTestHelpers.swift; sourceTree = "<group>"; };
 		5E0587752A938EC400447FC6 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		5E0974DB2AA0D2ED0013F418 /* CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelpers.swift; sourceTree = "<group>"; };
@@ -549,6 +551,7 @@
 			children = (
 				5EEBCFE22A87E39200809580 /* XCTestCase+MemoryLeakTracking.swift */,
 				5E0587752A938EC400447FC6 /* SharedTestHelpers.swift */,
+				5E0407D02AC563BE00DEC7F4 /* HTTPClientSpy.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -892,6 +895,7 @@
 				5EEBCFD52A87DC7C00809580 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */,
 				5E63B03E2A91FF5A00D38CC7 /* LoadFeedFromCacheUseCaseTests.swift in Sources */,
 				5EE001632AC317A200DF60A4 /* RemoteFeedImageDataLoaderTests.swift in Sources */,
+				5E0407D12AC563BE00DEC7F4 /* HTTPClientSpy.swift in Sources */,
 				5EE001512AC03B0300DF60A4 /* FeedLocalizationTests.swift in Sources */,
 				5EE0015F2AC2E03100DF60A4 /* NSManagedObjectContext+Helpers.swift in Sources */,
 				5E0587732A938D1600447FC6 /* FeedCachTestHelpers.swift in Sources */,
