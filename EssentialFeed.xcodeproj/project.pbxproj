@@ -71,7 +71,7 @@
 		5EE0015D2AC2DF0300DF60A4 /* NSManagedObjectContext+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE0015C2AC2DF0300DF60A4 /* NSManagedObjectContext+Stub.swift */; };
 		5EE0015F2AC2E03100DF60A4 /* NSManagedObjectContext+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE0015E2AC2E03100DF60A4 /* NSManagedObjectContext+Helpers.swift */; };
 		5EE001602AC30ED400DF60A4 /* FeedImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8F8F422AB053E200551CEB /* FeedImageDataLoader.swift */; };
-		5EE001632AC317A200DF60A4 /* RemoteFeedImageDataLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE001622AC317A200DF60A4 /* RemoteFeedImageDataLoaderTests.swift */; };
+		5EE001632AC317A200DF60A4 /* LoadFeedImageDataFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE001622AC317A200DF60A4 /* LoadFeedImageDataFromRemoteUseCaseTests.swift */; };
 		5EE29E1B2AA9BD3100873C3F /* FeedUIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE29E1A2AA9BD3100873C3F /* FeedUIIntegrationTests.swift */; };
 		5EE29E1D2AA9C39000873C3F /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EEBCFA72A87D52000809580 /* EssentialFeed.framework */; platformFilter = ios; };
 		5EE29E232AA9C7AD00873C3F /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEBCFE22A87E39200809580 /* XCTestCase+MemoryLeakTracking.swift */; };
@@ -205,7 +205,7 @@
 		5EE0015C2AC2DF0300DF60A4 /* NSManagedObjectContext+Stub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Stub.swift"; sourceTree = "<group>"; };
 		5EE0015E2AC2E03100DF60A4 /* NSManagedObjectContext+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Helpers.swift"; sourceTree = "<group>"; };
 		5EE001612AC3122300DF60A4 /* README_ImageLoader.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_ImageLoader.md; sourceTree = "<group>"; };
-		5EE001622AC317A200DF60A4 /* RemoteFeedImageDataLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedImageDataLoaderTests.swift; sourceTree = "<group>"; };
+		5EE001622AC317A200DF60A4 /* LoadFeedImageDataFromRemoteUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFeedImageDataFromRemoteUseCaseTests.swift; sourceTree = "<group>"; };
 		5EE29E172AA8BE5500873C3F /* CI_iOS.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CI_iOS.xctestplan; sourceTree = "<group>"; };
 		5EE29E1A2AA9BD3100873C3F /* FeedUIIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIIntegrationTests.swift; sourceTree = "<group>"; };
 		5EEBCFA72A87D52000809580 /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -378,7 +378,7 @@
 				5E0407D72AC57E5F00DEC7F4 /* Helpers */,
 				5EEBCFD42A87DC7C00809580 /* LoadFeedFromRemoteUseCaseTests.swift */,
 				5EEBCFDF2A87E36700809580 /* URLSessionHTTPClientTests.swift */,
-				5EE001622AC317A200DF60A4 /* RemoteFeedImageDataLoaderTests.swift */,
+				5EE001622AC317A200DF60A4 /* LoadFeedImageDataFromRemoteUseCaseTests.swift */,
 			);
 			path = "Feed API";
 			sourceTree = "<group>";
@@ -921,7 +921,7 @@
 				5E3A2CC42A9F2479003EEA83 /* CoreDataFeedStoreTests.swift in Sources */,
 				5EEBCFD52A87DC7C00809580 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */,
 				5E63B03E2A91FF5A00D38CC7 /* LoadFeedFromCacheUseCaseTests.swift in Sources */,
-				5EE001632AC317A200DF60A4 /* RemoteFeedImageDataLoaderTests.swift in Sources */,
+				5EE001632AC317A200DF60A4 /* LoadFeedImageDataFromRemoteUseCaseTests.swift in Sources */,
 				5E0407D12AC563BE00DEC7F4 /* HTTPClientSpy.swift in Sources */,
 				5EE001512AC03B0300DF60A4 /* FeedLocalizationTests.swift in Sources */,
 				5EE0015F2AC2E03100DF60A4 /* NSManagedObjectContext+Helpers.swift in Sources */,
