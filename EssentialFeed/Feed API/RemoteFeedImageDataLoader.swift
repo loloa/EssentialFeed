@@ -44,23 +44,32 @@ public final class RemoteFeedImageDataLoader: FeedImageDataLoader {
     @discardableResult
     public func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
         
-       let taskWrapper = HTTPTaskWrapper(completion: completion)
+        let taskWrapper = HTTPTaskWrapper(completion: completion)
         
         taskWrapper.wrapped = client.get(from: url, completion: { [weak self] result in
             
             guard self != nil else { return }
-            switch result {
-            case .failure:
-                taskWrapper.complete(with: .failure(Error.connectivity))
-                
-            case let .success((data, response)):
-               
-                if response.statusCode == 200, data.isEmpty == false {
-                    taskWrapper.complete(with: .success(data))
-                } else {
-                    taskWrapper.complete(with: .failure(Error.invalidData))
-                 }
-            }
+            
+            taskWrapper.complete(with: result
+                .mapError { _ in Error.connectivity}
+                .flatMap{ (data, response) in
+                    let isValidResponse = response.statusCode == 200 && !data.isEmpty
+                    return isValidResponse ? .success(data) : .failure(Error.invalidData)
+                }
+             )
+            
+            //            switch result {
+            //            case .failure:
+            //                taskWrapper.complete(with: .failure(Error.connectivity))
+            //
+            //            case let .success((data, response)):
+            //
+            //                if response.statusCode == 200, data.isEmpty == false {
+            //                    taskWrapper.complete(with: .success(data))
+            //                } else {
+            //                    taskWrapper.complete(with: .failure(Error.invalidData))
+            //                 }
+            //            }
         })
         return taskWrapper
     }
