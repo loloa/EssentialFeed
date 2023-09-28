@@ -69,7 +69,7 @@ final class EssentialFeedAPIEndEndtoEndTests: XCTestCase {
     //MARK: -Helpers
     
     private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> FeedImageDataLoader.Result? {
-            let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed/73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")!
+            let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
             let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
             let loader = RemoteFeedImageDataLoader(client: client)
             trackForMemoryLeaks(client, file: file, line: line)
@@ -78,7 +78,7 @@ final class EssentialFeedAPIEndEndtoEndTests: XCTestCase {
             let exp = expectation(description: "Wait for load completion")
 
             var receivedResult: FeedImageDataLoader.Result?
-            _ = loader.loadImageData(from: testServerURL) { result in
+            _ = loader.loadImageData(from: url) { result in
                 receivedResult = result
                 exp.fulfill()
             }
@@ -88,10 +88,9 @@ final class EssentialFeedAPIEndEndtoEndTests: XCTestCase {
         }
     
     private func getFeedResult(file: StaticString = #file, line: UInt = #line) -> FeedLoader.Result? {
-        
-        let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
+ 
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let loader = RemoteFeedLoader(url: testServerURL, client: client)
+        let loader = RemoteFeedLoader(url: feedTestServerURL, client: client)
         
         trackForMemoryLeaks(client, file: file, line: line)
         trackForMemoryLeaks(loader, file: file, line: line)
@@ -106,6 +105,11 @@ final class EssentialFeedAPIEndEndtoEndTests: XCTestCase {
         wait(for: [exp], timeout: 15.0)
         return receivedResult
     }
+    
+    private var feedTestServerURL: URL {
+            return URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
+        }
+    
     private func expectedImage(at index: Int) -> FeedImage {
         return FeedImage(
             id: id(at: index),
