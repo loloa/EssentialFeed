@@ -10,8 +10,10 @@ import EssentialFeed
 
 extension CoreDataFeedStore: FeedImageDataStore {
     
-    
-    func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.Result) -> Void) {
+//    public func insert(_ data: Data, for url: URL, completion: @escaping (FeedImageDataStore.InsertionResult) -> Void) {
+//
+//        }
+    public func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.Result) -> Void) {
          completion(.success(.none))
     }
  
@@ -26,6 +28,16 @@ final class CoreDataFeedImageDataStoreTests: XCTestCase {
         expect(sut, completeWith: notFound(), for: anyURL())
          
     }
+    
+//    func test_retrieveImageData_deliversNotFoundWhenStoredDataURLDoesNotMatch() {
+//            let sut = makeSUT()
+//            let url = URL(string: "http://a-url.com")!
+//            let nonMatchingURL = URL(string: "http://another-url.com")!
+//
+//            insert(anyData(), for: url, into: sut)
+//
+//            expect(sut, toCompleteRetrievalWith: notFound(), for: nonMatchingURL)
+//        }
     //MARK: -
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedImageDataStore {

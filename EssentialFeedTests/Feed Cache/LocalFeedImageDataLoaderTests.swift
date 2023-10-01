@@ -7,61 +7,7 @@
 
 import XCTest
 import EssentialFeed
-
-
-protocol FeedImageDataStore {
-    
-    typealias Result = Swift.Result<Data?, Error>
-    
-    func retrieve(dataForURL url: URL, completion: @escaping (Result) -> Void)
-}
-
-final class LocalFeedImageDataLoader: FeedImageDataLoader {
  
-    private class Task: FeedImageDataLoaderTask {
-        
-        private var completion: ((FeedImageDataLoader.Result) -> Void)?
- 
-        init(completion: @escaping (FeedImageDataLoader.Result) -> Void) {
-            self.completion = completion
-        }
-        
-        func cancel() {
-            preventFutureCompletions()
-             
-        }
-        func complete(with result: FeedImageDataLoader.Result) {
-            completion?(result)
-        }
-        func preventFutureCompletions() {
-            completion = nil
-        }
-     }
-    
-    public enum Error: Swift.Error {
-        case failed
-        case notFound
-    }
-    
-    private let store: FeedImageDataStore
-    init(store: FeedImageDataStore) {
-        self.store = store
-    }
-    
-    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> EssentialFeed.FeedImageDataLoaderTask {
-        
-        let task = Task(completion: completion)
-        
-        store.retrieve(dataForURL: url) { [weak self] result in
-            guard self != nil else { return }
-            task.complete( with: result
-                .mapError { _ in Error.failed }
-                .flatMap { data in
-                    data.map { .success($0) }  ??  .failure( Error.notFound ) })
-          }
-        return task
-    }
-}
 
 final class LocalFeedImageDataLoaderTests: XCTestCase {
 
@@ -98,16 +44,15 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
             store.complete(with: .none)
         }
     }
-    
-    func test_loadImageDataFromURL_deliversDataOnFound() {
-        
-        let (sut, store) = makeSUT()
-        let foundData = anyData()
  
-        expect(sut, toCompleteWith: .success(foundData)) {
-            store.complete(with: foundData)
+    func test_loadImageDataFromURL_deliversStoredDataOnFoundData() {
+            let (sut, store) = makeSUT()
+            let foundData = anyData()
+
+            expect(sut, toCompleteWith: .success(foundData), when: {
+                store.complete(with: foundData)
+            })
         }
-    }
     
     func test_cancelLoadImageDataURLTask_doesNotDeliverResultAfterCancellingTask() {
         
@@ -142,6 +87,7 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
         XCTAssertTrue(received.isEmpty, "Expected no received results after instance has been deallocated")
     }
     
+ 
     //MARK: --
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: StoreSpy) {
