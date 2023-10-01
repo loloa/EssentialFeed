@@ -55,7 +55,7 @@ extension LocalFeedLoader {
             guard let self = self else { return }
             switch result {
             case .failure:
-                self.store.deleteCachedFeed { _ in completion(.success(())) }
+                self.store.deleteCachedFeed(completion: completion)
                 
             case let .success(.some(cache)) where FeedCachePolicy.validate(cache.timestamp, against: self.currentDate()) == false:
                 self.store.deleteCachedFeed { _ in completion(.success(())) }
