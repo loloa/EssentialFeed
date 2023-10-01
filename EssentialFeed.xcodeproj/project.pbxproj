@@ -605,8 +605,8 @@
 				5EEE88762A8E44D500481BB9 /* FeedStore.swift */,
 				5EEE887A2A8EA86600481BB9 /* LocalFeedImage.swift */,
 				5EC6A87E2A94A59600D34D8C /* FeedCachePolicy.swift */,
-				5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */,
 				5E46F9122AC96935006C21CE /* LocalFeedImageDataLoader.swift */,
+				5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */,
 			);
 			path = "Feed Cache";
 			sourceTree = "<group>";
