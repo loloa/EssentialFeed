@@ -10,9 +10,10 @@ import EssentialFeed
 
 extension CoreDataFeedStore: FeedImageDataStore {
     
-//    public func insert(_ data: Data, for url: URL, completion: @escaping (FeedImageDataStore.InsertionResult) -> Void) {
-//
-//        }
+    public func insert(_ data: Data, for url: URL, completion: @escaping (InsertionResult) -> Void) {
+         
+    }
+ 
     public func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.Result) -> Void) {
          completion(.success(.none))
     }
