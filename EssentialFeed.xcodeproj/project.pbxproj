@@ -608,11 +608,11 @@
 			children = (
 				5E0974DA2AA0D1990013F418 /* Infrastructure */,
 				5EEE88742A8E428600481BB9 /* LocalFeedLoader.swift */,
+				5E46F9122AC96935006C21CE /* LocalFeedImageDataLoader.swift */,
 				5EEE88762A8E44D500481BB9 /* FeedStore.swift */,
+				5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */,
 				5EEE887A2A8EA86600481BB9 /* LocalFeedImage.swift */,
 				5EC6A87E2A94A59600D34D8C /* FeedCachePolicy.swift */,
-				5E46F9122AC96935006C21CE /* LocalFeedImageDataLoader.swift */,
-				5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */,
 			);
 			path = "Feed Cache";
 			sourceTree = "<group>";
