@@ -10,7 +10,7 @@ import EssentialFeed
 import EssentialApp
  
 
-final class FeedLoaderWithFallbackCompositeTests: XCTestCase {
+final class FeedLoaderWithFallbackCompositeTests: XCTestCase, FeedLoaderTestCase {
     
     func test_load_deliversPrimaryFeedOnPrimaryLoaderSuccess() {
         
@@ -49,25 +49,5 @@ final class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         return sut
     }
  
-    private func expect(_ sut: FeedLoader, completeWith expectedResult: FeedLoader.Result, file: StaticString = #file, line: UInt = #line) {
-        
-        
-        let exp = expectation(description: "Wait for load completion")
-        sut.load { receivedResult in
-            
-            switch (receivedResult, expectedResult) {
-            case let (.success(receivedFeed), .success(expectedFeed)):
-                XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
-                
-            case (.failure, .failure):
-                break
-                
-            default:
-                XCTFail("Expected successful load feed result, instead got \(expectedResult)}", file: file, line: line)
-            }
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
-    }
-  
+     
 }
