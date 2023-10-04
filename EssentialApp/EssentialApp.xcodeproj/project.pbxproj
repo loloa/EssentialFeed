@@ -115,12 +115,12 @@
 				5EB7D89F2ACABA1900C38F97 /* AppDelegate.swift */,
 				5EB7D8A12ACABA1900C38F97 /* SceneDelegate.swift */,
 				5EB7D8D92ACC002000C38F97 /* FeedLoaderWithFallbackComposite.swift */,
+				5EB7D8DD2ACC434300C38F97 /* FeedImageDataLoaderWithFallbackComposite.swift */,
 				5EB7D8A32ACABA1900C38F97 /* ViewController.swift */,
 				5EB7D8A52ACABA1900C38F97 /* Main.storyboard */,
 				5EB7D8A82ACABA1B00C38F97 /* Assets.xcassets */,
 				5EB7D8AA2ACABA1B00C38F97 /* LaunchScreen.storyboard */,
 				5EB7D8AD2ACABA1B00C38F97 /* Info.plist */,
-				5EB7D8DD2ACC434300C38F97 /* FeedImageDataLoaderWithFallbackComposite.swift */,
 			);
 			path = EssentialApp;
 			sourceTree = "<group>";
