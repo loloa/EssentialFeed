@@ -7,43 +7,71 @@
 
 
 import UIKit
+import EssentialFeed
+
+protocol FeedViewControllerDelegate {
+    
+    func didRequestFeedrefresh()
+}
  
- public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
+ public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
  
-    private var refreshController: FeedRefreshViewController?
+     @IBOutlet private(set) public weak var errorView: ErrorView?
+    var delegate: FeedViewControllerDelegate?
+     
+     
+     convenience init(coder: NSCoder, delegate: FeedViewControllerDelegate) {
+         self.init(coder: coder)!
+         self.delegate = delegate
+     }
+ 
+     
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
  
-     convenience init(refreshController: FeedRefreshViewController) {
-        self.init()
-        self.refreshController = refreshController
-        
-    }
     public override func viewDidLoad() {
         super.viewDidLoad()
-        refreshControl = refreshController?.view
-        
-        tableView.prefetchDataSource = self
-        refreshController?.refresh()
+        refresh()
     }
+     
+     @IBAction private func refresh() {
+          delegate?.didRequestFeedrefresh()
+      }
+     
+     public func display(_ viewModel: FeedLoadingViewModel) {
+         if viewModel.isLoading {
+             refreshControl?.beginRefreshing()
+         }else {
+             refreshControl?.endRefreshing()
+         }
+     }
+     
+     public func display(_ viewModel: FeedErrorViewModel) {
+         if let message = viewModel.message {
+             errorView?.show(message: message)
+         }else {
+             errorView?.hideMessage()
+         }
+      }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModel.count
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return cellController(forRowAt: indexPath).view()
+        return cellController(forRowAt: indexPath).view(in: tableView)
      }
     
+     public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+         let cellController = cellController(forRowAt: indexPath)
+         cellController.startTask(cell: cell)
+      }
+ 
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelCellcontrollerLoad(forRowAt: indexPath)
     }
-    
-    //    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    //        startTask(forRowAt: indexPath)
-    //    }
-    //
+ 
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         

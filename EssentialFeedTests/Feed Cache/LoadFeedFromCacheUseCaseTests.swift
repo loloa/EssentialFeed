@@ -31,7 +31,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let retrievalError = anyNSError()
         let (sut, store) = makeSUT()
         expect(sut, toCompleteWith: .failure(retrievalError), with: {
-            store.completeRetrival(with: retrievalError)
+            store.completeRetrieval(with: retrievalError)
         })
          
     }
@@ -45,7 +45,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
  
         expect(sut, toCompleteWith: .success([])) {
-            store.completeRetrivalWithEmptyCache()
+            store.completeRetrievalWithEmptyCache()
         }
     }
 
@@ -60,7 +60,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
  
         expect(sut, toCompleteWith: .success(feed.models)) {
-            store.completeRetrival(with: feed.local, timestamp: nonExpiredTimeStamp)
+            store.completeRetrieval(with: feed.local, timestamp: nonExpiredTimeStamp)
         }
     }
     
@@ -75,7 +75,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
  
         expect(sut, toCompleteWith: .success([])) {
-            store.completeRetrival(with: feed.local, timestamp: expirationTimeStamp)
+            store.completeRetrieval(with: feed.local, timestamp: expirationTimeStamp)
         }
     }
     
@@ -87,7 +87,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
  
         expect(sut, toCompleteWith: .success([])) {
-            store.completeRetrival(with: feed.local, timestamp: expiredTimeStamp)
+            store.completeRetrieval(with: feed.local, timestamp: expiredTimeStamp)
         }
     }
  
@@ -99,7 +99,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
         
         sut.load { _ in }
-        store.completeRetrival(with: anyNSError())
+        store.completeRetrieval(with: anyNSError())
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
  
@@ -107,7 +107,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
         
         sut.load { _ in }
-        store.completeRetrivalWithEmptyCache()
+        store.completeRetrievalWithEmptyCache()
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
@@ -119,7 +119,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
  
         sut.load { _ in }
-        store.completeRetrival(with: expectedImagesFeed.local, timestamp: nonExpiredTimestamp)
+        store.completeRetrieval(with: expectedImagesFeed.local, timestamp: nonExpiredTimestamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
@@ -131,7 +131,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT(currentDate: { fixedDate })
  
         sut.load { _ in }
-        store.completeRetrival(with: expectedImagesFeed.local, timestamp: expirationTimestamp)
+        store.completeRetrieval(with: expectedImagesFeed.local, timestamp: expirationTimestamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
@@ -143,7 +143,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
  
         sut.load { _ in }
-        store.completeRetrival(with: expectedImagesFeed.local, timestamp: expiredTimestamp)
+        store.completeRetrieval(with: expectedImagesFeed.local, timestamp: expiredTimestamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
@@ -154,7 +154,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         var capturedResult = [LocalFeedLoader.LoadResult]()
         sut?.load { capturedResult.append($0)}
         sut = nil
-        store.completeRetrivalWithEmptyCache()
+        store.completeRetrievalWithEmptyCache()
         XCTAssertTrue(capturedResult.isEmpty)
          
     }

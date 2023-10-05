@@ -6,16 +6,34 @@
 //
 
 import XCTest
+import CoreData
 import EssentialFeed
 
 
-final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
+final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs /*, FailableInsertFeedStoreSpecs*/ {
+    
+    //HELP! please search for HELP! uncomment this code and conforming to FailableInsertFeedStoreSpecs, and also
+    //in CoredDataFeedStore
+    
+//    func test_insert_deliversErrorOnInsertionError() {
+//
+//        let stub = NSManagedObjectContext.alwaysFailingSaveStub()
+//        stub.startIntercepting()
+//
+//        let sut =  makeSUT()
+//
+//        assertThatInsertDeliversErrorOnInsertionError(on: sut)
+//    }
+//
+//    func test_insert_hasNoSideEffectsOnInsertionError() {
+//
+//    }
+    
     
     private func makeSUT() -> CoreDataFeedStore {
-        
-        let bundle = Bundle(for: CoreDataFeedStore.self)
+ 
         let storeURL = URL(fileURLWithPath: "/dev/null")
-        let sut = try! CoreDataFeedStore(storeURL: storeURL, bundle: bundle)
+        let sut = try! CoreDataFeedStore(storeURL: storeURL)
         trackForMemoryLeaks(sut)
         return sut
     }

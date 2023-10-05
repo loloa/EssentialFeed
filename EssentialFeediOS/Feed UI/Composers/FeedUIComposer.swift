@@ -13,23 +13,30 @@ public final class FeedUIComposer {
     
     private init(){}
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
-        let feedViewModel = FeedViewModel(feedLoader: feedLoader)
-        let refreshController = FeedRefreshViewController(viewModel: feedViewModel)
-        let feedController = FeedViewController(refreshController: refreshController)
         
-        //this is adapter closure
-        //[FeedImage] -> Adapt -> [FeedImageCellcontroller]
-        feedViewModel.onFeedLoad =  adaptFeedToCellControllers(forwardingTo: feedController, loader: imageLoader)
+        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: MainQueueDispatchDecorator(decoratee: feedLoader))
+         
+        let feedController = makeFeedViewController(
+            delegate: presentationAdapter,
+            title: FeedPresenter.title)
+       
+        
+        presentationAdapter.presenter = FeedPresenter(feedView: FeedViewAdapter(controller: feedController, imageLoader: MainQueueDispatchDecorator(decoratee: imageLoader)), loadingView: WeakRefVirtualProxy(feedController), errorView: WeakRefVirtualProxy(feedController))
+        
         return feedController
     }
     
-    private static func adaptFeedToCellControllers(forwardingTo controller: FeedViewController, loader: FeedImageDataLoader) -> ([FeedImage]) -> Void {
+    private static func makeFeedViewController(delegate: FeedViewControllerDelegate, title: String) -> FeedViewController {
         
-        return { [weak controller] feed in
-            controller?.tableModel = feed.map{ model in
-                
-                FeedImageCellController(viewModel: FeedImageViewModel(model: model, imageLoader: loader, imageTransformer: UIImage.init))
-            }
-        }
+        let bundle = Bundle(for: FeedViewController.self)
+        let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
+        let feedController = storyboard.instantiateInitialViewController() as! FeedViewController
+        feedController.delegate = delegate
+        feedController.title = title
+        return feedController
     }
 }
+ 
+ 
+
+ 
