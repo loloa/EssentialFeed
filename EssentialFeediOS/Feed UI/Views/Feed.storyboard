@@ -150,6 +150,7 @@ Location</string>
                                         <constraint firstItem="M46-4o-hqg" firstAttribute="top" secondItem="uan-Dr-2fB" secondAttribute="topMargin" priority="999" constant="6" id="yem-3n-A6Z"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <accessibility key="accessibilityConfiguration" identifier="feed-image-cell"/>
                                 <connections>
                                     <outlet property="descriptionLabel" destination="ibV-9R-PXQ" id="CZE-gH-eSY"/>
                                     <outlet property="feedImageContainer" destination="Xws-kZ-wwd" id="Qx7-X2-k9g"/>
