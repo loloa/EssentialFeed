@@ -65,4 +65,8 @@ extension FeedViewController {
         let index = IndexPath(row: row, section: feedImagesSection)
         return ds?.tableView(tableView, cellForRowAt: index)
     }
+    
+    func renderedFeedImageData(at index: Int) -> Data? {
+            return simulateFeedImageViewVisible(at: index)?.renderedImage
+        }
  }
