@@ -16,6 +16,8 @@ public protocol FeedViewControllerDelegate {
  
  public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
  
+     private var loadingControllers = [IndexPath: FeedImageCellController]()
+     
      @IBOutlet private(set) public weak var errorView: ErrorView?
      public var delegate: FeedViewControllerDelegate?
      
@@ -31,6 +33,7 @@ public protocol FeedViewControllerDelegate {
     }
      
      public func display(_ cellControllers: [FeedImageCellController]) {
+         loadingControllers = [:]
          tableModel = cellControllers
      }
  
@@ -97,11 +100,16 @@ public protocol FeedViewControllerDelegate {
     }
     
     private func cellController(forRowAt indexPath: IndexPath) -> FeedImageCellController {
-         return tableModel[indexPath.row]
+        
+        let controller = tableModel[indexPath.row]
+        loadingControllers[indexPath] = controller
+         return controller
      }
      
      private func cancelCellcontrollerLoad(forRowAt indexPath: IndexPath) {
-         cellController(forRowAt: indexPath).cancelLoad()
+         loadingControllers[indexPath]?.cancelLoad()
+         loadingControllers[indexPath] = nil
+         //cellController(forRowAt: indexPath).cancelLoad()
      }
     /*
      On iOS 15+, the cell lifecycle behavior changed. For performance reasons, when the cell is removed from the table view and quickly added back (e.g., by scrolling up and down fast), the data source may not recreate the cell anymore using the cellForRow method if there's a cached cell for that IndexPath.
