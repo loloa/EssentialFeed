@@ -28,8 +28,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     private lazy var localFeedLoader: LocalFeedLoader = {
-            LocalFeedLoader(store: store, currentDate: Date.init)
-        }()
+        LocalFeedLoader(store: store, currentDate: Date.init)
+    }()
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
@@ -42,24 +42,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: scene)
-                
+        
         configureWindow()
     }
     
     func configureWindow() {
-       
+        
         let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
- 
+        
         let localImageLoader = LocalFeedImageDataLoader(store: store)
         
         window?.rootViewController = UINavigationController(
             rootViewController: FeedUIComposer.feedComposedWith(
                 feedLoader: makeRemoteFeedLoaderWithLocalFallback,
-                imageLoader: FeedImageDataLoaderWithFallbackComposite(
-                    primary: localImageLoader,
-                    fallback: FeedImageDataLoaderCacheDecorator(
-                        decoratee: remoteImageLoader,
-                        cache: localImageLoader))))
+                imageLoader: makeLocalImageLoaderWithRemoteFallback))
         
         window?.makeKeyAndVisible()
     }
@@ -67,6 +63,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {
         localFeedLoader.validateCache { _ in }
     }
+    
+    
     
     private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<[FeedImage], Error> {
         
@@ -79,14 +77,65 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
     }
+    
+    private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {
+        
+        let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
+        
+        let localImageLoader = LocalFeedImageDataLoader(store: store)
+        
+        return localImageLoader
+            .loadImageDataPublisher(from: url)
+            .fallback {
+                remoteImageLoader.loadImageDataPublisher(from: url)
+                    .cache(to: localImageLoader, using: url)
+            }
+    }
 }
 
+//MARK: --
+
+public extension Publisher where Output == Data {
+    
+    func cache(to cache: FeedImageDataCache, using url: URL) -> AnyPublisher<Output, Failure> {
+        
+        handleEvents(receiveOutput: { data in
+            cache.saveIgnoringResult(data: data, for: url)
+        }).eraseToAnyPublisher()
+    }
+}
+
+private extension FeedImageDataCache {
+    
+    func saveIgnoringResult(data: Data, for url: URL) {
+        save(data, for: url) { _ in }
+    }
+}
+
+public extension FeedImageDataLoader {
+    
+    typealias Publisher = AnyPublisher<Data, Error>
+    
+    func loadImageDataPublisher(from url: URL) -> Publisher {
+        
+        var task: FeedImageDataLoaderTask?
+        
+        return Deferred {
+            Future { promise in
+                task = self.loadImageData(from: url, completion: promise)
+            }
+        }
+        .handleEvents(receiveCancel: { task?.cancel() } )
+        .eraseToAnyPublisher()
+    }
+}
+// MARK: ---
 public extension FeedLoader {
     
     typealias Publisher = AnyPublisher<[FeedImage], Error>
     func loadPublisher() -> Publisher {
         
-         Deferred {
+        Deferred {
             Future(self.load)
         }
         .eraseToAnyPublisher()
@@ -104,18 +153,18 @@ private extension FeedCache {
 extension Publisher {
     
     func fallback(to fallbackPublisher: @escaping() -> AnyPublisher<Output, Failure>) -> AnyPublisher<Output, Failure> {
-         self.catch { _ in  fallbackPublisher() }.eraseToAnyPublisher()
-     }
+        self.catch { _ in  fallbackPublisher() }.eraseToAnyPublisher()
+    }
 }
 
 extension Publisher where Output == [FeedImage] {
     
     func caching(to cache: FeedCache) -> AnyPublisher<Output, Failure> {
-       
+        
         handleEvents(receiveOutput: cache.saveIgnoringResult)
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
-
+    
 }
 
 extension Publisher {
@@ -136,27 +185,27 @@ extension DispatchQueue {
         typealias SchedulerTimeType = DispatchQueue.SchedulerTimeType
         typealias SchedulerOptions = DispatchQueue.SchedulerOptions
         
- 
+        
         var now: Self.SchedulerTimeType { DispatchQueue.main.now }
-
+        
         var minimumTolerance: Self.SchedulerTimeType.Stride { DispatchQueue.main.minimumTolerance }
-
+        
         func schedule(options: Self.SchedulerOptions?, _ action: @escaping () -> Void) {
             
             guard Thread.isMainThread else {
-               return DispatchQueue.main.schedule(options: options, action)
+                return DispatchQueue.main.schedule(options: options, action)
                 
             }
             action()
             
         }
-
-         
+        
+        
         func schedule(after date: Self.SchedulerTimeType, tolerance: Self.SchedulerTimeType.Stride, options: Self.SchedulerOptions?, _ action: @escaping () -> Void){
             DispatchQueue.main.schedule(after: date, tolerance: tolerance, options: options, action)
         }
-
-         func schedule(after date: Self.SchedulerTimeType, interval: Self.SchedulerTimeType.Stride, tolerance: Self.SchedulerTimeType.Stride, options: Self.SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
+        
+        func schedule(after date: Self.SchedulerTimeType, interval: Self.SchedulerTimeType.Stride, tolerance: Self.SchedulerTimeType.Stride, options: Self.SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
             
             DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options, action)
         }
