@@ -85,24 +85,28 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         
         let (sut, client) = makeSUT()
         
-        let (item1, item1JSON) = makeItem(id: UUID(),
-                             description: nil,
-                             location: nil,
-                             imageURL: URL(string: "https://a-url.com")!)
- 
-        let (item2, item2JSON) = makeItem(id: UUID(),
-                             description: "a description",
-                             location: "a location",
-                             imageURL: URL(string: "https://another-url.com")!)
+        let item1 = makeItem(
+                    id: UUID(),
+                    message: "a message",
+                    createdAt: (Date(timeIntervalSince1970: 1598627222), "2020-08-28T15:07:02+00:00"),
+                    username: "a username")
+                
+                let item2 = makeItem(
+                    id: UUID(),
+                    message: "another message",
+                    createdAt: (Date(timeIntervalSince1970: 1577881882), "2020-01-01T12:31:22+00:00"),
+                    username: "another username")
+                
+                let items = [item1.model, item2.model]
  
         
         let samples = [200, 210, 250, 280, 299]
         
         samples.enumerated().forEach { index, code in
             
-            expect(sut, toCompleteWith: .success([item1, item2]), when: {
+            expect(sut, toCompleteWith: .success(items), when: {
                 
-                let json = makeItemsJSON(items: [item1JSON, item2JSON])
+                let json = makeItemsJSON(items: [item1.json, item2.json])
                 client.complete(withStatusCode: code, data: json, at: index)
             })
         }
@@ -155,16 +159,21 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         let json = try! JSONSerialization.data(withJSONObject: itemsJSON)
         return json
     }
-    private func makeItem(id: UUID, description: String?, location: String?, imageURL: URL) -> (model:FeedImage, json: [String: Any]){
+    
+    ////ISO8601DateFormatter().string(from: createdAt)
+    ///
+    private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), username: String) -> (model:ImageComment, json: [String: Any]){
         
-        let item =  FeedImage(id: id, description: description, location: location, url: imageURL)
+        let item =  ImageComment(id: id, message: message, createdAt: createdAt.date, username: username)
         
-        let json = [
-            "id"         : item.id.uuidString,
-            "description": item.description,
-            "location"   : item.location,
-            "image"      : item.url.absoluteString
-        ].compactMapValues{$0}
+        let json: [String: Any] = [
+            "id"         : id.uuidString,
+            "message": message,
+            "created_at"   : createdAt.iso8601String,
+            "author"      : [
+                "username" : username
+            ]
+        ]
         
         return (item, json)
         
