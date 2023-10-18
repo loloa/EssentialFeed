@@ -19,7 +19,7 @@ public final class RemoteImageCommentsLoader {
         case invalidData
     }
    
-    //we dont want expose this implementation detail to higher- level Feed feature module
+    
     public typealias Result = Swift.Result<[ImageComment], Swift.Error>
     
     public init(url: URL, client: HTTPClient) {
