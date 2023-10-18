@@ -140,9 +140,6 @@ final class RemoteLoaderTests: XCTestCase {
     }
     
     
-    
-    
-    
     //it also can be reversed, we want the completion to be called after deallocation
     func test_load_doesnotDeliverResultAfterSUTInstancehasBeenDeallocated(){
         
