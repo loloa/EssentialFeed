@@ -8,7 +8,7 @@
 import Foundation
 
  
- final class FeedItemMapper {
+public final class FeedItemMapper {
     
     private struct Root: Decodable {
         
@@ -31,7 +31,7 @@ import Foundation
    
     //used by FeedItemLoader, has to be , accessable in the module
     
-     static func map(_ data: Data, response: HTTPURLResponse) throws -> [FeedImage] {
+   public static func map(_ data: Data, response: HTTPURLResponse) throws -> [FeedImage] {
  
          guard response.isOK,
                let root = try? JSONDecoder().decode(Root.self, from: data) else {
