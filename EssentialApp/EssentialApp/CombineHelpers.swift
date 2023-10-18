@@ -10,6 +10,25 @@ import Combine
 import EssentialFeed
 
 
+
+public extension HTTPClient {
+    
+    typealias Publisher = AnyPublisher<(Data, HTTPURLResponse), Error>
+    
+    func getPublisher(url: URL) -> Publisher {
+        
+        var task: HTTPClientTask?
+        
+        return Deferred {
+            Future { promise in
+                task = self.get(from: url, completion: promise)
+            }
+        }
+        .handleEvents(receiveCancel: { task?.cancel() } )
+        .eraseToAnyPublisher()
+    }
+}
+
 //MARK: --
 
 public extension Publisher where Output == Data {

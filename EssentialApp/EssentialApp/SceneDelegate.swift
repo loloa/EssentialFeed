@@ -68,14 +68,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<[FeedImage], Error> {
         
         let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
-        
-        remoteFeedLoader = RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemMapper.map)
+//
+//        remoteFeedLoader = RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemMapper.map)
         //Creates a publisher that invokes a promise closure when the publisher emits an element.
-        return remoteFeedLoader!
-            .loadPublisher()
+        
+        return httpClient.getPublisher(url: remoteURL).tryMap(FeedItemMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
     }
+    /*
+     composition sandwitch
+     [ side - effect]
+     -pure function-
+     [ side - effect ]
+ 
+     */
+    
     
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {
         
