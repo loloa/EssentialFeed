@@ -32,8 +32,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     
-    private  var remoteFeedLoader: RemoteLoader<[FeedImage]>?
-    
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
         self.httpClient = httpClient
@@ -100,7 +98,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-extension RemoteLoader: FeedLoader where Resource == [FeedImage] {}
+ 
 
  
  
