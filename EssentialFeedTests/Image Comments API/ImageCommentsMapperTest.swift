@@ -65,9 +65,7 @@ final class ImageCommentsMapperTest: XCTestCase {
             let result = try ImageCommentsMapper.map(json, response: HTTPURLResponse(statusCode: code))
             XCTAssertEqual(result, items)
          }
-     }
-    
-    
+     }    
     
     func test_map_deliversNoItemsOn2xxHTTPResponseWithEmtyJsonList() throws {
  

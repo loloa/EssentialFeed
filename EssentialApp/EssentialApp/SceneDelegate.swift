@@ -32,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     
-    private  var remoteFeedLoader: RemoteFeedLoader?
+    private  var remoteFeedLoader: RemoteLoader<[FeedImage]>?
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
@@ -69,7 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
         
-       remoteFeedLoader = RemoteFeedLoader(url: remoteURL, client: httpClient)
+        remoteFeedLoader = RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemMapper.map)
         //Creates a publisher that invokes a promise closure when the publisher emits an element.
         return remoteFeedLoader!
             .loadPublisher()
@@ -92,4 +92,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-extension RemoteFeedLoader: FeedLoader where Resource == [FeedImage] {}
+extension RemoteLoader: FeedLoader where Resource == [FeedImage] {}
+
+ 
+ 
+//
+//public typealias RemoteImageCommentsLoader = RemoteLoader<[ImageComment]>
+//
+//public extension RemoteImageCommentsLoader {
+//
+//    convenience init (url: URL, client: HTTPClient) {
+//        self.init(url: url, client: client, mapper: ImageCommentsMapper.map)
+//    }
+//}
+
+
+ 

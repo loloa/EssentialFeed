@@ -32,6 +32,10 @@ public final class ImageCommentsMapper {
    }
   
    //used by FeedItemLoader, has to be , accessable in the module
+    
+    public enum Error: Swift.Error {
+        case invalidData
+    }
    
    public static func map(_ data: Data, response: HTTPURLResponse) throws -> [ImageComment] {
 
@@ -40,7 +44,7 @@ public final class ImageCommentsMapper {
         
         guard isOk(response),
               let root = try? decoder.decode(Root.self, from: data) else {
-            throw RemoteImageCommentsLoader.Error.invalidData
+            throw Error.invalidData
         }
        return root.comments
    }
