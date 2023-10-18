@@ -101,8 +101,6 @@ final class ImageCommentsMapperTest: XCTestCase {
         ]
         
         return (item, json)
-        
     }
- 
 }
 
