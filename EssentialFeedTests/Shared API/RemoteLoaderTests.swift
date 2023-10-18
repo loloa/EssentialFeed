@@ -48,7 +48,7 @@ final class RemoteLoaderTests: XCTestCase {
         }
         
     }
-    
+    /*
     func test_load_deliversErrorOnNon200HTTPResponse() {
         
         let (sut, client) = makeSUT()
@@ -63,53 +63,85 @@ final class RemoteLoaderTests: XCTestCase {
             }
         }
     }
+ 
+     func test_load_deliversErrorOn200HTTPResponseWithEmtyJsonList() {
+         
+         let (sut, client) = makeSUT()
+         
+         expect(sut, toCompleteWith: .success([])) {
+             
+             let emptyListJSON = makeItemsJSON(items: [])
+             client.complete(withStatusCode: 200, data: emptyListJSON)
+         }
+     }
+     
+     func test_load_deliversErrorOn200HTTPResponseWithInvalidJson() {
+         
+         let (sut, client) = makeSUT()
+         
+         expect(sut, toCompleteWith: failure(.invalidData)) {
+             
+             let invalidJson =  Data("invalid json".utf8)
+             client.complete(withStatusCode: 200, data: invalidJson)
+         }
+     }
+     
+     func test_load_deliversItemsOn200HTTPResponseWithJSONItems(){
+         
+         let (sut, client) = makeSUT()
+         
+         let (item1, item1JSON) = makeItem(id: UUID(),
+                              description: nil,
+                              location: nil,
+                              imageURL: URL(string: "https://a-url.com")!)
+  
+         let (item2, item2JSON) = makeItem(id: UUID(),
+                              description: "a description",
+                              location: "a location",
+                              imageURL: URL(string: "https://another-url.com")!)
+  
+         expect(sut, toCompleteWith: .success([item1, item2]), when: {
+             
+             let json = makeItemsJSON(items: [item1JSON, item2JSON])
+             client.complete(withStatusCode: 200, data: json)
+         })
+          
+     }
+     
+     
+   */
     
-    func test_load_deliversErrorOn200HTTPResponseWithInvalidJson() {
+    
+    func test_load_deliversErrorOnMapperError() {
         
-        let (sut, client) = makeSUT()
+        let (sut, client) = makeSUT(mapper: { _, _ in
+            throw anyNSError()
+        })
         
         expect(sut, toCompleteWith: failure(.invalidData)) {
-            
-            let invalidJson =  Data("invalid json".utf8)
-            client.complete(withStatusCode: 200, data: invalidJson)
+           
+            client.complete(withStatusCode: 200, data: anyData()) 
         }
     }
     
-    
-    func test_load_deliversItemsOn200HTTPResponseWithJSONItems(){
+    func test_load_deliversMappedResource(){
         
-        let (sut, client) = makeSUT()
+        let resource = "a resource"
         
-        let (item1, item1JSON) = makeItem(id: UUID(),
-                             description: nil,
-                             location: nil,
-                             imageURL: URL(string: "https://a-url.com")!)
+        let (sut, client) = makeSUT { data, _ in
+            String(data: data, encoding: .utf8)!
+        }
  
-        let (item2, item2JSON) = makeItem(id: UUID(),
-                             description: "a description",
-                             location: "a location",
-                             imageURL: URL(string: "https://another-url.com")!)
+        expect(sut, toCompleteWith: .success(resource), when: {
  
-        expect(sut, toCompleteWith: .success([item1, item2]), when: {
-            
-            let json = makeItemsJSON(items: [item1JSON, item2JSON])
-            client.complete(withStatusCode: 200, data: json)
+            client.complete(withStatusCode: 200, data: Data(resource.utf8))
         })
          
     }
     
     
     
-    func test_load_deliversErrorOn200HTTPResponseWithEmtyJsonList() {
-        
-        let (sut, client) = makeSUT()
-        
-        expect(sut, toCompleteWith: .success([])) {
-            
-            let emptyListJSON = makeItemsJSON(items: [])
-            client.complete(withStatusCode: 200, data: emptyListJSON)
-        }
-    }
+    
     
     //it also can be reversed, we want the completion to be called after deallocation
     func test_load_doesnotDeliverResultAfterSUTInstancehasBeenDeallocated(){
@@ -117,9 +149,11 @@ final class RemoteLoaderTests: XCTestCase {
         let url = URL(string: "https://any_url.com")!
         let client = HTTPClientSpy()
         
-        var sut: RemoteLoader? = RemoteLoader(url: url, client: client)
+        var sut: RemoteLoader<String>? = RemoteLoader<String>(url: url, client: client, mapper: {_,_ in 
+            "any"
+        })
         
-        var capturedResults = [RemoteLoader.Result]()
+        var capturedResults = [RemoteLoader<String>.Result]()
         sut?.load {   capturedResults.append($0)}
         
         sut = nil
@@ -153,12 +187,12 @@ final class RemoteLoaderTests: XCTestCase {
         
     }
     
-    private func failure(_ error: RemoteLoader.Error) -> RemoteLoader.Result {
+    private func failure(_ error: RemoteLoader<String>.Error) -> RemoteLoader<String>.Result {
         
         return .failure(error)
     }
     
-    private func expect(_ sut: RemoteLoader, toCompleteWith expectedResult: RemoteLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    private func expect(_ sut: RemoteLoader<String>, toCompleteWith expectedResult: RemoteLoader<String>.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
  
         let exp = expectation(description: "Wait for load completion")
         sut.load { receivedResult in
@@ -168,7 +202,7 @@ final class RemoteLoaderTests: XCTestCase {
             case let  (.success(receivedItems), .success(expectedItems)):
                 XCTAssertEqual(receivedItems, expectedItems, file: file, line: line)
                 
-            case let (.failure(receivedError as RemoteLoader.Error), .failure(expectedError as RemoteLoader.Error)):
+            case let (.failure(receivedError as RemoteLoader<String>.Error), .failure(expectedError as RemoteLoader<String>.Error)):
                 
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
                 
@@ -183,10 +217,15 @@ final class RemoteLoaderTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    private func makeSUT(url: URL = URL(string: "https://a-url.com")!, file: StaticString = #filePath, line: UInt = #line) -> (RemoteLoader, HTTPClientSpy) {
+    
+    
+    private func makeSUT(url: URL = URL(string: "https://a-url.com")!,
+                         mapper: @escaping RemoteLoader<String>.Mapper = { _, _ in "any" },
+                         file: StaticString = #filePath,
+                         line: UInt = #line) -> (RemoteLoader<String>, HTTPClientSpy) {
         
         let client = HTTPClientSpy()
-        let sut = RemoteLoader(url: url, client: client)
+        let sut = RemoteLoader(url: url, client: client, mapper: mapper)
         
         trackForMemoryLeaks(client, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)

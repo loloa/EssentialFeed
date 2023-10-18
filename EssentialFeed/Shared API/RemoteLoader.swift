@@ -8,10 +8,11 @@
 import Foundation
 
 
-public final class RemoteLoader: FeedLoader {
+public final class RemoteLoader<Resource> {
  
     private let url: URL
     private let client: HTTPClient
+    private let mapper: Mapper
     
     public enum Error: Swift.Error {
         
@@ -19,12 +20,14 @@ public final class RemoteLoader: FeedLoader {
         case invalidData
     }
    
-    //we dont want expose this implementation detail to higher- level Feed feature module
-    public typealias Result = FeedLoader.Result
     
-    public init(url: URL, client: HTTPClient) {
+    public typealias Result = Swift.Result<Resource, Swift.Error>
+    public typealias Mapper = (Data,HTTPURLResponse) throws -> Resource
+    
+    public init(url: URL, client: HTTPClient, mapper: @escaping Mapper) {
         self.client = client
         self.url = url
+        self.mapper = mapper
     }
     
     //this is main behaviour, so has to be public too
@@ -33,22 +36,22 @@ public final class RemoteLoader: FeedLoader {
         client.get(from: url) { [weak self] result in
             
             //this prevents unexpected behavior when instance deallocated
-            guard self != nil else {return}
+            guard let self = self else {return}
             
             switch result {
                 
             case let .success((data, response)):
-                completion(RemoteLoader.map(data, from: response))
+                completion(self.map(data, from: response))
              case .failure:
                 completion(.failure(Error.connectivity))
             }
         }
     }
-    private static func map(_ data: Data, from response: HTTPURLResponse) -> Result {
+    private  func map(_ data: Data, from response: HTTPURLResponse) -> Result {
         
         do {
-            let items = try FeedItemMapper.map(data, response: response)
-            return .success(items)
+           
+            return .success(try mapper(data, response))
         } catch {
             return .failure(Error.invalidData)
         }
