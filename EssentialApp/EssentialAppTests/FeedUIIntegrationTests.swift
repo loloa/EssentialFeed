@@ -74,7 +74,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, localized("GENERIC_CONNECTION_ERROR"), "Expected localized error explanation")
+        XCTAssertEqual(sut.errorMessage, loadError, "Expected localized error explanation")
     }
     
     func test_feedView_hidesErrorMessageOnRefreshUntilNextFailure() {
@@ -84,7 +84,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
 
         loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, localized("GENERIC_CONNECTION_ERROR"))
+        XCTAssertEqual(sut.errorMessage, loadError)
 
         sut.simulateUserInitiatedFeedReload()
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
@@ -96,7 +96,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
 
         loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, localized("GENERIC_CONNECTION_ERROR"))
+        XCTAssertEqual(sut.errorMessage, loadError)
 
         sut.simulateTapOnErrorMessage()
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
@@ -105,7 +105,7 @@ final class FeedUIIntegrationTests: XCTestCase {
     func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
         sut.loadViewIfNeeded()
-        XCTAssertEqual(sut.title, localized("FEED_VIEW_TITLE"))
+        XCTAssertEqual(sut.title, feedTitle)
     }
    
     
