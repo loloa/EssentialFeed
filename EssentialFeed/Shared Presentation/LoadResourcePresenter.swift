@@ -26,7 +26,7 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
  
     
     private var feedLoaderError: String {
-        return NSLocalizedString("FEED_VIEW_CONNECTION_ERROR", tableName: "Feed", bundle: Bundle(for: FeedPresenter.self), comment: "Error explanation")
+        return NSLocalizedString("GENERIC_CONNECTION_ERROR", tableName: "Feed", bundle: Bundle(for: FeedPresenter.self), comment: "Error explanation")
     }
     
     public init(resourceView: View, loadingView: FeedLoadingView, errorView: FeedErrorView, mapper: @escaping Mapper) {
@@ -55,7 +55,7 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
     }
     
     // Eror -> transform -> sends to the UI
-    public func didFinishLoadingFeed(with error: Error) {
+    public func didFinishLoading(with error: Error) {
         errorView.display(.error(message: feedLoaderError))
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
