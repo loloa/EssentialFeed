@@ -7,21 +7,31 @@
 
 import Foundation
 
+public protocol ResourceView {
+    func display(_ viewModel: String)
+    
+}
+
 public final class LoadResourcePresenter {
     
-    private let feedView: FeedView
+    public typealias Mapper = (String) -> String
+    
+    private let resourceView: ResourceView
     private let loadingView: FeedLoadingView
     private let errorView: FeedErrorView
+    private let mapper: Mapper
  
     
     private var feedLoaderError: String {
         return NSLocalizedString("FEED_VIEW_CONNECTION_ERROR", tableName: "Feed", bundle: Bundle(for: FeedPresenter.self), comment: "Error explanation")
     }
     
-    public init(feedView: FeedView, loadingView: FeedLoadingView, errorView: FeedErrorView) {
-        self.feedView = feedView
+    public init(resourceView: ResourceView, loadingView: FeedLoadingView, errorView: FeedErrorView, mapper: @escaping Mapper) {
+ 
+        self.resourceView = resourceView
         self.loadingView = loadingView
         self.errorView = errorView
+        self.mapper = mapper
     }
     //data in -> transform -> data out to the UI
     
@@ -35,9 +45,9 @@ public final class LoadResourcePresenter {
     // [ImageComment] -> transform -> sends to the UI
     // Data -> transform -> sends to the UI
     
-    //Resource -> create ResiurceViewModel -> sends to UI
-    public func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.display(FeedViewModel(feed: feed))
+    //Resource -> create ResourceviewModel -> sends to UI
+    public func didFinishLoading(with resource: String) {
+        resourceView.display(mapper(resource))
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
     
