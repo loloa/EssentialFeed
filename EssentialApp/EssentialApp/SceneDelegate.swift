@@ -70,7 +70,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        remoteFeedLoader = RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemMapper.map)
         //Creates a publisher that invokes a promise closure when the publisher emits an element.
         
-        return httpClient.getPublisher(url: remoteURL).tryMap(FeedItemMapper.map)
+        return httpClient
+            .getPublisher(url: remoteURL)
+            .tryMap(FeedItemMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
     }
@@ -85,16 +87,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {
         
-        let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
+       // let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
         
         let localImageLoader = LocalFeedImageDataLoader(store: store)
         
         return localImageLoader
             .loadImageDataPublisher(from: url)
-            .fallback {
-                remoteImageLoader.loadImageDataPublisher(from: url)
+            .fallback { [httpClient] in
+                httpClient.getPublisher(url: url)
+                    .tryMap(FeedImageDataMapper.map)
                     .cache(to: localImageLoader, using: url)
             }
+//                remoteImageLoader.loadImageDataPublisher(from: url)
+//                    .cache(to: localImageLoader, using: url)
+          
     }
 }
 
