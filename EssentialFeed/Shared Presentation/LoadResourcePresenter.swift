@@ -26,7 +26,7 @@ public final class LoadResourcePresenter {
     //data in -> transform -> data out to the UI
     
     // Void -> transform -> sends to the UI
-    public func didStartLoadingFeed() {
+    public func didStartLoading() {
         errorView.display(.noError)
         loadingView.display(FeedLoadingViewModel(isLoading: true))
     }
