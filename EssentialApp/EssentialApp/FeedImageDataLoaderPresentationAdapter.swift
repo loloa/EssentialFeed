@@ -27,7 +27,8 @@ import EssentialFeediOS
 
         let model = self.model
         
-        cancellable = imageLoader(model.url).sink(receiveCompletion: { [weak self] completion in
+        cancellable = imageLoader(model.url)
+            .sink(receiveCompletion: { [weak self] completion in
             
             switch completion {
                 
