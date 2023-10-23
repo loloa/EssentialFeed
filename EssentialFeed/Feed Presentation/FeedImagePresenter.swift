@@ -4,7 +4,7 @@
 //
 //  Created by אליסה לשין on 24/09/2023.
 //
- 
+
 public protocol FeedImageView {
     associatedtype Image
     func display(_ model: FeedImageViewModel<Image>)
@@ -20,7 +20,7 @@ public final class FeedImagePresenter<View: FeedImageView, Image> where View.Ima
         self.imageTransformer = imageTransformer
     }
     
-   // private struct InvalidImageDataError: Error {}
+    // private struct InvalidImageDataError: Error {}
     
     public func didStartLoadingImageData(for model: FeedImage) {
         
@@ -44,9 +44,9 @@ public final class FeedImagePresenter<View: FeedImageView, Image> where View.Ima
     
     public func didFinishLoadingImageData(with data: Data, for model: FeedImage) {
         
-//        guard let image = imageTransformer(data) else {
-//            return didFinishLoadingImageData(with: InvalidImageDataError(), for: model)
-//        }
+        //        guard let image = imageTransformer(data) else {
+        //            return didFinishLoadingImageData(with: InvalidImageDataError(), for: model)
+        //        }
         
         let image = imageTransformer(data)
         
@@ -57,6 +57,16 @@ public final class FeedImagePresenter<View: FeedImageView, Image> where View.Ima
             isLoading: false,
             shouldRetry: image == nil)
         view.display(viewModel)
+    }
+    
+    public static func map(_ image: FeedImage) -> FeedImageViewModel<Image> {
+        
+        return FeedImageViewModel<Image>(
+            description: image.description,
+            location: image.location,
+            image: nil,
+            isLoading: false,
+            shouldRetry: false)
     }
 }
 
