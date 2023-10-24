@@ -36,14 +36,19 @@ public final class ImageCommentsPresenter {
             comment: "Title for the comments screen")
     }
  
-    public static func map(_ comments: [ImageComment]) -> ImageCommentsViewModel {
+    public static func map(_ comments: [ImageComment],
+                           currentData: Date = Date(),
+                           calendar: Calendar = .current,
+                           locale: Locale = .current ) -> ImageCommentsViewModel {
         
         let formater = RelativeDateTimeFormatter()
+        formater.calendar = calendar
+        formater.locale = locale
  
         return ImageCommentsViewModel(comments: comments.map { comment in
             ImageCommentViewModel(
                 message: comment.message,
-                date: formater.localizedString(for: comment.createdAt, relativeTo: Date()),
+                date: formater.localizedString(for: comment.createdAt, relativeTo: currentData),
                 username: comment.username)
         })
     }
