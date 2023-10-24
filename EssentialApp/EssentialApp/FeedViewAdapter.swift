@@ -20,7 +20,7 @@ import EssentialFeediOS
      
     func display(_ viewModel: FeedViewModel) {
         
-        controller?.display( viewModel.feed.map{ model in
+        controller?.display( viewModel.feed.map { model in
             
             let adapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>(loader: { [imageLoader] in
                 
