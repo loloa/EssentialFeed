@@ -20,7 +20,10 @@ public protocol CellControler {
     func preload()
     func cancelLoad()
 }
-
+ 
+extension CellControler {
+    func startTask(cell: UITableViewCell){}
+}
  
  public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
  
