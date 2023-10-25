@@ -48,13 +48,7 @@ final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
         //        }
     }
 }
-
-extension LoadResourcePresentationAdapter: FeedViewControllerDelegate {
-    
-    func didRequestFeedrefresh() {
-        loadResource()
-    }
-}
+ 
 
 extension LoadResourcePresentationAdapter: FeedImageCellControllerDelegate {
     

@@ -9,10 +9,7 @@
 import UIKit
 import EssentialFeed
 
-public protocol FeedViewControllerDelegate {
-    
-    func didRequestFeedrefresh()
-}
+
 
 public protocol CellControler {
     
@@ -30,13 +27,13 @@ extension CellControler {
      private var loadingControllers = [IndexPath: CellControler]()
      
      @IBOutlet private(set) public weak var errorView: ErrorView?
-     public var delegate: FeedViewControllerDelegate?
+     public var onRefresh: (() -> Void)?
      
      
-     convenience init(coder: NSCoder, delegate: FeedViewControllerDelegate) {
-         self.init(coder: coder)!
-         self.delegate = delegate
-     }
+//     convenience init(coder: NSCoder, delegate: FeedViewControllerDelegate) {
+//         self.init(coder: coder)!
+//         self.delegate = delegate
+//     }
  
      
     private var tableModel = [CellControler]() {
@@ -60,7 +57,7 @@ extension CellControler {
      }
      
      @IBAction private func refresh() {
-          delegate?.didRequestFeedrefresh()
+          onRefresh?()
       }
      
      public func display(_ viewModel: ResourceLoadingViewModel) {
