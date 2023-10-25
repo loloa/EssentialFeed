@@ -60,10 +60,10 @@ class FeedSnapShotTests: XCTestCase {
     
     //MARK: -
     
-    private func makeSUT() -> FeedViewController {
-        let bundle = Bundle(for: FeedViewController.self)
+    private func makeSUT() -> ListViewController {
+        let bundle = Bundle(for: ListViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
-        let controller = storyboard.instantiateInitialViewController() as! FeedViewController
+        let controller = storyboard.instantiateInitialViewController() as! ListViewController
         controller.tableView.showsVerticalScrollIndicator = false
         controller.tableView.showsHorizontalScrollIndicator = false
         controller.loadViewIfNeeded()
@@ -228,7 +228,7 @@ private final class SnapshotWindow: UIWindow {
         }
     }
 }
-private extension FeedViewController {
+private extension ListViewController {
     
     func display(_ stabs: [ImageStub]) {
         let cells: [FeedImageCellController] = stabs.map { stub in

@@ -25,7 +25,7 @@ extension CellControler {
     func startTask(cell: UITableViewCell){}
 }
  
- public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
+ public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
  
      private var loadingControllers = [IndexPath: CellControler]()
      
