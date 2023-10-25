@@ -14,10 +14,13 @@ import Combine
 public final class FeedUIComposer {
     
     private init(){}
+    
+    private typealias Adapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>
+    
     public static func feedComposedWith(feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
                                         imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher) -> FeedViewController {
         
-        let presentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>(
+        let presentationAdapter = Adapter(
                     loader: { feedLoader().dispatchOnMainQueue() })
 
         
@@ -33,7 +36,7 @@ public final class FeedUIComposer {
                 imageLoader:  { imageLoader($0).dispatchOnMainQueue()}),
             loadingView: WeakRefVirtualProxy(feedController),
             errorView: WeakRefVirtualProxy(feedController),
-            mapper: FeedPresenter.map)
+            mapper: /*FeedPresenter.map*/ FeedViewModel.init)
         
         return feedController
     }
