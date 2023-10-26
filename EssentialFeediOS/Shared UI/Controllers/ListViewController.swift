@@ -20,6 +20,8 @@ public protocol CellControler {
  
 extension CellControler {
     func startTask(cell: UITableViewCell){}
+    public func preload() {}
+    public func cancelLoad() {}
 }
  
  public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
