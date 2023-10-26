@@ -11,18 +11,8 @@ import EssentialFeed
 
 
 
-public protocol CellControler {
-    
-    func view(in: UITableView) -> UITableViewCell
-    func preload()
-    func cancelLoad()
-}
- 
-extension CellControler {
-    func startTask(cell: UITableViewCell){}
-    public func preload() {}
-    public func cancelLoad() {}
-}
+public typealias CellControler = UITableViewDataSource & UITableViewDelegate & UITableViewDataSourcePrefetching
+
  
  public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
  
@@ -83,29 +73,39 @@ extension CellControler {
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return cellController(forRowAt: indexPath).view(in: tableView)
-     }
+        let cellController = cellController(forRowAt: indexPath)
+        return cellController.tableView(tableView, cellForRowAt: indexPath)
+      }
     
      public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-         let cellController = cellController(forRowAt: indexPath)
-         cellController.startTask(cell: cell)
+//         let cellController = cellController(forRowAt: indexPath)
+//         cellController.startTask(cell: cell)
+       //  let dl = cellController(at: indexPath)?.delegate
+       //  dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
       }
  
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cancelCellcontrollerLoad(forRowAt: indexPath)
-    }
+        let controller = removeLoadingController(forRowAt: indexPath)
+        controller.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
+     }
  
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         
         indexPaths.forEach { indexPath in
-            cellController(forRowAt: indexPath).preload()
+            
+            let cellController = cellController(forRowAt: indexPath)
+            cellController.tableView(tableView, prefetchRowsAt: indexPaths)
         }
     }
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         
-        indexPaths.forEach (cancelCellcontrollerLoad)
+        
+        indexPaths.forEach { indexPath in
+            let cellController = cellController(forRowAt: indexPath)
+            cellController.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
+        }
         
     }
     
@@ -116,10 +116,10 @@ extension CellControler {
          return controller
      }
      
-     private func cancelCellcontrollerLoad(forRowAt indexPath: IndexPath) {
-         loadingControllers[indexPath]?.cancelLoad()
+     private func removeLoadingController(forRowAt indexPath: IndexPath) -> CellControler {
+         let cellController = cellController(forRowAt: indexPath)
          loadingControllers[indexPath] = nil
-         //cellController(forRowAt: indexPath).cancelLoad()
+        return cellController
      }
     /*
      On iOS 15+, the cell lifecycle behavior changed. For performance reasons, when the cell is removed from the table view and quickly added back (e.g., by scrolling up and down fast), the data source may not recreate the cell anymore using the cellForRow method if there's a cached cell for that IndexPath.
@@ -135,5 +135,6 @@ extension CellControler {
      startTask(forRowAt: indexPath)
      }
      */
-    // private func startTask(forRowAt indexPath: IndexPath) {}
+    
+ 
 }
