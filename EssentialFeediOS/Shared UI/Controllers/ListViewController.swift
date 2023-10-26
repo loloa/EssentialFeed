@@ -8,11 +8,6 @@
 
 import UIKit
 import EssentialFeed
-
-
-
-public typealias CellControler = UITableViewDataSource & UITableViewDelegate & UITableViewDataSourcePrefetching
-
  
  public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
  
@@ -73,20 +68,20 @@ public typealias CellControler = UITableViewDataSource & UITableViewDelegate & U
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellController = cellController(forRowAt: indexPath)
-        return cellController.tableView(tableView, cellForRowAt: indexPath)
+        let ds = cellController(forRowAt: indexPath).dataSource
+        return ds.tableView(tableView, cellForRowAt: indexPath)
       }
     
      public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //         let cellController = cellController(forRowAt: indexPath)
 //         cellController.startTask(cell: cell)
-       //  let dl = cellController(at: indexPath)?.delegate
-       //  dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
+         let dl = cellController(forRowAt: indexPath).delegate
+         dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
       }
  
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let controller = removeLoadingController(forRowAt: indexPath)
-        controller.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
+        let dl = removeLoadingController(forRowAt: indexPath).delegate
+        dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
      }
  
     
@@ -94,8 +89,8 @@ public typealias CellControler = UITableViewDataSource & UITableViewDelegate & U
         
         indexPaths.forEach { indexPath in
             
-            let cellController = cellController(forRowAt: indexPath)
-            cellController.tableView(tableView, prefetchRowsAt: indexPaths)
+            let dsp = cellController(forRowAt: indexPath).dataSourcePrefetching
+            dsp?.tableView(tableView, prefetchRowsAt: indexPaths)
         }
     }
     
@@ -103,8 +98,8 @@ public typealias CellControler = UITableViewDataSource & UITableViewDelegate & U
         
         
         indexPaths.forEach { indexPath in
-            let cellController = cellController(forRowAt: indexPath)
-            cellController.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
+            let dsp = cellController(forRowAt: indexPath).dataSourcePrefetching
+            dsp?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
         }
         
     }

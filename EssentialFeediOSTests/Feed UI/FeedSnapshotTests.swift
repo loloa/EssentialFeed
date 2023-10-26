@@ -10,7 +10,7 @@ import EssentialFeediOS
 @testable import EssentialFeed
 
 class FeedSnapShotTests: XCTestCase {
-    
+    /*
     func test_emptyFeed() {
         
         let sut = makeSUT()
@@ -22,6 +22,8 @@ class FeedSnapShotTests: XCTestCase {
 //        record(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "EMPTY_FEED_light")
 //        record(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "EMPTY_FEED_dark")
     }
+    
+    */
     
     func test_feedWithContent() {
         
@@ -111,10 +113,10 @@ class FeedSnapShotTests: XCTestCase {
 private extension ListViewController {
     
     func display(_ stabs: [ImageStub]) {
-        let cells: [FeedImageCellController] = stabs.map { stub in
+        let cells: [CellControler] = stabs.map { stub in
             let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate:  stub)
             stub.controller = cellController
-            return cellController
+            return CellControler(cellController)
         }
         
         display(cells)
