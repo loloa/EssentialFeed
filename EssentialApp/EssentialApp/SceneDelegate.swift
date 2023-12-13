@@ -98,9 +98,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     .tryMap(FeedImageDataMapper.map)
                     .cache(to: localImageLoader, using: url)
             }
-//                remoteImageLoader.loadImageDataPublisher(from: url)
-//                    .cache(to: localImageLoader, using: url)
-          
     }
 }
 
