@@ -62,11 +62,15 @@ extension ListViewController {
     }
     
     var errorMessage: String? {
-        return errorView?.message
+        return errorView.message
     }
     
-    func simulateTapOnErrorMessage() {
-        errorView?.button.simulateTap()
+//    func simulateTapOnErrorMessage() {
+//        errorView.hideMessageAnimated()
+//    }
+//    
+    func simulateErrorViewTap() {
+        errorView.simulateTap()
     }
     func numberOfRenderedFeedImageViews() -> Int {
         return tableView.numberOfRows(inSection: feedImagesSection)
