@@ -34,6 +34,7 @@ import EssentialFeed
  
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureErrorView()
         refresh()
     }
