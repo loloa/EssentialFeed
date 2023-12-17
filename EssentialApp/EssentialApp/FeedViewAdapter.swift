@@ -43,7 +43,7 @@ import EssentialFeediOS
                     return image
                 })
  
-            return CellControler(view)
+            return CellControler(id: model, view)
         })
     }
 }

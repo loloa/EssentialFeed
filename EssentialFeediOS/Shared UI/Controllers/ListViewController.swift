@@ -11,7 +11,7 @@ import EssentialFeed
  
  public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
  
-     private var loadingControllers = [IndexPath: CellControler]()
+     
      
      private(set) public var errorView: ErrorView = ErrorView()
      public var onRefresh: (() -> Void)?
@@ -22,19 +22,28 @@ import EssentialFeed
 //         self.delegate = delegate
 //     }
  
+    
+     private lazy var dataSource: UITableViewDiffableDataSource<Int, CellControler> = {
+         
+         .init(tableView: tableView) { (tableView, indexPath, controller) -> UITableViewCell? in
+             
+             print("\(indexPath.row)")
+             return controller.dataSource.tableView(tableView, cellForRowAt: indexPath)
+         }
+     }()
      
-    private var tableModel = [CellControler]() {
-        didSet { tableView.reloadData() }
-    }
      
      public func display(_ cellControllers: [CellControler]) {
-         loadingControllers = [:]
-         tableModel = cellControllers
+          
+         var snapshot = NSDiffableDataSourceSnapshot<Int, CellControler>()
+         snapshot.appendSections([0])
+         snapshot.appendItems(cellControllers)
+         dataSource.apply(snapshot)
      }
  
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tableView.dataSource = dataSource
         configureErrorView()
         refresh()
     }
@@ -81,28 +90,16 @@ import EssentialFeed
           errorView.message = viewModel.message
        }
     
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableModel.count
-    }
-    
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let ds = cellController(forRowAt: indexPath)?.dataSource
-        if let cell = ds?.tableView(tableView, cellForRowAt: indexPath) {
-            return cell
-        }
-        return UITableViewCell()
-        //return ds?.tableView(tableView, cellForRowAt: indexPath)
-      }
     
      public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //         let cellController = cellController(forRowAt: indexPath)
 //         cellController.startTask(cell: cell)
-         let dl = cellController(forRowAt: indexPath)?.delegate
+         let dl = cellController(at: indexPath)?.delegate
          dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
       }
  
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let dl = removeLoadingController(forRowAt: indexPath)?.delegate
+        let dl = cellController(at: indexPath)?.delegate
         dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
      }
  
@@ -111,7 +108,7 @@ import EssentialFeed
         
         indexPaths.forEach { indexPath in
             
-            let dsp = cellController(forRowAt: indexPath)?.dataSourcePrefetching
+            let dsp = cellController(at: indexPath)?.dataSourcePrefetching
             dsp?.tableView(tableView, prefetchRowsAt: indexPaths)
         }
     }
@@ -120,27 +117,18 @@ import EssentialFeed
         
         
         indexPaths.forEach { indexPath in
-            let dsp = cellController(forRowAt: indexPath)?.dataSourcePrefetching
+            let dsp = cellController(at: indexPath)?.dataSourcePrefetching
             dsp?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
         }
         
     }
     
-    private func cellController(forRowAt indexPath: IndexPath) -> CellControler? {
+    private func cellController(at indexPath: IndexPath) -> CellControler? {
         
-        if tableModel.isEmpty {
-            return nil
-        }
-        let controller = tableModel[indexPath.row]
-        loadingControllers[indexPath] = controller
-         return controller
-     }
+        dataSource.itemIdentifier(for: indexPath)
+      }
      
-     private func removeLoadingController(forRowAt indexPath: IndexPath) -> CellControler? {
-         let cellController = cellController(forRowAt: indexPath)
-         loadingControllers[indexPath] = nil
-        return cellController
-     }
+    
     /*
      On iOS 15+, the cell lifecycle behavior changed. For performance reasons, when the cell is removed from the table view and quickly added back (e.g., by scrolling up and down fast), the data source may not recreate the cell anymore using the cellForRow method if there's a cached cell for that IndexPath.
      
