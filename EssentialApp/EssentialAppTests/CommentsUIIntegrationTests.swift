@@ -14,6 +14,12 @@ import EssentialApp
 
 final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
     
+    func test_commentsView_hasTitle() {
+        let (sut, _) = makeSUT()
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.title, commentsTitle)
+    }
+   
     
     override func test_feedView_doesNotShowErrorMessageOnLoadingStart() {
         let (sut, _) = makeSUT()
@@ -73,11 +79,6 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
     }
     //MARK: -
-    override func test_feedView_hasTitle() {
-        let (sut, _) = makeSUT()
-        sut.loadViewIfNeeded()
-        XCTAssertEqual(sut.title, feedTitle)
-    }
    
     
     override func test_loadFeedActions_requestFeedFromLoader() {

@@ -26,6 +26,10 @@ extension FeedUIIntegrationTests {
     var feedTitle: String {
         FeedPresenter.title
     }
+    
+    var commentsTitle: String {
+        ImageCommentsPresenter.title
+    }
 //    func localized(_ key: String, table: String = "Feed", file: StaticString = #file, line: UInt = #line) -> String {
 //         
 //        let bundle = Bundle(for: FeedPresenter.self)
