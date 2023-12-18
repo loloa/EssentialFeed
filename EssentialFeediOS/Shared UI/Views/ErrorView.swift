@@ -29,6 +29,10 @@ public final class ErrorView: UIButton {
         var attributes = AttributeContainer()
         attributes.paragraphStyle = paragraphStyle
         attributes.font = UIFont.preferredFont(forTextStyle: .body)
+        
+        //if we use custom ttf font, we can not use .body
+        //need ti scale
+       // UIFontMetrics.default.scaledFont(for: mycustom font)
         return attributes
     }
     
