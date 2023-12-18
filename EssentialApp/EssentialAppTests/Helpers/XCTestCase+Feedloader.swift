@@ -19,7 +19,7 @@ protocol FeedLoaderTestCase: XCTestCase {}
 extension FeedLoaderTestCase {
    /*
     
-     func expect(_ sut: FeedLoader, completeWith expectedResult: Swift.Result<[FeedImage], Error>, file: StaticString = #file, line: UInt = #line) {
+     func expect(_ sut: FeedLoader, completeWith expectedResult: Swift.Result<[FeedImage], Error>, file: StaticString = #filePath, line: UInt = #line) {
         
         
         let exp = expectation(description: "Wait for load completion")

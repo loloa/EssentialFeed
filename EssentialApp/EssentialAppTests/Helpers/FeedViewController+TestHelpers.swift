@@ -18,26 +18,29 @@ extension ListViewController {
     func simulateUserInitiatedReload() {
         refreshControl?.simulatePullToRefresh()
     }
+        
+    var isShowingLoadingIndicator: Bool {
+        return refreshControl?.isRefreshing == true
+    }
+    
+    var errorMessage: String? {
+        return errorView.message
+    }
+   
+    func simulateErrorViewTap() {
+        errorView.simulateTap()
+    }
+    
+}
+
+extension ListViewController {
+    
     
     @discardableResult
     func simulateFeedImageViewVisible(at index: Int) -> FeedImageCell? {
         return feedImageView(at: index) as? FeedImageCell
     }
-    
-    
-    /*
-     
-     @discardableResult
-         func simulateFeedImageBecomingVisibleAgain(at row: Int) -> FeedImageCell? {
-             let view = simulateFeedImageViewNotVisible(at: row)
-
-             let delegate = tableView.delegate
-             let index = IndexPath(row: row, section: feedImagesSection)
-             delegate?.tableView?(tableView, willDisplay: view!, forRowAt: index)
-
-             return view
-         }
-     */
+ 
     @discardableResult
     func simulateFeedImageViewNotVisible(at row: Int) -> FeedImageCell? {
         let view = simulateFeedImageViewVisible(at: row)
@@ -62,21 +65,6 @@ extension ListViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
     }
     
-    var isShowingLoadingIndicator: Bool {
-        return refreshControl?.isRefreshing == true
-    }
-    
-    var errorMessage: String? {
-        return errorView.message
-    }
-    
-//    func simulateTapOnErrorMessage() {
-//        errorView.hideMessageAnimated()
-//    }
-//    
-    func simulateErrorViewTap() {
-        errorView.simulateTap()
-    }
     func numberOfRenderedFeedImageViews() -> Int {
         return tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
     }
@@ -97,3 +85,35 @@ extension ListViewController {
             return simulateFeedImageViewVisible(at: index)?.renderedImage
         }
  }
+
+extension ListViewController {
+    
+    func numberOfRenderedComments() -> Int {
+        return tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: commentsSection)
+    }
+    
+    private var commentsSection: Int {
+        return 0
+    }
+    
+    func commentMessage(at row: Int) -> String? {
+        commentView(at: row)?.messageLabel.text
+    }
+    
+    func commentDate(at row: Int) -> String? {
+        commentView(at: row)?.dateLabel.text
+    }
+    
+    func commentUsername(at row: Int) -> String? {
+        commentView(at: row)?.usernameLabel.text
+    }
+    
+    private func commentView(at row: Int) -> ImagecommentCell? {
+        guard numberOfRenderedComments() > row else {
+            return nil
+        }
+        let ds = tableView.dataSource
+        let index = IndexPath(row: row, section: commentsSection)
+        return ds?.tableView(tableView, cellForRowAt: index) as? ImagecommentCell
+    }
+}

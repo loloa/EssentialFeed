@@ -12,7 +12,7 @@ protocol FeedImageDataLoaderTestCase: XCTestCase {}
 
 extension FeedImageDataLoaderTestCase {
     
-    func expect(_ sut: FeedImageDataLoader, completeWith expectedResult: FeedImageDataLoader.Result, action:() -> Void,  file: StaticString = #file, line: UInt = #line ) {
+    func expect(_ sut: FeedImageDataLoader, completeWith expectedResult: FeedImageDataLoader.Result, action:() -> Void,  file: StaticString = #filePath, line: UInt = #line ) {
         
         let exp = expectation(description: "Waiting for completion")
         

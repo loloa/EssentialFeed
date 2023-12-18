@@ -9,7 +9,7 @@ import XCTest
 
 func assertLocalizedKeyAndValuesExists(in presentationBundle: Bundle,
                                        _ table: String,
-                                       file: StaticString = #file,
+                                       file: StaticString = #filePath,
                                        line: UInt = #line) {
     let localizationBundles = allLocalizationBundles(in: presentationBundle)
     let localizedStringKeys = allLocalizedStringKeys(in: localizationBundles, table: table)
@@ -29,7 +29,7 @@ func assertLocalizedKeyAndValuesExists(in presentationBundle: Bundle,
 
 private typealias LocalizedBundle = (bundle: Bundle, localization: String)
 
-private func allLocalizationBundles(in bundle: Bundle, file: StaticString = #file, line: UInt = #line) -> [LocalizedBundle] {
+private func allLocalizationBundles(in bundle: Bundle, file: StaticString = #filePath, line: UInt = #line) -> [LocalizedBundle] {
     return bundle.localizations.compactMap { localization in
         guard
             let path = bundle.path(forResource: localization, ofType: "lproj"),
@@ -45,7 +45,7 @@ private func allLocalizationBundles(in bundle: Bundle, file: StaticString = #fil
 
 private func allLocalizedStringKeys(in bundles: [LocalizedBundle],
                                     table: String,
-                                    file: StaticString = #file,
+                                    file: StaticString = #filePath,
                                     line: UInt = #line) -> Set<String> {
     return bundles.reduce([]) { (acc, current) in
         guard
