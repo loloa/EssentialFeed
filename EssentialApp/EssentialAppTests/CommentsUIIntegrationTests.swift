@@ -1,39 +1,9 @@
 //
-//  FeedViewControllerTestss.swift
-//  EssentialFeediOSTests
+//  CommentsUIIntegrationTests.swift
+//  EssentialAppTests
 //
-//  Created by אליסה לשין on 07/09/2023.
+//  Created by אליסה לשין on 18/12/2023.
 //
-
-
-/*
- 
- [✅] Load feed automatically when view is presented
- func test_init_doesNotLoadFeed()
- func test_viewDidLoad_loadsFeed()
- 
- [✅] Allow customer to manually reload feed (pull to refresh)
- func test_userInitiatedFeedReload_loadsFeed()
- 
- [✅] Show a loading indicator while loading feed
- func test_viewDidLoad_showLoadingIndicator()
- # Hide a loading indicator while loading feed copleted
- func test_viewDidLoad_hideLoadingIndicatorOnLoaderCompletion()
- # Show loading indicator on pull to refresh
- func test_userInitiatedFeedReload_showsLoadingIndicator()
- # Hide a loading indicator on pull to refresh copleted
- func test_userInitiatedFeedReload_hidesLoadingIndicatorOnLoaderCompletion
- 
- 
- [✅] Render all loaded feed items (location, image, description)
- 
- [ ] Image loading experience
- [✅] Load when image view is visible (on screen)
- [✅] Cancel when image view is out of screen
- [✅] Show a loading indicator while loading image (shimmer)
- [✅] Option to retry on image download error
- [✅] Preload when image view is near visible
- */
 
 import XCTest
 import UIKit
@@ -41,16 +11,17 @@ import EssentialFeed
 import EssentialFeediOS
 import EssentialApp
 
- class FeedUIIntegrationTests: XCTestCase {
+
+final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
     
     
-    func test_feedView_doesNotShowErrorMessageOnLoadingStart() {
+    override func test_feedView_doesNotShowErrorMessageOnLoadingStart() {
         let (sut, _) = makeSUT()
         sut.loadViewIfNeeded()
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
     }
     
-    func test_feedView_doesNotShowErrorMessageOnCompletionSuccess() {
+    override func test_feedView_doesNotShowErrorMessageOnCompletionSuccess() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
 
@@ -64,20 +35,20 @@ import EssentialApp
         XCTAssertNil(sut.errorMessage, "Error message view expected to be not visible on empty list, instead \(String(describing: sut.errorMessage))")
     }
     
-    func test_feedView_showsErrorMessageOnCompletionFailure() {
+    override func test_feedView_showsErrorMessageOnCompletionFailure() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         loader.completeFeedLoadingWithError(at: 0)
         XCTAssertNotNil(sut.errorMessage, "Error message expected to be visible, instead no message")
     }
-    func test_feedView_hasErrorMessageLocalized() {
+    override func test_feedView_hasErrorMessageLocalized() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         loader.completeFeedLoadingWithError(at: 0)
         XCTAssertEqual(sut.errorMessage, loadError, "Expected localized error explanation")
     }
     
-    func test_feedView_hidesErrorMessageOnRefreshUntilNextFailure() {
+    override func test_feedView_hidesErrorMessageOnRefreshUntilNextFailure() {
         let (sut, loader) = makeSUT()
 
         sut.loadViewIfNeeded()
@@ -90,7 +61,7 @@ import EssentialApp
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
     }
     
-    func test_feedView_hidesErrorMessageOnTap() {
+    override func test_feedView_hidesErrorMessageOnTap() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
@@ -102,14 +73,14 @@ import EssentialApp
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
     }
     //MARK: -
-    func test_feedView_hasTitle() {
+    override func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
         sut.loadViewIfNeeded()
         XCTAssertEqual(sut.title, feedTitle)
     }
    
     
-    func test_loadFeedActions_requestFeedFromLoader() {
+    override func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
         XCTAssertEqual(loader.loadFeedCallCount, 0)
         
@@ -123,7 +94,7 @@ import EssentialApp
         XCTAssertEqual(loader.loadFeedCallCount, 3)
     }
     
-    func test_loadingFeedIndicator_isVisibleWhileLoadingFeed() {
+    override func test_loadingFeedIndicator_isVisibleWhileLoadingFeed() {
         
         let (sut, loader) = makeSUT()
         
@@ -141,7 +112,7 @@ import EssentialApp
         
     }
     
-    func test_loadFeedCompletion_rendersSuccessfullyLoadedFeed() {
+    override func test_loadFeedCompletion_rendersSuccessfullyLoadedFeed() {
         let image0 = makeImage(description:"a description", location:"a location")
         let image1 = makeImage(description:nil, location:"another location")
         let image2 = makeImage(description:"another description", location:nil)
@@ -161,7 +132,7 @@ import EssentialApp
         assertThat(sut, isRendering: [image0, image1, image2, image3])
     }
     
-    func test_loadFeedCompletion_rendersSuccessfullyLoadedEmptyFeedAfterNonEmptyFeed() {
+    override func test_loadFeedCompletion_rendersSuccessfullyLoadedEmptyFeedAfterNonEmptyFeed() {
             let image0 = makeImage()
             let image1 = makeImage()
         
@@ -182,7 +153,7 @@ import EssentialApp
         }
      
     
-    func test_loadFeedCompletion_doesNotAlterCurrentrenderingStateOnError() {
+    override func test_loadFeedCompletion_doesNotAlterCurrentrenderingStateOnError() {
         let image0 = makeImage()
         let (sut, loader) = makeSUT()
         
@@ -196,7 +167,7 @@ import EssentialApp
         
     }
     
-    func test_loadFeedCompletion_rendersErorMessageOnErrorUntilNextReload() {
+    override func test_loadFeedCompletion_rendersErorMessageOnErrorUntilNextReload() {
         
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
@@ -210,7 +181,7 @@ import EssentialApp
         
     }
     
-    func test_tapOnErrorView_hidesErrorMessage() {
+    override func test_tapOnErrorView_hidesErrorMessage() {
         
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
@@ -223,8 +194,8 @@ import EssentialApp
         XCTAssertEqual(sut.errorMessage, nil)
         
     }
-    
-    func test_feedImageView_loadsImageURLWhenVisible() {
+    /*
+    override func test_feedImageView_loadsImageURLWhenVisible() {
         
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
@@ -242,7 +213,7 @@ import EssentialApp
         XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url], "Expected second image URL request once second view become visible")
     }
     
-    func test_feedImageView_cancelImageURLWhenNotVisible() {
+    override func test_feedImageView_cancelImageURLWhenNotVisible() {
         
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
@@ -260,7 +231,7 @@ import EssentialApp
         XCTAssertEqual(loader.cancelledImageURLs, [image0.url, image1.url], "Expected two cancelled image URL requests once second image is also not visible anymore")
     }
     
-    func test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage() {
+    override func test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -281,7 +252,7 @@ import EssentialApp
         XCTAssertEqual(view1?.isShowingImageLoadingIndicator, false, "Expected no loading indicator for second view once second image loading completes with error")
     }
     
-    func test_feedImageView_rendersImageLoadedFromURL() {
+    override func test_feedImageView_rendersImageLoadedFromURL() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -304,7 +275,7 @@ import EssentialApp
     }
     
     
-    func test_feedImageViewRetryButton_isVisibleOnImageURLLoadError() {
+    override func test_feedImageViewRetryButton_isVisibleOnImageURLLoadError() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -325,7 +296,7 @@ import EssentialApp
         XCTAssertEqual(view1?.isShowingRetryAction, true, "Expected retry action for second view once second image loading completes with error")
     }
     
-    func test_feedImageViewRetryButton_isVisibleOnInvalidImageData() {
+    override func test_feedImageViewRetryButton_isVisibleOnInvalidImageData() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -339,7 +310,7 @@ import EssentialApp
         XCTAssertEqual(view?.isShowingRetryAction, true, "Expected retry action once image loading completes with invalid image data")
     }
     
-    func test_feedImageViewRetryAction_retriesImageLoad() {
+    override func test_feedImageViewRetryAction_retriesImageLoad() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (sut, loader) = makeSUT()
@@ -362,7 +333,7 @@ import EssentialApp
         XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url, image0.url, image1.url], "Expected fourth imageURL request after second view retry action")
     }
     
-    func test_feedImageView_preloadsImageURLWhenNearVisible() {
+    override func test_feedImageView_preloadsImageURLWhenNearVisible() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (sut, loader) = makeSUT()
@@ -379,7 +350,7 @@ import EssentialApp
     }
     
     
-    func test_feedImageView_cancelsImageURLPreloadingWhenNotNearVisibleAnymore() {
+    override func test_feedImageView_cancelsImageURLPreloadingWhenNotNearVisibleAnymore() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (sut, loader) = makeSUT()
@@ -395,7 +366,7 @@ import EssentialApp
         XCTAssertEqual(loader.cancelledImageURLs, [image0.url, image1.url], "Expected second cancelled image URL request once second image is not near visible anymore")
     }
     
-    func test_feedImageView_doesNotRenderLoadedImageWhenNotVisibleAnyMore() {
+    override func test_feedImageView_doesNotRenderLoadedImageWhenNotVisibleAnyMore() {
         
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
@@ -406,7 +377,7 @@ import EssentialApp
         XCTAssertNil(view?.renderedImage, "Expected no rendered image when an image load finishes after the view is not visible anymore")
     }
  
-    func test_feedImageView_doesNotShowDataFromPreviousRequestWhenCellIsReused() throws {
+    override func test_feedImageView_doesNotShowDataFromPreviousRequestWhenCellIsReused() throws {
             let (sut, loader) = makeSUT()
 
             sut.loadViewIfNeeded()
@@ -421,7 +392,7 @@ import EssentialApp
             XCTAssertEqual(view0.renderedImage, .none, "Expected no image state change for reused view once image loading completes successfully")
         }
     
-    func test_loadFeedCompletion_dispatchesFromBackgroundToMainThread()  {
+    override func test_loadFeedCompletion_dispatchesFromBackgroundToMainThread()  {
         
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
@@ -433,7 +404,7 @@ import EssentialApp
         wait(for: [expectation], timeout: 1.0)
     }
     
-    func test_loadImageDataCompletion_dispatchesFromBackgroundToMainThread() {
+    override func test_loadImageDataCompletion_dispatchesFromBackgroundToMainThread() {
         
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
@@ -449,23 +420,20 @@ import EssentialApp
         wait(for: [expectation], timeout: 1.0)
        
     }
+     
+     */
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
-        let sut = FeedUIComposer.feedComposedWith(feedLoader: loader.loadPublisher, imageLoader: loader.loadImageDataPublisher)
+        let sut = CommentsUIComposer.commentsComposedWith(commentsLoader: loader.loadPublisher)
        
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, loader)
     }
-     
-    private func anyImageData() -> Data {
-        
-        return UIImage.make(withColor: .red).pngData()!
-    }
+   
     private func makeImage(description:String? = nil, location: String? = nil, url: URL = URL(string: "http://-any-url.com")!) -> FeedImage {
         return FeedImage(id: UUID(), description: description, location: location, url: url)
     }
 }
-

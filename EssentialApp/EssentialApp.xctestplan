@@ -18,6 +18,9 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "CommentsUIIntegrationTests"
+      ],
       "target" : {
         "containerPath" : "container:EssentialApp.xcodeproj",
         "identifier" : "5EB7D8B12ACABA1B00C38F97",
