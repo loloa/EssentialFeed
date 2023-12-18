@@ -41,7 +41,7 @@ import EssentialFeed
 import EssentialFeediOS
 import EssentialApp
 
- class FeedUIIntegrationTests: XCTestCase {
+ final class FeedUIIntegrationTests: XCTestCase {
     
     
     func test_feedView_doesNotShowErrorMessageOnLoadingStart() {
