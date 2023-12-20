@@ -188,6 +188,34 @@ final class CommentsUIIntegrationTests: XCTestCase {
         XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
     }
     
+    func test_deinit_cancelsRunningRequest() {
+        
+        var cancelCallCount = 0
+        
+        var sut: ListViewController?
+        autoreleasepool {
+            
+            sut = CommentsUIComposer.commentsComposedWith {
+                
+                
+                PassthroughSubject<[ImageComment], Error>()
+                    .handleEvents(receiveCancel: {
+                    
+                    cancelCallCount += 1
+                    }).eraseToAnyPublisher()
+            }
+            
+            sut?.loadViewIfNeeded()
+        }
+ 
+        XCTAssertEqual(cancelCallCount, 0)
+        weak var weakSUT = sut
+        sut = nil
+        XCTAssertNil(weakSUT)
+        XCTAssertEqual(cancelCallCount, 1)
+        
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
