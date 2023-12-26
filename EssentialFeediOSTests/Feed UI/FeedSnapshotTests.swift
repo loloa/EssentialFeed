@@ -121,10 +121,13 @@ private extension ListViewController {
     
     func display(_ stabs: [ImageStub]) {
         let cells: [CellControler] = stabs.map { stub in
-            let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate:  stub)
+            let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate:  stub, selection: {
+                
+            })
             stub.controller = cellController
             return CellControler(id: UUID(), cellController)
         }
+        
         
         display(cells)
     }
