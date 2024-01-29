@@ -21,9 +21,9 @@ import EssentialFeediOS
          self.selection = selection
     }
      
-    func display(_ viewModel: FeedViewModel) {
+    func display(_ viewModel: Paginated<FeedImage>) {
         
-        controller?.display( viewModel.feed.map { model in
+        controller?.display( viewModel.items.map { model in
             
             let adapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>(loader: { [imageLoader] in
                 
