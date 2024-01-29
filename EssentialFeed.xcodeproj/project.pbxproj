@@ -35,6 +35,8 @@
 		5E3A2CC42A9F2479003EEA83 /* CoreDataFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A2CC32A9F2479003EEA83 /* CoreDataFeedStoreTests.swift */; };
 		5E3A2CCC2A9F6B78003EEA83 /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A2CC82A9F2DB1003EEA83 /* CoreDataFeedStore.swift */; };
 		5E3A2CCD2A9F6DFD003EEA83 /* FeedStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A2CC52A9F2B07003EEA83 /* FeedStore.xcdatamodeld */; };
+		5E46191F2B67A41D008DF2DB /* UIView+Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46191E2B67A41D008DF2DB /* UIView+Container.swift */; };
+		5E4619212B67A46A008DF2DB /* UIRefreshControll+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4619202B67A46A008DF2DB /* UIRefreshControll+Helpers.swift */; };
 		5E46F90F2AC95B85006C21CE /* CoreDataFeedImageDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46F90E2AC95B85006C21CE /* CoreDataFeedImageDataStoreTests.swift */; };
 		5E46F9112AC968E6006C21CE /* FeedImageDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */; };
 		5E46F9132AC96935006C21CE /* LocalFeedImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46F9122AC96935006C21CE /* LocalFeedImageDataLoader.swift */; };
@@ -208,6 +210,8 @@
 		5E3A2CC32A9F2479003EEA83 /* CoreDataFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStoreTests.swift; sourceTree = "<group>"; };
 		5E3A2CC62A9F2B07003EEA83 /* FeedStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FeedStore.xcdatamodel; sourceTree = "<group>"; };
 		5E3A2CC82A9F2DB1003EEA83 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
+		5E46191E2B67A41D008DF2DB /* UIView+Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Container.swift"; sourceTree = "<group>"; };
+		5E4619202B67A46A008DF2DB /* UIRefreshControll+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControll+Helpers.swift"; sourceTree = "<group>"; };
 		5E46F90E2AC95B85006C21CE /* CoreDataFeedImageDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedImageDataStoreTests.swift; sourceTree = "<group>"; };
 		5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataStore.swift; sourceTree = "<group>"; };
 		5E46F9122AC96935006C21CE /* LocalFeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedImageDataLoader.swift; sourceTree = "<group>"; };
@@ -616,6 +620,8 @@
 			children = (
 				5E21D4E12AD5B4B80020BFA8 /* UITableView+HeaderSizing.swift */,
 				5E1160E22AB74B0D000DB7BA /* UITableView+Dequeing.swift */,
+				5E46191E2B67A41D008DF2DB /* UIView+Container.swift */,
+				5E4619202B67A46A008DF2DB /* UIRefreshControll+Helpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1146,12 +1152,14 @@
 				5E21D4E22AD5B4B80020BFA8 /* UITableView+HeaderSizing.swift in Sources */,
 				5EB93CE62AA9E93C00FC38FA /* ListViewController.swift in Sources */,
 				5E721C092ABC7413003EABEF /* ErrorView.swift in Sources */,
+				5E46191F2B67A41D008DF2DB /* UIView+Container.swift in Sources */,
 				5EE666F92AEA920500230129 /* CellController.swift in Sources */,
 				5E8F8F472AB0681B00551CEB /* FeedImageCellController.swift in Sources */,
 				5E8F8F352AAF029600551CEB /* UIView+Shimmering.swift in Sources */,
 				5E8F8F332AADFB3700551CEB /* FeedImageCell.swift in Sources */,
 				5E621B822AA8AA4800051014 /* EssentialFeediOS.docc in Sources */,
 				5E1160E52AB74BB3000DB7BA /* UIImage+Animation.swift in Sources */,
+				5E4619212B67A46A008DF2DB /* UIRefreshControll+Helpers.swift in Sources */,
 				5E9F1A2F2AE97EB7000EF17B /* ImageCommentCellController.swift in Sources */,
 				5E1160E32AB74B0D000DB7BA /* UITableView+Dequeing.swift in Sources */,
 				5E9F1A4F2AEA3AFE000EF17B /* ImageCommentCell.swift in Sources */,
