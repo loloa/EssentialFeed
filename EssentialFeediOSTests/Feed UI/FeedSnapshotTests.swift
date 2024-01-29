@@ -65,6 +65,16 @@ class FeedSnapShotTests: XCTestCase {
         assert(snapshot: sut.snapshot(for: .iPhone(style: .dark)), named: "FEED_WITH_FAILED_IMAGE_LOADING_dark")
     }
     
+    func test_feedWithLoadMoreIndicator() {
+        let sut = makeSUT()
+        
+        sut.display(feedWithLoadMoreIndicator())
+        
+        assert(snapshot: sut.snapshot(for: .iPhone(style: .light)), named: "FEED_WITH_LOAD_MORE_INDICATOR_light")
+        assert(snapshot: sut.snapshot(for: .iPhone(style: .dark)), named: "FEED_WITH_LOAD_MORE_INDICATOR_dark")
+ 
+    }
+    
     //MARK: -
     
     private func makeSUT() -> ListViewController {
@@ -77,6 +87,19 @@ class FeedSnapShotTests: XCTestCase {
         return controller
     }
     
+    private func feedWithLoadMoreIndicator() -> [CellControler] {
+        
+        let stub = feedWithContent().last!
+        let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate:  stub, selection: { })
+        stub.controller = cellController
+        
+        let loadMore = LoadMoreCellController()
+        loadMore.display(ResourceLoadingViewModel(isLoading: true))
+        return [
+            CellControler(id: UUID(), cellController),
+            CellControler(id: UUID(), loadMore)
+        ]
+    }
     private func emptyFeed() -> [FeedImageCellController] {
         return []
     }
@@ -125,7 +148,6 @@ private extension ListViewController {
             stub.controller = cellController
             return CellControler(id: UUID(), cellController)
         }
-        
         
         display(cells)
     }

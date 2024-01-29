@@ -37,6 +37,8 @@
 		5E3A2CCD2A9F6DFD003EEA83 /* FeedStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A2CC52A9F2B07003EEA83 /* FeedStore.xcdatamodeld */; };
 		5E46191F2B67A41D008DF2DB /* UIView+Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46191E2B67A41D008DF2DB /* UIView+Container.swift */; };
 		5E4619212B67A46A008DF2DB /* UIRefreshControll+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4619202B67A46A008DF2DB /* UIRefreshControll+Helpers.swift */; };
+		5E4619232B67B6FC008DF2DB /* LoadMoreCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4619222B67B6FC008DF2DB /* LoadMoreCellController.swift */; };
+		5E4619252B67C138008DF2DB /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4619242B67C138008DF2DB /* LoadMoreCell.swift */; };
 		5E46F90F2AC95B85006C21CE /* CoreDataFeedImageDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46F90E2AC95B85006C21CE /* CoreDataFeedImageDataStoreTests.swift */; };
 		5E46F9112AC968E6006C21CE /* FeedImageDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */; };
 		5E46F9132AC96935006C21CE /* LocalFeedImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E46F9122AC96935006C21CE /* LocalFeedImageDataLoader.swift */; };
@@ -212,6 +214,8 @@
 		5E3A2CC82A9F2DB1003EEA83 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
 		5E46191E2B67A41D008DF2DB /* UIView+Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Container.swift"; sourceTree = "<group>"; };
 		5E4619202B67A46A008DF2DB /* UIRefreshControll+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControll+Helpers.swift"; sourceTree = "<group>"; };
+		5E4619222B67B6FC008DF2DB /* LoadMoreCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCellController.swift; sourceTree = "<group>"; };
+		5E4619242B67C138008DF2DB /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		5E46F90E2AC95B85006C21CE /* CoreDataFeedImageDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedImageDataStoreTests.swift; sourceTree = "<group>"; };
 		5E46F9102AC968E6006C21CE /* FeedImageDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataStore.swift; sourceTree = "<group>"; };
 		5E46F9122AC96935006C21CE /* LocalFeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedImageDataLoader.swift; sourceTree = "<group>"; };
@@ -573,6 +577,7 @@
 			isa = PBXGroup;
 			children = (
 				5E8F8F462AB0681B00551CEB /* FeedImageCellController.swift */,
+				5E4619222B67B6FC008DF2DB /* LoadMoreCellController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -580,6 +585,7 @@
 		5E8F8F412AB0536B00551CEB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5E4619242B67C138008DF2DB /* LoadMoreCell.swift */,
 				5E8F8F322AADFB3700551CEB /* FeedImageCell.swift */,
 				5E21D4E02AD5B46C0020BFA8 /* Helpers */,
 				5E1160DE2AB730B8000DB7BA /* Feed.xcassets */,
@@ -1149,12 +1155,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E4619252B67C138008DF2DB /* LoadMoreCell.swift in Sources */,
 				5E21D4E22AD5B4B80020BFA8 /* UITableView+HeaderSizing.swift in Sources */,
 				5EB93CE62AA9E93C00FC38FA /* ListViewController.swift in Sources */,
 				5E721C092ABC7413003EABEF /* ErrorView.swift in Sources */,
 				5E46191F2B67A41D008DF2DB /* UIView+Container.swift in Sources */,
 				5EE666F92AEA920500230129 /* CellController.swift in Sources */,
 				5E8F8F472AB0681B00551CEB /* FeedImageCellController.swift in Sources */,
+				5E4619232B67B6FC008DF2DB /* LoadMoreCellController.swift in Sources */,
 				5E8F8F352AAF029600551CEB /* UIView+Shimmering.swift in Sources */,
 				5E8F8F332AADFB3700551CEB /* FeedImageCell.swift in Sources */,
 				5E621B822AA8AA4800051014 /* EssentialFeediOS.docc in Sources */,
