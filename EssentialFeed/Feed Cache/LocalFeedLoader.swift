@@ -33,7 +33,6 @@ extension LocalFeedLoader : FeedCache {
             case let .failure(error):
                 comletion(.failure(error))
             }
-            
         }
     }
     

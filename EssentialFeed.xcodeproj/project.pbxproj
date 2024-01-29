@@ -48,6 +48,7 @@
 		5E621B882AA8AA4900051014 /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E621B7E2AA8AA4800051014 /* EssentialFeediOS.framework */; };
 		5E63B03E2A91FF5A00D38CC7 /* LoadFeedFromCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E63B03D2A91FF5A00D38CC7 /* LoadFeedFromCacheUseCaseTests.swift */; };
 		5E63B0402A92004700D38CC7 /* FeedStoreSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E63B03F2A92004700D38CC7 /* FeedStoreSpy.swift */; };
+		5E66F08D2B3B025800AA8E2E /* ImageCommentsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E66F08C2B3B025800AA8E2E /* ImageCommentsEndpoint.swift */; };
 		5E6FAD762AC58FF3004FA9B0 /* LoadFeedImageDataFromCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6FAD752AC58FF3004FA9B0 /* LoadFeedImageDataFromCacheUseCaseTests.swift */; };
 		5E721C072ABC6F09003EABEF /* FeedPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E721C062ABC6F09003EABEF /* FeedPresenterTests.swift */; };
 		5E721C092ABC7413003EABEF /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E721C082ABC7413003EABEF /* ErrorView.swift */; };
@@ -222,6 +223,7 @@
 		5E621B872AA8AA4800051014 /* EssentialFeediOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeediOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E63B03D2A91FF5A00D38CC7 /* LoadFeedFromCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFeedFromCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		5E63B03F2A92004700D38CC7 /* FeedStoreSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreSpy.swift; sourceTree = "<group>"; };
+		5E66F08C2B3B025800AA8E2E /* ImageCommentsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsEndpoint.swift; sourceTree = "<group>"; };
 		5E6FAD752AC58FF3004FA9B0 /* LoadFeedImageDataFromCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFeedImageDataFromCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		5E721C062ABC6F09003EABEF /* FeedPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPresenterTests.swift; sourceTree = "<group>"; };
 		5E721C082ABC7413003EABEF /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 			isa = PBXGroup;
 			children = (
 				5E8CD8082ADECB4A003DEE77 /* ImageCommentsMapper.swift */,
+				5E66F08C2B3B025800AA8E2E /* ImageCommentsEndpoint.swift */,
 			);
 			path = "Image Comments API";
 			sourceTree = "<group>";
@@ -1207,6 +1210,7 @@
 				5E46F9132AC96935006C21CE /* LocalFeedImageDataLoader.swift in Sources */,
 				5EB084BB2AE6748B00AD7170 /* ResourceErrorView.swift in Sources */,
 				5E0974E02AA0D3B30013F418 /* ManagedFeedImage.swift in Sources */,
+				5E66F08D2B3B025800AA8E2E /* ImageCommentsEndpoint.swift in Sources */,
 				5EEE88752A8E428600481BB9 /* LocalFeedLoader.swift in Sources */,
 				5E46F91B2AC98CFA006C21CE /* CoreDataFeedStore+FeedImageDataStore.swift in Sources */,
 				5EEBCFAC2A87D52000809580 /* EssentialFeed.docc in Sources */,
@@ -1368,7 +1372,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1401,7 +1405,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1430,7 +1434,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65AZA3858V;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = liliaexamples.com.EssentialFeediOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1451,7 +1455,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65AZA3858V;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = liliaexamples.com.EssentialFeediOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1598,6 +1602,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1629,6 +1634,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
