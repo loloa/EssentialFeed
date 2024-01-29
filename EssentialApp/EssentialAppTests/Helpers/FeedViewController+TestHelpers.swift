@@ -10,9 +10,19 @@ import EssentialFeediOS
 
 extension ListViewController {
     
-    public override func loadViewIfNeeded() {
-        super.loadViewIfNeeded()
-        tableView.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
+//    public override func loadViewIfNeeded() {
+//        super.loadViewIfNeeded()
+//        tableView.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
+//    }
+    
+    func simulateAppearance() {
+        if !isViewLoaded {
+            loadViewIfNeeded()
+            prepareForFirstAppearance()
+        }
+
+        beginAppearanceTransition(true, animated: false)
+        endAppearanceTransition()
     }
     
     func simulateUserInitiatedReload() {
@@ -29,6 +39,29 @@ extension ListViewController {
    
     func simulateErrorViewTap() {
         errorView.simulateTap()
+    }
+    
+    // iOS 17
+    
+    private func prepareForFirstAppearance() {
+        setSmallFrameToPreventRenderingCells()
+        replaceRefreshControlWithSpyForiOS17Support()
+    }
+
+    private func setSmallFrameToPreventRenderingCells() {
+        tableView.frame = CGRect(x: 0, y: 0, width: 390, height: 1)
+    }
+
+    private func replaceRefreshControlWithSpyForiOS17Support() {
+        let spyRefreshControl = UIRefreshControlSpy()
+
+        refreshControl?.allTargets.forEach { target in
+            refreshControl?.actions(forTarget: target, forControlEvent: .valueChanged)?.forEach { action in
+                spyRefreshControl.addTarget(target, action: Selector(action), for: .valueChanged)
+            }
+        }
+
+        refreshControl = spyRefreshControl
     }
     
 }
@@ -122,5 +155,19 @@ extension ListViewController {
         let ds = tableView.dataSource
         let index = IndexPath(row: row, section: commentsSection)
         return ds?.tableView(tableView, cellForRowAt: index) as? ImagecommentCell
+    }
+}
+
+private class UIRefreshControlSpy: UIRefreshControl {
+    private var _isRefreshing = false
+
+    override var isRefreshing: Bool { _isRefreshing }
+
+    override func beginRefreshing() {
+        _isRefreshing = true
+    }
+
+    override func endRefreshing() {
+        _isRefreshing = false
     }
 }

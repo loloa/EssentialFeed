@@ -12,7 +12,7 @@ import EssentialFeediOS
 extension FeedUIIntegrationTests {
 
     func assertThat(_ sut: ListViewController, isRendering feed: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {
-        sut.loadViewIfNeeded()
+        sut.simulateAppearance()
         executeRunLoopToCleanUpReferences()
         
         guard sut.numberOfRenderedFeedImageViews() == feed.count else {
