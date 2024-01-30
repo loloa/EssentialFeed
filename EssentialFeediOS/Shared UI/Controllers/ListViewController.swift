@@ -69,11 +69,13 @@ import EssentialFeed
       }
      
      
-     public func display(_ cellControllers: [CellControler]) {
+     public func display(_ sections: [CellControler]...) {
           
          var snapshot = NSDiffableDataSourceSnapshot<Int, CellControler>()
-         snapshot.appendSections([0])
-         snapshot.appendItems(cellControllers)
+         sections.enumerated().forEach { (section, cellControllers) in
+             snapshot.appendSections([section])
+             snapshot.appendItems(cellControllers, toSection: section)
+         }
          
          if #available(iOS 15.0, *) {
              dataSource.applySnapshotUsingReloadData(snapshot)
@@ -97,8 +99,7 @@ import EssentialFeed
      }
      
      public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//         let cellController = cellController(forRowAt: indexPath)
-//         cellController.startTask(cell: cell)
+
          let dl = cellController(at: indexPath)?.delegate
          dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
       }

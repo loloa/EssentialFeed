@@ -23,14 +23,14 @@ import EssentialFeediOS
      
     func display(_ viewModel: Paginated<FeedImage>) {
         
-        controller?.display( viewModel.items.map { model in
+        let feed: [CellControler] = viewModel.items.map { model in
             
             let adapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>(loader: { [imageLoader] in
                 
                 imageLoader(model.url)
             })
- 
-             
+            
+            
             let view = FeedImageCellController(
                 viewModel: FeedImagePresenter.map(model),
                 delegate: adapter,
@@ -44,13 +44,23 @@ import EssentialFeediOS
                 mapper: { data in
                     guard let image = UIImage(data: data) else {
                         
-                      throw InvalidImageData()
-                     }
+                        throw InvalidImageData()
+                    }
                     return image
                 })
- 
+            
             return CellControler(id: model, view)
-        })
+        }
+        
+        let loadMore = LoadMoreCellController {
+            viewModel.loadMore?({ _ in
+                print("+++++++++++LOAD MORE")
+            })
+         }
+        
+        let loadMoreSection = [CellControler(id: UUID(), loadMore)]
+        
+        controller?.display( feed, loadMoreSection)
     }
 }
 private struct InvalidImageData: Error{}
