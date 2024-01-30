@@ -148,15 +148,16 @@ import EssentialApp
          let (sut, loader) = makeSUT()
          
          sut.simulateAppearance()
-         loader.completeFeedLoading()
          
+         loader.completeFeedLoading()
          XCTAssertEqual(loader.loadMoreCallCount, 0, "Expected no requests before until load more action")
-         XCTAssertEqual(loader.loadFeedCallCount, 1, "Expected no requests before until load more action")
+        
          
          sut.simulateLoadMoreFeedAction()
-        
-       
-         XCTAssertEqual(loader.loadMoreCallCount, 1)
+         XCTAssertEqual(loader.loadMoreCallCount, 1, "Expected load more request")
+         
+         sut.simulateLoadMoreFeedAction()
+         XCTAssertEqual(loader.loadMoreCallCount, 1, "Expected no request while loading more, till will get completion")
  
      }
     
