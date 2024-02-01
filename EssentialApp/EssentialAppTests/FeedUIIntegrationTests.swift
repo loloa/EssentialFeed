@@ -190,6 +190,30 @@ import EssentialApp
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user initiated loading completed with error")
         
     }
+     
+     func test_loadingMoreIndicator_isVisibleWhileLoadingMore() {
+         
+         let (sut, loader) = makeSUT()
+         
+         sut.simulateAppearance()
+         XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once view appears")
+         
+         loader.completeFeedLoading(at: 0)
+         XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once loading completes successfully")
+         
+         sut.simulateLoadMoreFeedAction()
+         XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on load more action")
+         
+         loader.completeLoadMore(at: 0)
+         XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes successfully")
+         
+         sut.simulateLoadMoreFeedAction()
+         XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on second load more action")
+         
+         loader.completeLoadMoreWithEror(at: 1)
+         XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes with error")
+         
+     }
     
     func test_loadFeedCompletion_rendersSuccessfullyLoadedFeed() {
         let image0 = makeImage(description:"a description", location:"a location")
