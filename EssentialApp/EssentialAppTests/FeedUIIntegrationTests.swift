@@ -158,6 +158,18 @@ import EssentialApp
          
          sut.simulateLoadMoreFeedAction()
          XCTAssertEqual(loader.loadMoreCallCount, 1, "Expected no request while loading more, till will get completion")
+         
+         loader.completeLoadMore(lastPage: false, at:0)
+         sut.simulateLoadMoreFeedAction()
+         XCTAssertEqual(loader.loadMoreCallCount, 2, "Expected request after load morecomleted with more pages")
+         
+         loader.completeLoadMoreWithEror(at: 1)
+         sut.simulateLoadMoreFeedAction()
+         XCTAssertEqual(loader.loadMoreCallCount, 3, "Expected request after load more failure")
+         
+         loader.completeLoadMore(lastPage: true, at:2)
+         sut.simulateLoadMoreFeedAction()
+         XCTAssertEqual(loader.loadMoreCallCount, 3, "Expected load no more request after loading all pages")
  
      }
     
