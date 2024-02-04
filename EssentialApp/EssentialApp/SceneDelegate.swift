@@ -88,7 +88,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error> {
         
-        let remoteURL = baseURL.appending(path: "/v1/feed")
+        let remoteURL = FeedEndpoint.get.url(baseURL: baseURL)
+        
+        //baseURL.appending(path: "/v1/feed")
        
 //
 //        remoteFeedLoader = RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemMapper.map)
