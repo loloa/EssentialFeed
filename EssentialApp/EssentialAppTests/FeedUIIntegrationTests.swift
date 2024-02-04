@@ -44,63 +44,6 @@ import EssentialApp
 final class FeedUIIntegrationTests: XCTestCase {
     
     
-    func test_feedView_doesNotShowErrorMessageOnLoadingStart() {
-        let (sut, _) = makeSUT()
-        sut.simulateAppearance()
-        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
-    }
-    
-    func test_feedView_doesNotShowErrorMessageOnCompletionSuccess() {
-        let image0 = makeImage(url: URL(string: "http://url-0.com")!)
-        let image1 = makeImage(url: URL(string: "http://url-1.com")!)
-        
-        let (sut, loader) = makeSUT()
-        sut.simulateAppearance()
-        
-        loader.completeFeedLoading(with: [image0, image1])
-        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible on not empty list, instead \(String(describing: sut.errorMessage))")
-        
-        loader.completeFeedLoading(with: [])
-        XCTAssertNil(sut.errorMessage, "Error message view expected to be not visible on empty list, instead \(String(describing: sut.errorMessage))")
-    }
-    
-    func test_feedView_showsErrorMessageOnCompletionFailure() {
-        let (sut, loader) = makeSUT()
-        sut.simulateAppearance()
-        loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertNotNil(sut.errorMessage, "Error message expected to be visible, instead no message")
-    }
-    func test_feedView_hasErrorMessageLocalized() {
-        let (sut, loader) = makeSUT()
-        sut.simulateAppearance()
-        loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadError, "Expected localized error explanation")
-    }
-    
-    func test_feedView_hidesErrorMessageOnRefreshUntilNextFailure() {
-        let (sut, loader) = makeSUT()
-        
-        sut.simulateAppearance()
-        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
-        
-        loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadError)
-        
-        sut.simulateUserInitiatedReload()
-        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
-    }
-    
-    func test_feedView_hidesErrorMessageOnTap() {
-        let (sut, loader) = makeSUT()
-        sut.simulateAppearance()
-        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
-        
-        loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadError)
-        
-        sut.simulateErrorViewTap()
-        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
-    }
     //MARK: -
     func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
@@ -281,6 +224,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         
     }
     
+    //MARK: - error
     func test_loadFeedCompletion_rendersErorMessageOnErrorUntilNextReload() {
         
         let (sut, loader) = makeSUT()
@@ -292,7 +236,22 @@ final class FeedUIIntegrationTests: XCTestCase {
         
         sut.simulateUserInitiatedReload()
         XCTAssertEqual(sut.errorMessage, nil)
+    }
+    
+    func test_loadMoreCompletion_rendersErorMessageOnError() {
         
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        loader.completeFeedLoading()
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil)
+
+        loader.completeLoadMoreWithEror()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, loadError)
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil)
     }
     
     func test_tapOnErrorView_hidesErrorMessage() {
@@ -308,7 +267,66 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.errorMessage, nil)
         
     }
+    func test_feedView_showsErrorMessageOnCompletionFailure() {
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        loader.completeFeedLoadingWithError(at: 0)
+        XCTAssertNotNil(sut.errorMessage, "Error message expected to be visible, instead no message")
+    }
     
+    func test_feedView_doesNotShowErrorMessageOnLoadingStart() {
+        let (sut, _) = makeSUT()
+        sut.simulateAppearance()
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
+    }
+    
+    func test_feedView_doesNotShowErrorMessageOnCompletionSuccess() {
+        let image0 = makeImage(url: URL(string: "http://url-0.com")!)
+        let image1 = makeImage(url: URL(string: "http://url-1.com")!)
+        
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        
+        loader.completeFeedLoading(with: [image0, image1])
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible on not empty list, instead \(String(describing: sut.errorMessage))")
+        
+        loader.completeFeedLoading(with: [])
+        XCTAssertNil(sut.errorMessage, "Error message view expected to be not visible on empty list, instead \(String(describing: sut.errorMessage))")
+    }
+    
+    
+    func test_feedView_hasErrorMessageLocalized() {
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        loader.completeFeedLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, loadError, "Expected localized error explanation")
+    }
+    
+    func test_feedView_hidesErrorMessageOnRefreshUntilNextFailure() {
+        let (sut, loader) = makeSUT()
+        
+        sut.simulateAppearance()
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
+        
+        loader.completeFeedLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, loadError)
+        
+        sut.simulateUserInitiatedReload()
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
+    }
+    
+    func test_feedView_hidesErrorMessageOnTap() {
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
+        
+        loader.completeFeedLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, loadError)
+        
+        sut.simulateErrorViewTap()
+        XCTAssertNil(sut.errorMessage, "Error message expected to be not visible, instead \(String(describing: sut.errorMessage))")
+    }
+    //
     func test_feedImageView_loadsImageURLWhenVisible() {
         
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
