@@ -156,6 +156,13 @@ extension ListViewController {
     private func loadMorefeedCell() -> LoadMoreCell? {
         cell(row: 0, section: feedLoadMoreSection) as? LoadMoreCell
     }
+    
+    func simulateTapOnLoaderMoreFeedError() {
+        
+        let delegate = tableView.delegate
+        let index = IndexPath(row: 0, section: feedLoadMoreSection)
+        delegate?.tableView?(tableView, didSelectRowAt: index)
+    }
  }
 
 extension ListViewController {
