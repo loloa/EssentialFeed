@@ -128,12 +128,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
        // let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
         
+        let client = HTTPClientProfilingDecorator(decoratee: httpClient, logger: logger)
+        
         let localImageLoader = LocalFeedImageDataLoader(store: store)
         
         return localImageLoader
             .loadImageDataPublisher(from: url)
-            .fallback { [httpClient] in
-                httpClient.getPublisher(url: url)
+            .fallback {
+                client.getPublisher(url: url)
                     .tryMap(FeedImageDataMapper.map)
                     .cache(to: localImageLoader, using: url)
             }
@@ -155,4 +157,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //}
 
 
- 

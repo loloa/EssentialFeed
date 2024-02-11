@@ -28,6 +28,7 @@
 		5E0A86F62AD41CC600315A4F /* FeedAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0A86F52AD41CC600315A4F /* FeedAcceptanceTests.swift */; };
 		5E21D5682ADD777D0020BFA8 /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E21D5672ADD777D0020BFA8 /* CombineHelpers.swift */; };
 		5E381B392B79000800E1EFF6 /* NullStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E381B382B79000800E1EFF6 /* NullStore.swift */; };
+		5EA1B7CF2B79107600331BFA /* HTTPClientProfilingDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA1B7CE2B79107600331BFA /* HTTPClientProfilingDecorator.swift */; };
 		5EB7D8A02ACABA1900C38F97 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB7D89F2ACABA1900C38F97 /* AppDelegate.swift */; };
 		5EB7D8A22ACABA1900C38F97 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB7D8A12ACABA1900C38F97 /* SceneDelegate.swift */; };
 		5EB7D8A92ACABA1B00C38F97 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5EB7D8A82ACABA1B00C38F97 /* Assets.xcassets */; };
@@ -97,6 +98,7 @@
 		5E0A86F52AD41CC600315A4F /* FeedAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAcceptanceTests.swift; sourceTree = "<group>"; };
 		5E21D5672ADD777D0020BFA8 /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 		5E381B382B79000800E1EFF6 /* NullStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStore.swift; sourceTree = "<group>"; };
+		5EA1B7CE2B79107600331BFA /* HTTPClientProfilingDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientProfilingDecorator.swift; sourceTree = "<group>"; };
 		5EB7D89C2ACABA1900C38F97 /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB7D89F2ACABA1900C38F97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5EB7D8A12ACABA1900C38F97 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				5EB7D89F2ACABA1900C38F97 /* AppDelegate.swift */,
 				5EB7D8A12ACABA1900C38F97 /* SceneDelegate.swift */,
 				5E381B382B79000800E1EFF6 /* NullStore.swift */,
+				5EA1B7CE2B79107600331BFA /* HTTPClientProfilingDecorator.swift */,
 				5EB7D8A82ACABA1B00C38F97 /* Assets.xcassets */,
 				5EB7D8AA2ACABA1B00C38F97 /* LaunchScreen.storyboard */,
 				5EB7D8AD2ACABA1B00C38F97 /* Info.plist */,
@@ -362,6 +365,7 @@
 				5E0A86DD2AD2EF6600315A4F /* WeakRefVirtualProxy.swift in Sources */,
 				5E0A86DB2AD2EF6600315A4F /* FeedUIComposer.swift in Sources */,
 				5EB7D8A02ACABA1900C38F97 /* AppDelegate.swift in Sources */,
+				5EA1B7CF2B79107600331BFA /* HTTPClientProfilingDecorator.swift in Sources */,
 				5E381B392B79000800E1EFF6 /* NullStore.swift in Sources */,
 				5E0A86DC2AD2EF6600315A4F /* FeedViewAdapter.swift in Sources */,
 				5EB7D8A22ACABA1900C38F97 /* SceneDelegate.swift in Sources */,
