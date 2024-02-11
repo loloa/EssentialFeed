@@ -207,7 +207,7 @@ final class FeedUIIntegrationTests: XCTestCase {
     
     func test_loadFeedCompletion_doesNotAlterCurrentrenderingStateOnError() {
         let image0 = makeImage()
-        let image1 = makeImage()
+       // let image1 = makeImage()
         let (sut, loader) = makeSUT()
         
         sut.simulateAppearance()
