@@ -46,6 +46,8 @@ extension FeedUIIntegrationTests {
                 return publisher.eraseToAnyPublisher()
                 
             }))
+            
+            feedRequests[index].send(completion: .finished)
         }
         func completeFeedLoadingWithError(at index: Int) {
             let error = NSError(domain: "an error", code: 0)
