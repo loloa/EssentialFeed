@@ -105,10 +105,7 @@ class FeedSnapShotTests: XCTestCase {
         
         let loadMore = LoadMoreCellController(callback: {})
         loadMore.display(ResourceLoadingViewModel(isLoading: true))
-        return [
-            CellControler(id: UUID(), cellController),
-            CellControler(id: UUID(), loadMore)
-        ]
+        return  feedWith(loadMore: loadMore)
     }
     
     private func feedWithLoadMoreError() -> [CellControler] {
@@ -119,6 +116,14 @@ class FeedSnapShotTests: XCTestCase {
         
         let loadMore = LoadMoreCellController(callback: {})
         loadMore.display(ResourceErrorViewModel(message: "An error message\n multiline error \n messge"))
+        return  feedWith(loadMore: loadMore)
+    }
+    
+    private func feedWith(loadMore: LoadMoreCellController) -> [CellControler] {
+        let stub = feedWithContent().last!
+        let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate:  stub, selection: { })
+        stub.controller = cellController
+        
         return [
             CellControler(id: UUID(), cellController),
             CellControler(id: UUID(), loadMore)
