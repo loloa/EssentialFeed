@@ -186,6 +186,10 @@ final class FeedUIIntegrationTests: XCTestCase {
         sut.simulateUserInitiatedReload()
         loader.completeFeedLoading(with: [image0, image1], at: 1)
         assertThat(sut, isRendering: [image0, image1])
+        
+        sut.simulateUserInitiatedReload()
+        loader.completeFeedLoading(with: [], at: 2)
+        assertThat(sut, isRendering: [])
     }
     
     func test_loadFeedCompletion_rendersSuccessfullyLoadedEmptyFeedAfterNonEmptyFeed() {
