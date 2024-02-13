@@ -142,6 +142,10 @@ extension ListViewController {
         return ds?.tableView(tableView, cellForRowAt: index)
     }
     
+    var canloadMoreFeed: Bool {
+        loadMorefeedCell() != nil
+    }
+    
     func renderedFeedImageData(at index: Int) -> Data? {
             return simulateFeedImageViewVisible(at: index)?.renderedImage
         }

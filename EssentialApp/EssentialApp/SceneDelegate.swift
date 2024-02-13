@@ -101,21 +101,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error> {
         
         let remoteURL = FeedEndpoint.get().url(baseURL: baseURL)
-        
-        //baseURL.appending(path: "/v1/feed")
-       
-//
-//        remoteFeedLoader = RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemMapper.map)
-        //Creates a publisher that invokes a promise closure when the publisher emits an element.
-        
         return httpClient
             .getPublisher(url: remoteURL)
             .tryMap(FeedItemMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
-            .map{
-                Paginated(items: $0)
+            .map{ items in
+                Paginated(items: items, loadMorePublisher:
+                            self.makeRemoteLoaderMoreLoader(items: items, last: items.last))
+  
             }.eraseToAnyPublisher()
+    }
+    
+    private func makeRemoteLoaderMoreLoader(items: [FeedImage], last: FeedImage?) -> (() -> AnyPublisher<Paginated<FeedImage>, Error>)? {
+        
+        last.map { lastItem in
+            
+            let url = FeedEndpoint.get(after: lastItem).url(baseURL: baseURL)
+            
+            return { [httpClient] in
+                
+                httpClient
+                    .getPublisher(url: url)
+                    .tryMap(FeedItemMapper.map)
+                    .map { newItems in
+                        let feed = items + newItems
+                        return Paginated(items: feed, loadMorePublisher:
+                                            self.makeRemoteLoaderMoreLoader(items: feed, last: newItems.last))
+ 
+                    }.eraseToAnyPublisher()
+            }
+        }
+        
     }
     /*
      composition sandwitch
