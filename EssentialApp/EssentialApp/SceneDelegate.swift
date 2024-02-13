@@ -119,7 +119,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             let url = FeedEndpoint.get(after: lastItem).url(baseURL: baseURL)
             
-            return { [httpClient] in
+            return { [httpClient, localFeedLoader] in
                 
                 httpClient
                     .getPublisher(url: url)
@@ -128,8 +128,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         let feed = items + newItems
                         return Paginated(items: feed, loadMorePublisher:
                                             self.makeRemoteLoaderMoreLoader(items: feed, last: newItems.last))
- 
-                    }.eraseToAnyPublisher()
+                    }
+                    .caching(to: localFeedLoader)
             }
         }
         
