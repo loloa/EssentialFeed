@@ -4,7 +4,7 @@
 //
 //  Created by אליסה לשין on 05/10/2023.
 //
-
+/*
 import EssentialFeed
 
 class FeedImageDataLoaderSpy: FeedImageDataLoader {
@@ -39,3 +39,4 @@ class FeedImageDataLoaderSpy: FeedImageDataLoader {
         messages[index].completion(.success(data))
     }
 }
+*/

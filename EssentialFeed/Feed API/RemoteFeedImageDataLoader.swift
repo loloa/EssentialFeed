@@ -4,7 +4,7 @@
 //
 //  Created by אליסה לשין on 28/09/2023.
 //
-
+/*
 import Foundation
 
 public final class RemoteFeedImageDataLoader: FeedImageDataLoader {
@@ -57,20 +57,8 @@ public final class RemoteFeedImageDataLoader: FeedImageDataLoader {
                     return isValidResponse ? .success(data) : .failure(Error.invalidData)
                 }
              )
-            
-            //            switch result {
-            //            case .failure:
-            //                taskWrapper.complete(with: .failure(Error.connectivity))
-            //
-            //            case let .success((data, response)):
-            //
-            //                if response.statusCode == 200, data.isEmpty == false {
-            //                    taskWrapper.complete(with: .success(data))
-            //                } else {
-            //                    taskWrapper.complete(with: .failure(Error.invalidData))
-            //                 }
-            //            }
-        })
+         })
         return taskWrapper
     }
 }
+*/

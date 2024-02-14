@@ -7,7 +7,7 @@
 
 import XCTest
 import EssentialFeed
-
+/*
 protocol FeedImageDataLoaderTestCase: XCTestCase {}
 
 extension FeedImageDataLoaderTestCase {
@@ -36,3 +36,4 @@ extension FeedImageDataLoaderTestCase {
     }
  
 }
+*/
