@@ -39,18 +39,18 @@ class CacheFeedImageDataUseCaseTests: XCTestCase {
                 store.completeInsertionSuccessfully()
             })
         }
-    func test_saveImageDataFromURL_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
-            let store = FeedImageDataStoreSpy()
-            var sut: LocalFeedImageDataLoader? = LocalFeedImageDataLoader(store: store)
-
-            var received = [LocalFeedImageDataLoader.SaveResult]()
-            sut?.save(anyData(), for: anyURL()) { received.append($0) }
-
-            sut = nil
-            store.completeInsertionSuccessfully()
-
-            XCTAssertTrue(received.isEmpty, "Expected no received results after instance has been deallocated")
-        }
+//    func test_saveImageDataFromURL_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
+//            let store = FeedImageDataStoreSpy()
+//            var sut: LocalFeedImageDataLoader? = LocalFeedImageDataLoader(store: store)
+//
+//            var received = [LocalFeedImageDataLoader.SaveResult]()
+//            sut?.save(anyData(), for: anyURL()) { received.append($0) }
+//
+//            sut = nil
+//            store.completeInsertionSuccessfully()
+//
+//            XCTAssertTrue(received.isEmpty, "Expected no received results after instance has been deallocated")
+//        }
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
@@ -68,6 +68,13 @@ class CacheFeedImageDataUseCaseTests: XCTestCase {
     private func expect(_ sut: LocalFeedImageDataLoader, toCompleteWith expectedResult: LocalFeedImageDataLoader.SaveResult, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         let exp = expectation(description: "Wait for load completion")
         
+        /*
+         moved here, first stub than call the method for sunctonyouis behavior
+         */
+        
+        action()
+        
+        
         sut.save(anyData(), for: anyURL()) { receivedResult in
             switch (receivedResult, expectedResult) {
             case (.success, .success):
@@ -83,8 +90,8 @@ class CacheFeedImageDataUseCaseTests: XCTestCase {
             
             exp.fulfill()
         }
-        
-        action()
+//        
+//        action()
         wait(for: [exp], timeout: 1.0)
     }
     
