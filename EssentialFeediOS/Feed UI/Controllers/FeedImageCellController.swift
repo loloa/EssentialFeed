@@ -6,48 +6,64 @@
 //
 
 import UIKit
- 
-final class FeedImageCellController {
+import EssentialFeed
+
+public protocol FeedImageCellControllerDelegate {
     
-    private let viewModel: FeedImageViewModel<UIImage>
-    
-    init(viewModel: FeedImageViewModel<UIImage>) {
-        self.viewModel = viewModel
-    }
-    
-    func view() -> UITableViewCell {
-        
-        let cell = binded(FeedImageCell())
-        viewModel.loadImageData()
-        return cell
-    }
-    
-    private func binded(_ cell: FeedImageCell) -> FeedImageCell {
-        
-        cell.locationContainer.isHidden = !viewModel.hasLocation
-        cell.locationLabel.text = viewModel.location
-        cell.descriptionLabel.text = viewModel.description
-        cell.onRetry = viewModel.loadImageData
-        
-        viewModel.onImageLoad = { [weak cell] image in
-            cell?.feedImageView.image = image
-        }
-        
-        viewModel.onImageLoadingStateChange = { [weak cell]  isLoading in
-            cell?.feedImageContainer.isShimmering = isLoading
-        }
-        
-        viewModel.onShouldRetryImageLoadStateChange = { [weak cell] shouldRetry in
-            cell?.feedImageRetryButton.isHidden = !shouldRetry
-        }
-        return cell
-    }
-    
-    func preload() {
-        viewModel.loadImageData()
-    }
-    func cancelLoad() {
-        viewModel.cancelImageDataLoad()
-    }
+    func didRequestImage()
+    func didCancelImageRequest()
 }
 
+public final class FeedImageCellController : FeedImageView {
+    
+    private let delegate: FeedImageCellControllerDelegate
+    private var cell: FeedImageCell?
+    
+    public init(delegate: FeedImageCellControllerDelegate) {
+        self.delegate = delegate
+    }
+    
+    func view(in tableView: UITableView) -> UITableViewCell {
+        cell = tableView.dequeuReusableCell()
+        cell?.onReuse = { [weak self] in
+                    self?.releaseCell()
+                }
+        delegate.didRequestImage()
+        return cell!
+    }
+    
+    public func display(_ viewModel: FeedImageViewModel<UIImage>) {
+        
+        cell?.locationContainer.isHidden = !viewModel.hasLocation
+        cell?.locationLabel.text = viewModel.location
+        cell?.descriptionLabel.text = viewModel.description
+        
+        cell?.feedImageView.setImageAnimated(viewModel.image)
+        cell?.feedImageContainer.isShimmering = viewModel.isLoading
+        cell?.feedImageRetryButton.isHidden = !viewModel.shouldRetry
+        cell?.onRetry = delegate.didRequestImage
+        cell?.onReuse = { [weak self] in
+                    self?.releaseCell()
+                }
+        
+    }
+    
+    
+    func preload() {
+        delegate.didRequestImage()
+    }
+    
+    func startTask(cell: UITableViewCell?) {
+        self.cell = cell as? FeedImageCell
+        delegate.didRequestImage()
+    }
+    func cancelLoad() {
+        releaseCell()
+        delegate.didCancelImageRequest()
+    }
+    
+    private func releaseCell() {
+        cell = nil
+    }
+}
+ 

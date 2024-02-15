@@ -7,43 +7,84 @@
 
 
 import UIKit
+import EssentialFeed
+
+public protocol FeedViewControllerDelegate {
+    
+    func didRequestFeedrefresh()
+}
  
- public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
+ public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
  
-    private var refreshController: FeedRefreshViewController?
-    var tableModel = [FeedImageCellController]() {
+     private var loadingControllers = [IndexPath: FeedImageCellController]()
+     
+     @IBOutlet private(set) public weak var errorView: ErrorView?
+     public var delegate: FeedViewControllerDelegate?
+     
+     
+     convenience init(coder: NSCoder, delegate: FeedViewControllerDelegate) {
+         self.init(coder: coder)!
+         self.delegate = delegate
+     }
+ 
+     
+    private var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
+     
+     public func display(_ cellControllers: [FeedImageCellController]) {
+         loadingControllers = [:]
+         tableModel = cellControllers
+     }
  
-     convenience init(refreshController: FeedRefreshViewController) {
-        self.init()
-        self.refreshController = refreshController
-        
-    }
     public override func viewDidLoad() {
         super.viewDidLoad()
-        refreshControl = refreshController?.view
-        
-        tableView.prefetchDataSource = self
-        refreshController?.refresh()
+        refresh()
     }
+     
+     public override func viewDidLayoutSubviews() {
+         super.viewDidLayoutSubviews()
+         
+         tableView.sizeTableHeaderToFit()
+     }
+     
+     @IBAction private func refresh() {
+          delegate?.didRequestFeedrefresh()
+      }
+     
+     public func display(_ viewModel: FeedLoadingViewModel) {
+         if viewModel.isLoading {
+             refreshControl?.beginRefreshing()
+         }else {
+             refreshControl?.endRefreshing()
+         }
+     }
+     
+     public func display(_ viewModel: FeedErrorViewModel) {
+         if let message = viewModel.message {
+             errorView?.show(message: message)
+         }else {
+             errorView?.hideMessage()
+         }
+      }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModel.count
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return cellController(forRowAt: indexPath).view()
+        return cellController(forRowAt: indexPath).view(in: tableView)
      }
     
+     public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+         let cellController = cellController(forRowAt: indexPath)
+         cellController.startTask(cell: cell)
+      }
+ 
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelCellcontrollerLoad(forRowAt: indexPath)
     }
-    
-    //    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    //        startTask(forRowAt: indexPath)
-    //    }
-    //
+ 
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         
@@ -59,11 +100,16 @@ import UIKit
     }
     
     private func cellController(forRowAt indexPath: IndexPath) -> FeedImageCellController {
-         return tableModel[indexPath.row]
+        
+        let controller = tableModel[indexPath.row]
+        loadingControllers[indexPath] = controller
+         return controller
      }
      
      private func cancelCellcontrollerLoad(forRowAt indexPath: IndexPath) {
-         cellController(forRowAt: indexPath).cancelLoad()
+         loadingControllers[indexPath]?.cancelLoad()
+         loadingControllers[indexPath] = nil
+         //cellController(forRowAt: indexPath).cancelLoad()
      }
     /*
      On iOS 15+, the cell lifecycle behavior changed. For performance reasons, when the cell is removed from the table view and quickly added back (e.g., by scrolling up and down fast), the data source may not recreate the cell anymore using the cellForRow method if there's a cached cell for that IndexPath.

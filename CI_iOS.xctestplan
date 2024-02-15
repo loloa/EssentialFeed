@@ -1,8 +1,8 @@
 {
   "configurations" : [
     {
-      "id" : "A13B8E8D-4059-470A-9FB0-149C44F847C4",
-      "name" : "Configuration 1",
+      "id" : "12AFCEB3-7C58-452B-A525-8EDEE08917CD",
+      "name" : "Test Scheme Action",
       "options" : {
 
       }
@@ -11,6 +11,11 @@
   "defaultOptions" : {
     "codeCoverage" : {
       "targets" : [
+        {
+          "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
+          "identifier" : "5EB7D89B2ACABA1900C38F97",
+          "name" : "EssentialApp"
+        },
         {
           "containerPath" : "container:EssentialFeed.xcodeproj",
           "identifier" : "5EEBCFA62A87D52000809580",
@@ -23,9 +28,21 @@
         }
       ]
     },
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
+      "identifier" : "5EB7D89B2ACABA1900C38F97",
+      "name" : "EssentialApp"
+    },
     "testExecutionOrdering" : "random"
   },
   "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
+        "identifier" : "5EB7D8B12ACABA1B00C38F97",
+        "name" : "EssentialAppTests"
+      }
+    },
     {
       "target" : {
         "containerPath" : "container:EssentialFeed.xcodeproj",
@@ -52,6 +69,13 @@
         "containerPath" : "container:EssentialFeed.xcodeproj",
         "identifier" : "5E621B862AA8AA4800051014",
         "name" : "EssentialFeediOSTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
+        "identifier" : "5E0A86C42ACED73C00315A4F",
+        "name" : "EssentialAppUIAcceptenceTests"
       }
     }
   ],
