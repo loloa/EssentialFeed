@@ -23,8 +23,7 @@ public final class FeedUIComposer {
         
         let presentationAdapter = Adapter(
                     loader: { feedLoader().dispatchOnMainQueue() })
-
-        
+ 
  
         let feedController = makeFeedViewController(
             title: FeedPresenter.title)
