@@ -21,7 +21,7 @@ public extension Paginated {
                     if case let .failure(error) = result {
                         completion(.failure(error))
                     }
-                     
+                    
                 }, receiveValue: { result in
                     completion(.success(result))
                 }))
@@ -82,16 +82,16 @@ public extension FeedImageDataLoader {
     typealias Publisher = AnyPublisher<Data, Error>
     
     func loadImageDataPublisher(from url: URL) -> Publisher {
- 
+        
         return Deferred {
-            Future { promise in
-                 
+            Future() { promise in
+                
                 promise(Result{
                     try self.loadImageData(from: url)
                 })
-             }
+            }
         }
-         .eraseToAnyPublisher()
+        .eraseToAnyPublisher()
     }
 }
 // MARK: ---
@@ -195,6 +195,65 @@ extension DispatchQueue {
             
             DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options, action)
         }
+    }
+}
+
+// we need our oen scheduler to inject for tests to finish immediatelly
+typealias AnyDispatchQueueScheduler = AnyScheduler<DispatchQueue.SchedulerTimeType, DispatchQueue.SchedulerOptions>
+
+//for tests
+
+extension AnyDispatchQueueScheduler {
+    static var immediateOnMainQueue: Self {
         
+        DispatchQueue.immediateWhenOnMainQueuScheduler.eraseToAnyScheduler()
+    }
+}
+extension Scheduler {
+    func eraseToAnyScheduler() -> AnyScheduler<SchedulerTimeType, SchedulerOptions> {
+        AnyScheduler(self)
+    }
+}
+public struct AnyScheduler<SchedulerTimeType : Strideable, SchedulerOptions> : Scheduler where SchedulerTimeType.Stride : SchedulerTimeIntervalConvertible {
+    
+    //we can not keep reference on schedular S because compiler does not know its type
+    //but we can use closures to our wrapped schedular, its like Decorator pattern delegate
+    
+    private let _now: () -> SchedulerTimeType
+    private let _minimumTolerance: () -> SchedulerTimeType.Stride
+    private let _schedule: (SchedulerOptions?, @escaping () -> Void) -> Void
+    private let _scheduleAfter: (SchedulerTimeType, SchedulerTimeType.Stride, SchedulerOptions?, @escaping () -> Void) -> Void
+    
+    private let _scheduleAfterInterval: (SchedulerTimeType, SchedulerTimeType.Stride, SchedulerTimeType.Stride, SchedulerOptions?, @escaping () -> Void) -> Cancellable
+    
+    public init<S>(_ scheduler: S) where SchedulerTimeType == S.SchedulerTimeType, SchedulerOptions == S.SchedulerOptions, S : Scheduler {
+        
+        _now = { scheduler.now }
+        _minimumTolerance = { scheduler.minimumTolerance }
+        //        _schedule = { options, action in
+        //            scheduler.schedule(options: options, action)
+        //        }
+        
+        _schedule = scheduler.schedule(options:_:)
+        _scheduleAfter = scheduler.schedule(after:tolerance:options:_:)
+        _scheduleAfterInterval = scheduler.schedule(after:interval:tolerance:options:_:)
+        
+    }
+    public var now: SchedulerTimeType { _now() }
+    
+    public var minimumTolerance: SchedulerTimeType.Stride { _minimumTolerance() }
+    
+    public func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
+        _schedule(options, action)
+    }
+    
+    public func schedule(after date:SchedulerTimeType, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) {
+        
+        _scheduleAfter(date, tolerance, options, action)
+    }
+    
+    public func schedule(after date: SchedulerTimeType, interval: SchedulerTimeType.Stride, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
+        
+        _scheduleAfterInterval(date, interval, tolerance, options, action)
     }
 }
